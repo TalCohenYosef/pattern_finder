@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: graph-measures
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Tal 
+    name-particle: Cohen Yosef
+    affiliation: Bar-Ilan University
+  - given-names: Yael
+    name-particle: Ginzburg
+    affiliation: Bar-Ilan University
+  - given-names: Yoram
+    name-particle: Louzoun
+    affiliation: Bar-Ilan University
+    email: louzouy@math.biu.ac.il
+repository-code: 'https://github.com/louzounlab/graph-measures'
+abstract: >-
+  
+version: 0.1.44
+date-released: '2022-10-20'
