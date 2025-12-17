@@ -31,13 +31,10 @@ private:
      * m_number_of_neighbours[c][d] stores how many neighbors of color `c`
      * are compatible with extending the pattern at depth `d`.
      */
-    std::vector<std::vector<int32_t>> m_number_of_neighbours;
+    std::vector<std::vector<uint32_t>> m_number_of_neighbours;
 
     /// Number of distinct colors in the graph
     int32_t C;
-
-    /// Maximum pattern size (maximum depth)
-    int32_t MAX_S;
 
 public:
     /**
@@ -46,26 +43,18 @@ public:
      * @param num_colors Number of distinct colors (C)
      * @param max_s Maximum depth / pattern size
      */
-    ColorHist(int32_t num_colors, int32_t max_s);
+    ColorHist(int32_t num_colors);
 
     /**
-     * @brief Decrease histogram counts due to removed or invalid neighbors.
-     *
-     * This function is typically called when extending the tree path causes
-     * certain neighbor mappings to become invalid.
-     *
-     * @param last_node_in_path Last node in the current tree path
-     * @param indexes_in_s Indices of candidate nodes in S (unused here, kept for symmetry)
-     * @param s_list List of graphs S_i
-     * @param update_in_hist Mapping:
-     *        - key: index in S
-     *        - value: index in pattern P (depth)
+     * @brief Decrease histogram counts due to neighbour added to match.
+ 
+     * @param s_graph Graph f tree whose match is extanded.
+     * @param update_in_hist vector of pairs:
+     *        - first: index in pattern P (depth)
+     *        - second: vertex color
      */
     void update_hist_decrease_from_neighbours(
-        const NodePtr& last_node_in_path,
-        const std::vector<int32_t>& indexes_in_s,
-        const std::vector<Graph>& s_list,
-        const std::unordered_map<int32_t, int32_t>& update_in_hist
+        const std::vector<std::pair<uint32_t, uint32_t>>& update_in_hist
     );
 
     /**
@@ -74,16 +63,14 @@ public:
      * Called after successfully adding a node to the pattern tree,
      * increasing compatibility counts for its neighbors.
      *
-     * @param last_node_in_path Newly added node in the tree
-     * @param indexes_in_s Indices of candidate nodes in S (unused here)
-     * @param s_list List of graphs S_i
-     * @param update_in_hist Mapping of neighbors contributing to histogram update
+     * @param s_graph Graph f tree whose match is extanded.
+     * @param new_node_depth Depth of the newly added node in the pattern
+     * @param update_in_hist vector:
+     *        - second: vertex color
      */
     void update_neigbours_add_node_add_neighbours_to_hist(
-        const NodePtr& last_node_in_path,
-        const std::vector<int32_t>& indexes_in_s,
-        const std::vector<Graph>& s_list,
-        const std::unordered_map<int32_t, int32_t>& update_in_hist
+        uint32_t new_node_depth,
+        const std::vector<uint32_t>& update_in_hist
     );
 
     /**
@@ -92,14 +79,14 @@ public:
      * Used during backtracking when a node is removed and its contribution
      * to neighbor compatibility must be reverted.
      *
-     * @param node_to_remove Node being removed from the tree
-     * @param s_list List of graphs S_i
-     * @param update_in_hist Mapping of neighbors affected by removal
+     * @param s_graph Graph f tree whose match is extanded.
+     * @param update_in_hist vector of pairs:
+     *        - first: index in pattern P (depth)
+     *        - second: vertex color
      */
     void update_neigbours_remove_node_decrease_neighbours_from_hist(
-        const NodePtr& node_to_remove,
-        const std::vector<Graph>& s_list,
-        const std::unordered_map<int32_t, int32_t>& update_in_hist
+        uint32_t remove_node_depth,
+        const std::vector<uint32_t>& update_in_hist
     );
 
     /**
@@ -112,7 +99,7 @@ public:
      *         - color: color index with maximum support
      *         - depth: pattern depth where extension is most promising
      */
-    std::pair<int32_t, int32_t> get_color_to_add() const;
+    std::pair<uint32_t, uint32_t> get_color_to_add() const;
 };
 
 using ColorHistPtr = std::shared_ptr<ColorHist>;

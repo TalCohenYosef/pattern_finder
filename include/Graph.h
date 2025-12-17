@@ -1,7 +1,9 @@
+#pragma once
+
 #include <boost/graph/adjacency_list.hpp>
 
 struct VertexProperty {
-    int color;
+    int32_t color;
 };
 
 struct EdgeProperty {

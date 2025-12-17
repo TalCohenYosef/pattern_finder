@@ -1,6 +1,7 @@
 #include "Tree.h"
 #include <stdexcept>
 #include <algorithm>
+#include <vector>
 
 /* ---------- Constructor ---------- */
 
@@ -96,6 +97,74 @@ void Tree::_delete_node(const NodePtr& node)
     }
 }
 
+std::vector<std::pair<uint32_t, uint32_t>> Tree::_get_neighbours_in_tree_path(NodePtr last_node_in_path, std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list)
+{
+    // return all the neighbours of the indexes in s that are also in the tree path
+    std::vector<std::pair<uint32_t, uint32_t>> neighbours_in_s_in_tree_path;
+
+    Graph graph = s_list[this->m_root->index];
+
+    std::vector<std::pair<uint32_t, uint32_t>> neighbours;
+    for (uint32_t index_in_s : indexes_in_s)
+    {
+        auto src_vertex = static_cast<Graph::vertex_descriptor>(index_in_s);
+
+        for (auto edge : boost::make_iterator_range(boost::out_edges(src_vertex, graph))) 
+        {
+            auto neighbour = boost::target(edge, graph);
+            uint32_t neighbour_index = static_cast<uint32_t>(neighbour);
+            neighbours.push_back(std::make_pair(neighbour_index, graph[neighbour].color));        
+        }
+    } 
+    auto neighbours_end = std::unique(neighbours.begin(), neighbours.end());
+
+    std::unordered_map<int32_t, int32_t> path_in_tree = this->get_tree_path_map(last_node_in_path);
+
+    for (auto index_neighbours = neighbours.begin(); index_neighbours != neighbours_end; index_neighbours++)
+    {
+        if (path_in_tree.find((*index_neighbours).first) != path_in_tree.end())
+        {
+            neighbours_in_s_in_tree_path.push_back(std::make_pair(path_in_tree[(*index_neighbours).first], (*index_neighbours).second));
+        }
+    }
+    return neighbours_in_s_in_tree_path;
+}
+
+
+std::vector<uint32_t> Tree::_get_neighbours_not_in_tree_path(NodePtr last_node_in_path, std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list)
+{
+    // return all the neighbours of the indexes in s that are also in the tree path
+    std::vector<uint32_t> neighbours_in_s_not_in_tree_path;
+
+    Graph graph = s_list[this->m_root->index];
+
+    std::vector<std::pair<uint32_t, uint32_t>> neighbours;
+    for (uint32_t index_in_s : indexes_in_s)
+    {
+        auto src_vertex = static_cast<Graph::vertex_descriptor>(index_in_s);
+
+        for (auto edge : boost::make_iterator_range(boost::out_edges(src_vertex, graph))) 
+        {
+            auto neighbour = boost::target(edge, graph);
+            uint32_t neighbour_index = static_cast<uint32_t>(neighbour);
+            neighbours.push_back(std::make_pair(neighbour_index, graph[neighbour].color));
+        }
+    } 
+
+    std::unordered_map<int32_t, int32_t> path_in_tree = this->get_tree_path_map(last_node_in_path);
+
+    for (auto index_neighbours = neighbours.begin(); index_neighbours != neighbours.end(); index_neighbours++)
+    {
+        if (path_in_tree.find((*index_neighbours).first) == path_in_tree.end())
+        {
+            neighbours_in_s_not_in_tree_path.push_back((*index_neighbours).second);
+        }
+    }
+    
+    return neighbours_in_s_not_in_tree_path;
+}
+
+
 /* ---------- Public API ---------- */
 
 std::unordered_map<int32_t, int32_t>
@@ -124,7 +193,7 @@ bool Tree::is_empty()
 
 std::vector<NodePtr>
 Tree::add_tree_level(const NodePtr& node_parent,
-                     const std::vector<int32_t>& new_indexes,
+                     const std::vector<uint32_t>& new_indexes,
                      const std::vector<Graph>& s_list)
 {
     std::vector<NodePtr> added_nodes;
@@ -135,17 +204,17 @@ Tree::add_tree_level(const NodePtr& node_parent,
         for (int32_t idx : new_indexes)
             added_nodes.push_back(_add_node(node_parent, idx));
 
-        auto update_in_hist =
+        const std::vector<std::pair<uint32_t, uint32_t>> update_in_hist1 = 
             _get_neighbours_in_tree_path(node_parent, new_indexes, s_list);
 
         hist->update_hist_decrease_from_neighbours(
-            node_parent, new_indexes, s_list, update_in_hist);
+            update_in_hist1);
 
-        update_in_hist =
+        const std::vector<uint32_t> update_in_hist2 =
             _get_neighbours_not_in_tree_path(node_parent, new_indexes, s_list);
 
         hist->update_neigbours_add_node_add_neighbours_to_hist(
-            node_parent, new_indexes, s_list, update_in_hist);
+            this->depth-1, update_in_hist2);
     }
     else {
         remove_node(node_parent, s_list);
@@ -160,11 +229,11 @@ void Tree::remove_node(const NodePtr& node,
     NodePtr node_to_remove = node;
 
     while (node_to_remove) {
-        auto update_in_hist =
+        const std::vector<uint32_t> update_in_hist =
             _get_neighbours_not_in_tree_path(node_to_remove, {}, s_list);
 
         hist->update_neigbours_remove_node_decrease_neighbours_from_hist(
-            node_to_remove, s_list, update_in_hist);
+            node_to_remove->depth-1, update_in_hist);
 
         NodePtr parent = node_to_remove->parent.lock();
         _delete_node(node_to_remove);

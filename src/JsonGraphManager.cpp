@@ -31,7 +31,7 @@ Graph JsonGraphManager::read_graph(const std::string& path)
         int id = node.at("id");
         int color = node.at("color");
 
-        auto v = boost::add_vertex(VertexProperty{color}, graph);
+        auto v = boost::add_vertex(VertexProperty{static_cast<uint32_t>(color)}, graph);
         id_map[id] = v;
     }
 
@@ -47,12 +47,12 @@ Graph JsonGraphManager::read_graph(const std::string& path)
             graph
         );
 
-        boost::add_edge(
-            id_map.at(tgt),
-            id_map.at(src),
-            EdgeProperty{true},   // default
-            graph
-        );
+        // boost::add_edge(
+        //     id_map.at(tgt),
+        //     id_map.at(src),
+        //     EdgeProperty{true},   // default
+        //     graph
+        // );
     }
 
     return graph;
