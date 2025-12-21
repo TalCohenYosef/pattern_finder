@@ -1,3 +1,0 @@
-/home/sapir/pattern_finder/build/CMakeFiles/pattern_finder.dir
-/home/sapir/pattern_finder/build/CMakeFiles/edit_cache.dir
-/home/sapir/pattern_finder/build/CMakeFiles/rebuild_cache.dir
