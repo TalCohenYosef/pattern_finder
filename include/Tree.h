@@ -43,14 +43,14 @@ private:
     * @brief Get neighbors in S that are already in the tree path.
     * @return Vector of pairs (depth in pattern, color pf vertex)
     */
-    std::vector<std::pair<uint32_t, uint32_t>> _get_neighbours_in_tree_path(NodePtr last_node_in_path, 
+    std::vector<uint32_t> _get_neighbours_in_tree_path(NodePtr last_node_in_path, 
         std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list);
 
     /**
     * @brief Get neighbors in S that are not in the tree path.
     * @return Vector ( color of vertex)
     */
-    std::vector<uint32_t> _get_neighbours_not_in_tree_path(NodePtr last_node_in_path, 
+    std::vector<uint32_t> _get_colors_of_neighbours_not_in_tree_path(NodePtr last_node_in_path, 
         std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list);
 
 
@@ -68,7 +68,7 @@ public:
     /**
      * @brief Get map of pattern index → depth along a tree path.
      */
-    std::unordered_map<int32_t, int32_t>
+    std::unordered_map<uint32_t, uint32_t>
     get_tree_path_map(const NodePtr& last_node_in_path);
 
     /// @return Root node

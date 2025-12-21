@@ -48,13 +48,13 @@ public:
     /**
      * @brief Decrease histogram counts due to neighbour added to match.
  
-     * @param s_graph Graph f tree whose match is extanded.
-     * @param update_in_hist vector of pairs:
-     *        - first: index in pattern P (depth)
-     *        - second: vertex color
+     * @param current_vertex_color uint32_t - color of the current vertex in pattern P
+     * @param update_in_hist vector of indexes in p of current neighbors in pattern 
+     * 
      */
     void update_hist_decrease_from_neighbours(
-        const std::vector<std::pair<uint32_t, uint32_t>>& update_in_hist
+        const uint32_t current_vertex_color,
+        const std::vector<uint32_t>& update_in_hist
     );
 
     /**

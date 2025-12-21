@@ -12,13 +12,12 @@ ColorHist::ColorHist(int32_t num_colors): C(num_colors)
  * @brief Decreases histogram counts for neighbors invalidated by path extension.
  */
 void ColorHist::update_hist_decrease_from_neighbours(
-    const std::vector<std::pair<uint32_t, uint32_t>>& update_in_hist)
+    const uint32_t current_vertex_color,
+    const std::vector<uint32_t>& update_in_hist)
 {
-    for (const auto& neighbour : update_in_hist) {
-        uint32_t color = neighbour.second;
-        uint32_t index_in_p = neighbour.first;
-
-        --m_number_of_neighbours[color][index_in_p];       
+    for (const auto& neighbour : update_in_hist)
+    {
+        --m_number_of_neighbours[neighbour][current_vertex_color];       
     }
 }
 
@@ -29,10 +28,14 @@ void ColorHist::update_neigbours_add_node_add_neighbours_to_hist(
     uint32_t new_node_depth,
     const std::vector<uint32_t>& update_in_hist)
 {
-    this->m_number_of_neighbours.push_back(std::vector<uint32_t>(C, 0));
-    for (const auto& neighbour : update_in_hist) {
+    if(new_node_depth >= m_number_of_neighbours.size())
+    {
+        this->m_number_of_neighbours.push_back(std::vector<uint32_t>(C, 0));
+    }
+    for (const auto& neighbour : update_in_hist)
+    {
         int color = neighbour;
-        ++m_number_of_neighbours[color][new_node_depth];
+        ++m_number_of_neighbours[new_node_depth][color];
     }
 }
 
@@ -46,7 +49,7 @@ void ColorHist::update_neigbours_remove_node_decrease_neighbours_from_hist(
 
     for (const auto& neighbour : update_in_hist) {
         int color = neighbour;
-        --m_number_of_neighbours[color][remove_node_depth];
+        --m_number_of_neighbours[remove_node_depth][color];
     }
 }
 

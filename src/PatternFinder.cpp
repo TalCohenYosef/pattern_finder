@@ -102,6 +102,7 @@ int32_t PatternFinder::extend_pattern_at_node_find_matches_in_s(
                 trees[i]->get_node_by_depth(lowest, node_to_connect_id+1);
 
             std::vector<uint32_t> candidates;
+            std::unordered_map<uint32_t, uint32_t> in_match= trees[i]->get_tree_path_map(lowest);
 
             for (auto e :
                  boost::make_iterator_range(
@@ -109,7 +110,12 @@ int32_t PatternFinder::extend_pattern_at_node_find_matches_in_s(
 
                 auto neigh = target(e, s_list[i]);
                 if (s_list[i][neigh].color == new_color)
-                    candidates.push_back(neigh);
+                {
+                    if (in_match.find(static_cast<uint32_t>(neigh)) == in_match.end())
+                    {
+                        candidates.push_back(neigh);
+                    }
+                }
             }
 
             auto added =
@@ -335,7 +341,8 @@ Graph PatternFinder::find_pattern(
     while (alive_s > alive_threshold * s_size) 
     {
         std::cout << alive_s << std::endl;
-        double p = 1/(std::log(1.5+std::sqrt(boost::num_vertices(pattern))));
+        double p = 1/(0.85+ std::log(std::sqrt(boost::num_vertices(pattern))));
+        std::cout << "p: " << p << std::endl;
         if ((failed_add_edge or unif(rng) < p) && !(done_adding_vertices))
         {
             auto [color_new, node_to_connect] = color_hist->get_color_to_add();
@@ -360,7 +367,7 @@ Graph PatternFinder::find_pattern(
         }
         else if (!failed_add_edge)
         {
-                failed_add_edge = add_edge(
+                failed_add_edge = !add_edge(
                     pattern,
                     trees,
                     last_nodes,

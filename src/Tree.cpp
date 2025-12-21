@@ -97,10 +97,10 @@ void Tree::_delete_node(const NodePtr& node)
     }
 }
 
-std::vector<std::pair<uint32_t, uint32_t>> Tree::_get_neighbours_in_tree_path(NodePtr last_node_in_path, std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list)
+std::vector<uint32_t> Tree::_get_neighbours_in_tree_path(NodePtr last_node_in_path, std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list)
 {
     // return all the neighbours of the indexes in s that are also in the tree path
-    std::vector<std::pair<uint32_t, uint32_t>> neighbours_in_s_in_tree_path;
+    std::vector<uint32_t> neighbours_in_s_in_tree_path;
 
     Graph graph = s_list[this->m_root->index];
 
@@ -118,20 +118,20 @@ std::vector<std::pair<uint32_t, uint32_t>> Tree::_get_neighbours_in_tree_path(No
     } 
     auto neighbours_end = std::unique(neighbours.begin(), neighbours.end());
 
-    std::unordered_map<int32_t, int32_t> path_in_tree = this->get_tree_path_map(last_node_in_path);
+    std::unordered_map<uint32_t, uint32_t> path_in_tree = this->get_tree_path_map(last_node_in_path);
 
     for (auto index_neighbours = neighbours.begin(); index_neighbours != neighbours_end; index_neighbours++)
     {
         if (path_in_tree.find((*index_neighbours).first) != path_in_tree.end())
         {
-            neighbours_in_s_in_tree_path.push_back(std::make_pair(path_in_tree[(*index_neighbours).first], (*index_neighbours).second));
+            neighbours_in_s_in_tree_path.push_back(path_in_tree[(*index_neighbours).first]-1);
         }
     }
     return neighbours_in_s_in_tree_path;
 }
 
 
-std::vector<uint32_t> Tree::_get_neighbours_not_in_tree_path(NodePtr last_node_in_path, std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list)
+std::vector<uint32_t> Tree::_get_colors_of_neighbours_not_in_tree_path(NodePtr last_node_in_path, std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list)
 {
     // return all the neighbours of the indexes in s that are also in the tree path
     std::vector<uint32_t> neighbours_in_s_not_in_tree_path;
@@ -151,7 +151,7 @@ std::vector<uint32_t> Tree::_get_neighbours_not_in_tree_path(NodePtr last_node_i
         }
     } 
 
-    std::unordered_map<int32_t, int32_t> path_in_tree = this->get_tree_path_map(last_node_in_path);
+    std::unordered_map<uint32_t, uint32_t> path_in_tree = this->get_tree_path_map(last_node_in_path);
 
     for (auto index_neighbours = neighbours.begin(); index_neighbours != neighbours.end(); index_neighbours++)
     {
@@ -167,10 +167,10 @@ std::vector<uint32_t> Tree::_get_neighbours_not_in_tree_path(NodePtr last_node_i
 
 /* ---------- Public API ---------- */
 
-std::unordered_map<int32_t, int32_t>
+std::unordered_map<uint32_t, uint32_t>
 Tree::get_tree_path_map(const NodePtr& last_node_in_path)
 {
-    std::unordered_map<int32_t, int32_t> path;
+    std::unordered_map<uint32_t, uint32_t> path;
     NodePtr current = last_node_in_path;
 
     while (current && !current->parent.expired()) {
@@ -204,14 +204,15 @@ Tree::add_tree_level(const NodePtr& node_parent,
         for (int32_t idx : new_indexes)
             added_nodes.push_back(_add_node(node_parent, idx));
 
-        const std::vector<std::pair<uint32_t, uint32_t>> update_in_hist1 = 
+        const std::vector<uint32_t> update_in_hist1 = 
             _get_neighbours_in_tree_path(node_parent, new_indexes, s_list);
-
+        
+        uint32_t color = s_list[this->m_root->index][new_indexes[0]].color;
         hist->update_hist_decrease_from_neighbours(
-            update_in_hist1);
+            color,update_in_hist1);
 
         const std::vector<uint32_t> update_in_hist2 =
-            _get_neighbours_not_in_tree_path(node_parent, new_indexes, s_list);
+            _get_colors_of_neighbours_not_in_tree_path(node_parent, new_indexes, s_list);
 
         hist->update_neigbours_add_node_add_neighbours_to_hist(
             this->depth-1, update_in_hist2);
@@ -230,7 +231,7 @@ void Tree::remove_node(const NodePtr& node,
 
     while (node_to_remove) {
         const std::vector<uint32_t> update_in_hist =
-            _get_neighbours_not_in_tree_path(node_to_remove, {}, s_list);
+            _get_colors_of_neighbours_not_in_tree_path(node_to_remove, {}, s_list);
 
         hist->update_neigbours_remove_node_decrease_neighbours_from_hist(
             node_to_remove->depth-1, update_in_hist);
