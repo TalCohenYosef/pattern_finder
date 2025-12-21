@@ -95,15 +95,16 @@ int32_t PatternFinder::extend_pattern_at_node_find_matches_in_s(
     for (int i = 0; i < s_size; ++i) {
         if (!trees[i]) continue;
 
-        std::vector<NodePtr> new_last_nodes;
+        std::vector<std::pair<uint32_t, NodePtr>> candidates;
+
 
         for (const NodePtr& lowest : last_nodes[i]) {
             auto node_in_tree =
                 trees[i]->get_node_by_depth(lowest, node_to_connect_id+1);
 
-            std::vector<uint32_t> candidates;
             std::unordered_map<uint32_t, uint32_t> in_match= trees[i]->get_tree_path_map(lowest);
 
+            bool found_child = false;
             for (auto e :
                  boost::make_iterator_range(
                      out_edges(node_in_tree->index, s_list[i]))) {
@@ -113,20 +114,20 @@ int32_t PatternFinder::extend_pattern_at_node_find_matches_in_s(
                 {
                     if (in_match.find(static_cast<uint32_t>(neigh)) == in_match.end())
                     {
-                        candidates.push_back(neigh);
+                        candidates.push_back({neigh, lowest});
+                        found_child = true;
                     }
                 }
             }
 
-            auto added =
-                trees[i]->add_tree_level(
-                    lowest, candidates, s_list);
+            if (!found_child) {
+                trees[i]->remove_node(lowest, s_list);
+            }
 
-            new_last_nodes.insert(
-                new_last_nodes.end(), added.begin(), added.end());
         }
 
-        last_nodes[i] = new_last_nodes;
+        last_nodes[i] = trees[i]->add_tree_level(
+            candidates, s_list);;
 
         if (!trees[i]->is_empty())
             alive_count++;
@@ -280,14 +281,7 @@ void PatternFinder::recolor_pattern(Graph& pattern,
 
     for (auto v : boost::make_iterator_range(vertices(pattern))) 
     {
-        auto idx = boost::get(boost::vertex_index, pattern, v);
-
-        // Safety check
-        if (idx >= color_map.size()) {
-        throw std::runtime_error("Color map index out of range");
-        }
-
-        pattern[v].color = static_cast<uint32_t>(color_map[idx]);
+        pattern[v].color = static_cast<uint32_t>(color_map[pattern[v].color]);
     }
 }
 
@@ -323,9 +317,19 @@ Graph PatternFinder::find_pattern(
         std::vector<uint32_t> matches =
             find_initial_matches(s_list[i], first_color);
 
+        std::vector<std::pair<uint32_t, NodePtr>> initial_indexes;
+        for (uint32_t match : matches) {
+            initial_indexes.push_back({match, trees[i]->get_root()});
+        }
+
         last_nodes[i] =
             trees[i]->add_tree_level(
-                trees[i]->get_root(), matches, s_list);
+                initial_indexes, s_list);
+        
+        if (matches.empty()) {
+            trees[i].reset();
+            alive_s--;
+        }
     }
 
     bool failed_add_edge = false;
@@ -338,8 +342,10 @@ Graph PatternFinder::find_pattern(
     rng.seed(ss);
     std::uniform_real_distribution<double> unif(0, 1);
 
+    uint32_t step = 0;
     while (alive_s > alive_threshold * s_size) 
     {
+        step++;
         std::cout << alive_s << std::endl;
         double p = 1/(0.85+ std::log(std::sqrt(boost::num_vertices(pattern))));
         std::cout << "p: " << p << std::endl;
@@ -354,7 +360,9 @@ Graph PatternFinder::find_pattern(
             {
                 uint32_t new_node_id =
                 boost::add_vertex(
-                VertexProperty{static_cast<uint32_t>(color_new)}, pattern);
+                VertexProperty{static_cast<int32_t>(color_new)}, pattern);
+
+                auto nv = boost::num_vertices(pattern);
 
                 boost::add_edge(
                 node_to_connect, new_node_id,
@@ -367,6 +375,7 @@ Graph PatternFinder::find_pattern(
         }
         else if (!failed_add_edge)
         {
+                std::cout<< "Trying to add edge." << std::endl;
                 failed_add_edge = !add_edge(
                     pattern,
                     trees,

@@ -99,7 +99,7 @@ public:
      *         - color: color index with maximum support
      *         - depth: pattern depth where extension is most promising
      */
-    std::pair<uint32_t, uint32_t> get_color_to_add() const;
+    std::pair<int32_t, int32_t> get_color_to_add() const;
 };
 
 using ColorHistPtr = std::shared_ptr<ColorHist>;

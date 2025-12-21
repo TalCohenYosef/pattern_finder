@@ -43,15 +43,19 @@ private:
     * @brief Get neighbors in S that are already in the tree path.
     * @return Vector of pairs (depth in pattern, color pf vertex)
     */
-    std::vector<uint32_t> _get_neighbours_in_tree_path(NodePtr last_node_in_path, 
-        std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list);
+    std::vector<uint32_t> _get_neighbours_in_tree_path(
+        std::vector<uint32_t> indexes_in_s, 
+        const std::vector<Graph>& s_list,
+        std::unordered_map<uint32_t, uint32_t> path_in_tree);
 
     /**
     * @brief Get neighbors in S that are not in the tree path.
     * @return Vector ( color of vertex)
     */
-    std::vector<uint32_t> _get_colors_of_neighbours_not_in_tree_path(NodePtr last_node_in_path, 
-        std::vector<uint32_t> indexes_in_s, std::vector<Graph> s_list);
+    std::vector<uint32_t> _get_colors_of_neighbours_not_in_tree_path(
+        std::vector<uint32_t> indexes_in_s, 
+        const std::vector<Graph>& s_list,
+        std::unordered_map<uint32_t, uint32_t> path_in_tree);
 
 
 public:
@@ -63,7 +67,8 @@ public:
     /**
      * @brief Destructor clears the entire tree.
      */
-    ~Tree();
+    //~Tree();
+    ~Tree()=default;
 
     /**
      * @brief Get map of pattern index → depth along a tree path.
@@ -81,8 +86,7 @@ public:
      * @brief Add a new level under a parent node.
      */
     std::vector<NodePtr>
-    add_tree_level(const NodePtr& node_parent,
-                   const std::vector<uint32_t>& new_indexes,
+    add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexes,
                    const std::vector<Graph>& s_list);
 
     /**

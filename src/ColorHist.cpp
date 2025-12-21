@@ -47,8 +47,7 @@ void ColorHist::update_neigbours_remove_node_decrease_neighbours_from_hist(
     const std::vector<uint32_t>& update_in_hist)
 {
 
-    for (const auto& neighbour : update_in_hist) {
-        int color = neighbour;
+    for (const auto& color : update_in_hist) {
         --m_number_of_neighbours[remove_node_depth][color];
     }
 }
@@ -56,7 +55,7 @@ void ColorHist::update_neigbours_remove_node_decrease_neighbours_from_hist(
 /**
  * @brief Finds the (color, depth) pair with the maximum histogram value.
  */
-std::pair<uint32_t, uint32_t> ColorHist::get_color_to_add() const
+std::pair<int32_t, int32_t> ColorHist::get_color_to_add() const
 {
     int32_t max_count = 0;
     int32_t best_color = -1;
