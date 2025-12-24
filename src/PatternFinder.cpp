@@ -85,7 +85,7 @@ int32_t PatternFinder::extend_pattern_at_node_find_matches_in_s(
     std::vector<std::shared_ptr<Tree>>& trees,
     int32_t s_size,
     const std::vector<Graph>& s_list,
-    uint32_t /*new_node_id*/,
+    uint32_t new_node_id,
     uint32_t new_color,
     uint32_t node_to_connect_id,
     std::vector<std::vector<NodePtr>>& last_nodes)
@@ -96,7 +96,6 @@ int32_t PatternFinder::extend_pattern_at_node_find_matches_in_s(
         if (!trees[i]) continue;
 
         std::vector<std::pair<uint32_t, NodePtr>> candidates;
-
 
         for (const NodePtr& lowest : last_nodes[i]) {
             auto node_in_tree =
@@ -128,7 +127,7 @@ int32_t PatternFinder::extend_pattern_at_node_find_matches_in_s(
 
         last_nodes[i] = trees[i]->add_tree_level(
             candidates, s_list);;
-
+        
         if (!trees[i]->is_empty())
             alive_count++;
         else
@@ -292,6 +291,7 @@ Graph PatternFinder::find_pattern(
     std::vector<Graph> s_list,
     double alive_threshold)
 {
+    auto start = std::chrono::high_resolution_clock::now();
     PatternFinder pf;
     std::vector<int32_t> m_color_map = pf.map_colors(s_size, s_list);
 
@@ -347,8 +347,10 @@ Graph PatternFinder::find_pattern(
     {
         step++;
         std::cout << alive_s << std::endl;
+        std::cout << "neighbor_in_s_calls: " << Tree::neighbor_in_s_calls << std::endl;
         double p = 1/(0.85+ std::log(std::sqrt(boost::num_vertices(pattern))));
         std::cout << "p: " << p << std::endl;
+
         if ((failed_add_edge or unif(rng) < p) && !(done_adding_vertices))
         {
             auto [color_new, node_to_connect] = color_hist->get_color_to_add();
@@ -395,5 +397,11 @@ Graph PatternFinder::find_pattern(
     }
 
     recolor_pattern(pattern, m_color_map);
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Time taken: " << elapsed.count() << " seconds\n";
+    
     return pattern;
 }

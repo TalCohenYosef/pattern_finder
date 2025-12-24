@@ -49,7 +49,10 @@ target_include_directories(pattern_finder
 target_link_libraries(pattern_finder
     PRIVATE
         Boost::program_options
-        nlohmann_json::nlohmann_json
+)
+target_link_libraries(pattern_finder
+    PRIVATE
+        json-c
 )
 
 # -----------------------------

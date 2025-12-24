@@ -9,7 +9,7 @@
 #include <stack>
 #include <memory>
 #include <cstdint>
-
+#include <atomic>
 
 /**
  * @class Tree
@@ -59,6 +59,8 @@ private:
 
 
 public:
+    static std::atomic<uint64_t> unordered_insert_calls;
+    static std::atomic<uint64_t> neighbor_in_s_calls;
     /**
      * @brief Construct tree with a root node.
      */

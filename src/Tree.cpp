@@ -2,6 +2,11 @@
 #include <stdexcept>
 #include <algorithm>
 #include <vector>
+#include <iostream>
+#include <atomic>
+
+std::atomic<uint64_t> Tree::unordered_insert_calls{0};
+std::atomic<uint64_t> Tree::neighbor_in_s_calls{0};
 
 /* ---------- Constructor ---------- */
 
@@ -108,9 +113,8 @@ std::vector<uint32_t> Tree::_get_neighbours_in_tree_path(
 {
     // return all the neighbours of the indexes in s that are also in the tree path
     std::vector<uint32_t> neighbours_in_s_in_tree_path;
-
     const Graph& graph = s_list[this->m_root->index];
-
+    ++neighbor_in_s_calls;
     std::unordered_set<int32_t> neighbours;
     for (uint32_t index_in_s : indexes_in_s)
     {
@@ -120,7 +124,9 @@ std::vector<uint32_t> Tree::_get_neighbours_in_tree_path(
         {
             auto neighbour = boost::target(edge, graph);
             uint32_t neighbour_index = static_cast<uint32_t>(neighbour);
-            neighbours.insert(neighbour_index);        
+            neighbours.insert(neighbour_index);   
+            ++unordered_insert_calls;
+            //std::cout << "unordered_insert_calls: " << unordered_insert_calls << std::endl;     
         }
     }
 
