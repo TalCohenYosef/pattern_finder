@@ -7,9 +7,10 @@
 
 #include "Node.h"
 #include "Graph.h"
+#include "GeneralColorHist.h"
 
 /**
- * @class ColorHist
+ * @class IndevidualColorHist
  * @brief Maintains a histogram of neighbor appearances by color and pattern depth.
  *
  * The histogram is a 2D structure:
@@ -23,7 +24,7 @@
  * This structure is used to decide which color and which depth in the pattern
  * should be extended next, based on the maximum number of compatible neighbors.
  */
-class ColorHist {
+class IndevidualColorHist {
 private:
     /**
      * @brief Histogram matrix.
@@ -36,14 +37,16 @@ private:
     /// Number of distinct colors in the graph
     int32_t C;
 
+    GeneralColorHist& general_hist;
+
 public:
     /**
-     * @brief Construct a ColorHist object.
+     * @brief Construct a IndevidualColorHist object.
      *
      * @param num_colors Number of distinct colors (C)
      * @param max_s Maximum depth / pattern size
      */
-    ColorHist(int32_t num_colors);
+    IndevidualColorHist(GeneralColorHist& general_color_hist);
 
     /**
      * @brief Decrease histogram counts due to neighbour added to match.
@@ -87,19 +90,8 @@ public:
     void update_neigbours_remove_node_decrease_neighbours_from_hist(
         uint32_t remove_node_depth,
         const std::vector<uint32_t>& update_in_hist
+        
     );
-
-    /**
-     * @brief Select the best color and depth to extend next.
-     *
-     * Scans the entire histogram and returns the (color, depth) pair
-     * with the maximum number of compatible neighbors.
-     *
-     * @return std::pair<color, depth>
-     *         - color: color index with maximum support
-     *         - depth: pattern depth where extension is most promising
-     */
-    std::pair<int32_t, int32_t> get_color_to_add() const;
 };
 
-using ColorHistPtr = std::shared_ptr<ColorHist>;
+using IndevidualColorHistPtr = std::shared_ptr<IndevidualColorHist>;

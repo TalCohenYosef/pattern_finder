@@ -2,3 +2,5 @@ build/*
 Graph-Search/*
 local_test/*
 .vscode/*
+venv/*
+__pycache__/*

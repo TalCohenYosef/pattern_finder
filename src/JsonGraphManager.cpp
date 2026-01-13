@@ -1,24 +1,10 @@
+#include "JsonGraphManager.h"
 #include <json-c/json.h>
 
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/graph_traits.hpp>
-#include <boost/range/iterator_range.hpp>
-
 #include <unordered_map>
+#include <vector>
 #include <stdexcept>
-#include <string>
-#include "Graph.h"
-
-
-/* =====================
-   JSON Graph Manager
-   ===================== */
-
-class JsonGraphManager {
-public:
-    static Graph read_graph(const std::string& path);
-    static void write_graph(const std::string& path, const Graph& graph);
-};
+#include <algorithm>
 
 /* =====================
    Read graph from JSON
@@ -28,7 +14,7 @@ Graph JsonGraphManager::read_graph(const std::string& path)
 {
     json_object* root = json_object_from_file(path.c_str());
     if (!root)
-        throw std::runtime_error("JsonGraphManager: cannot open or parse JSON file");
+        throw std::runtime_error("JsonGraphManager: cannot open JSON");
 
     json_object* nodes = nullptr;
     json_object* links = nullptr;
@@ -37,15 +23,16 @@ Graph JsonGraphManager::read_graph(const std::string& path)
         !json_object_object_get_ex(root, "links", &links))
     {
         json_object_put(root);
-        throw std::runtime_error("JsonGraphManager: invalid JSON format (missing nodes/links)");
+        throw std::runtime_error("JsonGraphManager: missing nodes/links");
     }
 
-    Graph graph;
-    std::unordered_map<int, Graph::vertex_descriptor> id_map;
+    const uint32_t num_nodes = json_object_array_length(nodes);
 
-    /* ---- vertices ---- */
-    const int num_nodes = json_object_array_length(nodes);
-    for (int i = 0; i < num_nodes; ++i) {
+    /* ---- colors ---- */
+    std::vector<int32_t> colors(num_nodes);
+    std::unordered_map<int, uint32_t> id_to_index;
+
+    for (uint32_t i = 0; i < num_nodes; ++i) {
         json_object* node = json_object_array_get_idx(nodes, i);
 
         json_object* id_obj = nullptr;
@@ -55,23 +42,23 @@ Graph JsonGraphManager::read_graph(const std::string& path)
             !json_object_object_get_ex(node, "color", &color_obj))
         {
             json_object_put(root);
-            throw std::runtime_error("JsonGraphManager: invalid node entry");
+            throw std::runtime_error("Invalid node entry");
         }
 
         int id = json_object_get_int(id_obj);
         int color = json_object_get_int(color_obj);
 
-        auto v = boost::add_vertex(
-            VertexProperty{static_cast<uint32_t>(color)},
-            graph
-        );
-
-        id_map[id] = v;
+        id_to_index[id] = i;
+        colors[i] = static_cast<uint32_t>(color);
     }
 
     /* ---- edges ---- */
-    const int num_edges = json_object_array_length(links);
-    for (int i = 0; i < num_edges; ++i) {
+    std::vector<std::pair<uint32_t, uint32_t>> edges;
+
+    const uint32_t num_edges = json_object_array_length(links);
+    edges.reserve(num_edges * 2); // undirected
+
+    for (uint32_t i = 0; i < num_edges; ++i) {
         json_object* edge = json_object_array_get_idx(links, i);
 
         json_object* src_obj = nullptr;
@@ -81,32 +68,32 @@ Graph JsonGraphManager::read_graph(const std::string& path)
             !json_object_object_get_ex(edge, "target", &tgt_obj))
         {
             json_object_put(root);
-            throw std::runtime_error("JsonGraphManager: invalid edge entry");
+            throw std::runtime_error("Invalid edge entry");
         }
 
-        int src = json_object_get_int(src_obj);
-        int tgt = json_object_get_int(tgt_obj);
+        uint32_t src = id_to_index.at(json_object_get_int(src_obj));
+        uint32_t tgt = id_to_index.at(json_object_get_int(tgt_obj));
 
-        boost::add_edge(
-            id_map.at(src),
-            id_map.at(tgt),
-            EdgeProperty{false},
-            graph
-        );
+        // undirected → add both
+        edges.emplace_back(src, tgt);
+        edges.emplace_back(tgt, src);
     }
 
-    json_object_put(root); // free JSON tree
-    return graph;
+    json_object_put(root);
+
+    return Graph(num_nodes, edges, colors);
 }
+
 
 /* =====================
    Write graph to JSON
    ===================== */
 
-void JsonGraphManager::write_graph(const std::string& path,
-                                   const Graph& graph)
+   void JsonGraphManager::write_graph(
+    const std::string& path,
+    const BoostGraph& graph)
 {
-    json_object* root = json_object_new_object();
+    json_object* root  = json_object_new_object();
     json_object* nodes = json_object_new_array();
     json_object* links = json_object_new_array();
 
@@ -115,12 +102,14 @@ void JsonGraphManager::write_graph(const std::string& path,
         json_object* node = json_object_new_object();
 
         json_object_object_add(
-            node, "id",
+            node,
+            "id",
             json_object_new_int(static_cast<int>(v))
         );
 
         json_object_object_add(
-            node, "color",
+            node,
+            "color",
             json_object_new_int(graph[v].color)
         );
 
@@ -129,19 +118,27 @@ void JsonGraphManager::write_graph(const std::string& path,
 
     /* ---- edges ---- */
     for (auto e : boost::make_iterator_range(edges(graph))) {
-        json_object* edge = json_object_new_object();
+        auto u = source(e, graph);
+        auto v = target(e, graph);
 
-        json_object_object_add(
-            edge, "source",
-            json_object_new_int(static_cast<int>(source(e, graph)))
-        );
+        // avoid duplicating undirected edges
+        if (u < v) {
+            json_object* edge = json_object_new_object();
 
-        json_object_object_add(
-            edge, "target",
-            json_object_new_int(static_cast<int>(target(e, graph)))
-        );
+            json_object_object_add(
+                edge,
+                "source",
+                json_object_new_int(static_cast<int>(u))
+            );
 
-        json_object_array_add(links, edge);
+            json_object_object_add(
+                edge,
+                "target",
+                json_object_new_int(static_cast<int>(v))
+            );
+
+            json_object_array_add(links, edge);
+        }
     }
 
     json_object_object_add(root, "nodes", nodes);
@@ -153,8 +150,9 @@ void JsonGraphManager::write_graph(const std::string& path,
             JSON_C_TO_STRING_PRETTY) != 0)
     {
         json_object_put(root);
-        throw std::runtime_error("JsonGraphManager: failed to write JSON file");
+        throw std::runtime_error("JsonGraphManager: failed to write JSON");
     }
 
-    json_object_put(root); // free JSON tree
+    json_object_put(root);
 }
+

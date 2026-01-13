@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Graph.h"
+#include "BoostGraph.h"
 #include "Tree.h"
-#include "ColorHist.h"
+#include "IndevidualColorHist.h"
+#include <unordered_set>   // needed for unordered_set
+#include <utility>         // needed for std::pair
 
 #include <vector>
 #include <map>
@@ -31,9 +34,11 @@ private:
      * Try to add a new edge to the current pattern.
      * Returns true if an edge was added, false otherwise.
      */
-    static bool add_edge(Graph& pattern, std::vector<std::shared_ptr<Tree>>& trees,
-        std::vector<std::vector<NodePtr>>& last_nodes, uint32_t& alive_count, uint32_t s_size,
-        const std::vector<Graph>& s_list, double threshold, double alive_threshold);
+    static bool add_edge(BoostGraph& pattern, std::vector<std::shared_ptr<Tree>>& trees,
+        std::vector<std::vector<NodePtr>>& last_nodes, std::unordered_set<uint32_t>& alive_indexes, uint32_t s_size,
+        const std::vector<Graph>& s_list, 
+        std::unordered_map<uint64_t, std::unordered_set<uint32_t>>& edge_support_map,
+        double threshold, double alive_threshold);
 
     /**
      * Compute support score for a candidate pattern edge (uP, vP).
@@ -42,17 +47,19 @@ private:
         uint32_t uP, uint32_t vP,
         const std::vector<std::shared_ptr<Tree>>& trees,
         const std::vector<std::vector<NodePtr>>& last_nodes,
-        const std::vector<Graph>& s_list, uint32_t s_size
+        const std::vector<Graph>& s_list, uint32_t s_size,
+        std::unordered_map<uint64_t, std::unordered_set<uint32_t>>& edge_support_map
     );
 
     /**
      * Apply an accepted edge to the pattern and prune unsupported trees.
      */
     static void apply_edge_and_prune(
-        Graph& pattern, uint32_t uP, uint32_t vP,
+        BoostGraph& pattern, uint32_t uP, uint32_t vP,
         std::vector<std::shared_ptr<Tree>>& trees,
         std::vector<std::vector<NodePtr>>& last_nodes,
-        uint32_t& alive_count, const std::vector<Graph>& s_list
+        std::unordered_set<uint32_t>& alive_indexes,
+        const std::vector<Graph>& s_list
     );
 
     static void recolor_s(
@@ -68,21 +75,22 @@ private:
         int32_t s_size,
         const std::vector<Graph>& s_list);
     
-    static void recolor_pattern(Graph& pattern,
+    static void recolor_pattern(BoostGraph& pattern,
         const std::vector<int32_t>& color_map);
 
     static std::vector<uint32_t> find_initial_matches(
         const Graph& s,
         uint32_t color);
 
-    static int32_t extend_pattern_at_node_find_matches_in_s(
+    static std::pair<int32_t,int32_t> extend_pattern_at_node_find_matches_in_s(
         std::vector<std::shared_ptr<Tree>>& trees,
         int32_t s_size,
         const std::vector<Graph>& s_list,
         uint32_t new_node_id,
         uint32_t new_color,
         uint32_t node_to_connect_id,
-        std::vector<std::vector<NodePtr>>& last_nodes);
+        std::vector<std::vector<NodePtr>>& last_nodes,
+        std::unordered_set<uint32_t>& alive_indexes);
 
 public:
     /**
@@ -93,8 +101,21 @@ public:
      * @param alive_threshold Global alive threshold
      * @return Extracted pattern graph
      */
-    static Graph find_pattern(
+    static std::pair<BoostGraph, std::unordered_set<uint32_t>>
+    find_pattern(
+    int32_t s_size,
+    std::vector<Graph>& s_list,
+    double alive_threshold);
+
+    void compute_global_color_distribution(
+        uint32_t color_number,
         int32_t s_size,
-        std::vector<Graph> s_list,
-        double alive_threshold);
+        const std::vector<Graph>& s_list);
+
+        // ---- Global color statistics ----
+    std::vector<uint32_t> global_color_count;
+    std::vector<double>   global_color_prob;
+    uint64_t total_color_mass = 0;
+
+  
 };

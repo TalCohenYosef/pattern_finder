@@ -7,16 +7,13 @@
 #include <filesystem>
 #include <iostream>
 
-
 /**
- * @brief Load S graphs from disk using JsonGraphManager.
- *
- * Assumes files are named sequentially or all JSON files in a directory.
+ * @brief Load S graphs and record file name for each S[i]
  */
-static std::vector<Graph>
-load_s_files(const IArgumentManager& options)
+static std::pair<std::vector<Graph>, std::vector<std::string>> load_s_files(const IArgumentManager& options)
 {
     std::vector<Graph> s_list;
+    std::vector<std::string> names;
 
     int32_t count = 0;
     for (const auto& entry :
@@ -26,8 +23,10 @@ load_s_files(const IArgumentManager& options)
             break;
 
         if (entry.path().extension() == ".json") {
-            s_list.push_back(
-                JsonGraphManager::read_graph(entry.path().string()));
+            std::string filename = entry.path().filename().string();
+            s_list.push_back(JsonGraphManager::read_graph(
+                entry.path().string()));
+            names.push_back(filename);
             ++count;
         }
     }
@@ -39,7 +38,7 @@ load_s_files(const IArgumentManager& options)
                   << options.s_size << "\n";
     }
 
-    return s_list;
+    return {s_list, names};
 }
 
 /**
@@ -53,16 +52,35 @@ int main(int32_t argc, char** argv)
         options.read_arguments(argc, argv);
 
         /* ---------- Load input graphs ---------- */
-        std::vector<Graph> s_list =
-            load_s_files(options);
+        auto [s_list, s_names] = load_s_files(options);
 
         /* ---------- Run pattern finder ---------- */
-        Graph pattern =
+        auto [pattern, alive_indexes] =
             PatternFinder::find_pattern(
                 options.s_size,
                 s_list,
                 options.alive_threshold);
-
+    
+        
+        if (!alive_indexes.empty()) {
+            // Copy unordered_set to vector and sort
+            std::vector<int> alive_sorted(alive_indexes.begin(), alive_indexes.end());
+            std::sort(alive_sorted.begin(), alive_sorted.end());
+        
+            std::cout << "\nPattern appears in " 
+                        << alive_sorted.size() 
+                        << " graphs:\n";
+        
+            for (int idx : alive_sorted) {
+                if (idx >= 0 && idx < static_cast<int>(s_names.size())) {
+                    std::cout << "S[" << idx << "] -> " 
+                                << s_names[idx] << "\n";
+                }
+            }
+        } else {
+            std::cout << "No S graphs survived.\n";
+        }
+                
         /* ---------- Write output ---------- */
         JsonGraphManager::write_graph(
             "pattern.json", pattern);

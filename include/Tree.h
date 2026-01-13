@@ -2,7 +2,7 @@
 
 #include "Node.h"
 #include "Graph.h"
-#include "ColorHist.h"
+#include "IndevidualColorHist.h"
 
 #include <vector>
 #include <unordered_map>
@@ -25,7 +25,7 @@ class Tree {
 private:
     NodePtr m_root;          ///< Root node of the tree
     int32_t depth;           ///< Maximum depth reached
-    ColorHistPtr hist;       ///< Color histogram for heuristic updates
+    IndevidualColorHist hist;       ///< Color histogram for heuristic updates
 
 private:
 
@@ -43,10 +43,11 @@ private:
     * @brief Get neighbors in S that are already in the tree path.
     * @return Vector of pairs (depth in pattern, color pf vertex)
     */
-    std::vector<uint32_t> _get_neighbours_in_tree_path(
+    void _update_neighbours_in_tree_path(
         std::vector<uint32_t> indexes_in_s, 
         const std::vector<Graph>& s_list,
-        std::unordered_map<uint32_t, uint32_t> path_in_tree);
+        std::unordered_map<uint32_t, uint32_t> path_in_tree,
+        std::unordered_multimap<uint32_t,uint32_t>& found_neibours_in_tree_path);
 
     /**
     * @brief Get neighbors in S that are not in the tree path.
@@ -55,16 +56,15 @@ private:
     std::vector<uint32_t> _get_colors_of_neighbours_not_in_tree_path(
         std::vector<uint32_t> indexes_in_s, 
         const std::vector<Graph>& s_list,
-        std::unordered_map<uint32_t, uint32_t> path_in_tree);
+        std::unordered_map<uint32_t, uint32_t> path_in_tree,
+        std::unordered_set<uint32_t>& previous_children);
 
 
 public:
-    static std::atomic<uint64_t> unordered_insert_calls;
-    static std::atomic<uint64_t> neighbor_in_s_calls;
     /**
      * @brief Construct tree with a root node.
      */
-    Tree(int32_t s_index, ColorHistPtr hist);
+    Tree(int32_t s_index, GeneralColorHist& general_hist);
 
     /**
      * @brief Destructor clears the entire tree.

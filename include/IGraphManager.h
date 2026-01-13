@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Graph.h"
+#include "BoostGraph.h"
 
 /**
  * @class IGraphManager
@@ -20,5 +21,5 @@ public:
      * @brief Write a graph to a file.
      */
     virtual void write_graph(const std::string& path,
-                             const Graph& graph) = 0;
+                             const BoostGraph& graph) = 0;
 };

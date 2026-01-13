@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graph.h"
+#include "BoostGraph.h"
 #include <string>
 
 /**
@@ -38,5 +39,5 @@ public:
      * @throws std::runtime_error on file error
      */
     static void write_graph(const std::string& path,
-                            const Graph& graph);
+                            const BoostGraph& graph);
 };

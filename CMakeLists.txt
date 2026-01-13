@@ -58,6 +58,9 @@ target_link_libraries(pattern_finder
 # -----------------------------
 # Warnings
 # -----------------------------
+
+target_compile_options(pattern_finder PRIVATE -O2 -g)
+
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(pattern_finder PRIVATE -Wall -Wextra -Wpedantic)
 elseif (MSVC)

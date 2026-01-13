@@ -4,14 +4,12 @@
 #include <vector>
 #include <iostream>
 #include <atomic>
-
-std::atomic<uint64_t> Tree::unordered_insert_calls{0};
-std::atomic<uint64_t> Tree::neighbor_in_s_calls{0};
+#include <unordered_set>
 
 /* ---------- Constructor ---------- */
 
-Tree::Tree(int32_t s_index, ColorHistPtr hist)
-    : depth(0), hist(hist)
+Tree::Tree(int32_t s_index, GeneralColorHist& general_hist)
+    : depth(0), hist(IndevidualColorHist(general_hist))
 {
     m_root = std::make_shared<Node>(s_index, 0);
 }
@@ -79,6 +77,8 @@ NodePtr Tree::_add_node(const NodePtr& node_parent, int32_t index_in_s)
 
 void Tree::_delete_node(const NodePtr& node)
 {
+    auto parent = node->parent.lock();
+
     if (node->son)
         throw std::runtime_error("Cannot delete node with children");
 
@@ -96,79 +96,66 @@ void Tree::_delete_node(const NodePtr& node)
             node->right->left = node->left;
     }
 
-    if (auto parent = node->parent.lock()) {
+    if (parent != nullptr) {
         if (parent->son == node)
             parent->son = node->left;
+        parent->previous_children.insert(node->index);
+        parent->previous_children.insert(node->previous_children.begin(), node->previous_children.end());
     }
 
-    if( m_root == node ) {
-        m_root.reset();
-    }
 }
 
-std::vector<uint32_t> Tree::_get_neighbours_in_tree_path(
+void Tree::_update_neighbours_in_tree_path(
     std::vector<uint32_t> indexes_in_s, 
     const std::vector<Graph>& s_list,
-    std::unordered_map<uint32_t, uint32_t> path_in_tree)
+    std::unordered_map<uint32_t, uint32_t> path_in_tree,
+    std::unordered_multimap<uint32_t,uint32_t>& found_neibours_in_tree_path)
 {
     // return all the neighbours of the indexes in s that are also in the tree path
-    std::vector<uint32_t> neighbours_in_s_in_tree_path;
     const Graph& graph = s_list[this->m_root->index];
-    ++neighbor_in_s_calls;
-    std::unordered_set<int32_t> neighbours;
     for (uint32_t index_in_s : indexes_in_s)
     {
-        auto src_vertex = static_cast<Graph::vertex_descriptor>(index_in_s);
+        auto src_vertex = index_in_s;
 
-        for (auto edge : boost::make_iterator_range(boost::out_edges(src_vertex, graph))) 
+        auto[first_neigbhour, last_neighbour] = graph.get_neighbours(src_vertex);
+        for (auto edge = first_neigbhour; edge != last_neighbour; ++edge) 
         {
-            auto neighbour = boost::target(edge, graph);
+            uint32_t neighbour = *edge;
             uint32_t neighbour_index = static_cast<uint32_t>(neighbour);
-            neighbours.insert(neighbour_index);   
-            ++unordered_insert_calls;
-            //std::cout << "unordered_insert_calls: " << unordered_insert_calls << std::endl;     
+            if (path_in_tree.find(neighbour_index) != path_in_tree.end())
+            {
+                found_neibours_in_tree_path.insert({neighbour_index, path_in_tree[neighbour_index]-1});
+            }    
         }
     }
 
-    for (auto index_neighbours = neighbours.begin(); index_neighbours != neighbours.end(); index_neighbours++)
-    {
-        if (path_in_tree.find((*index_neighbours)) != path_in_tree.end())
-        {
-            neighbours_in_s_in_tree_path.push_back(path_in_tree[(*index_neighbours)]-1);
-        }
-    }
-    return neighbours_in_s_in_tree_path;
 }
 
 
 std::vector<uint32_t> Tree::_get_colors_of_neighbours_not_in_tree_path(
      std::vector<uint32_t> indexes_in_s, 
      const std::vector<Graph>& s_list,
-     std::unordered_map<uint32_t, uint32_t> path_in_tree)
+     std::unordered_map<uint32_t, uint32_t> path_in_tree,
+    std::unordered_set<uint32_t>& previous_children)
 {
     // return all the neighbours of the indexes in s that are also in the tree path
     std::vector<uint32_t> neighbours_in_s_not_in_tree_path;
 
-    std::vector<std::pair<uint32_t, uint32_t>> neighbours;
     for (uint32_t index_in_s : indexes_in_s)
     {
-        auto src_vertex = static_cast<Graph::vertex_descriptor>(index_in_s);
+        auto src_vertex = index_in_s;
 
-        for (auto edge : boost::make_iterator_range(boost::out_edges(src_vertex, s_list[this->m_root->index]))) 
-        {
-            auto neighbour = boost::target(edge, s_list[this->m_root->index]);
-            uint32_t neighbour_index = static_cast<uint32_t>(neighbour);
-            neighbours.push_back(std::make_pair(neighbour_index, s_list[this->m_root->index][neighbour].color));
+        auto[first_neigbhour, last_neighbour] = s_list[this->m_root->index].get_neighbours(src_vertex);
+        for (auto edge = first_neigbhour; edge != last_neighbour; ++edge) {
+            uint32_t neighbour_index = *edge;
+            if (path_in_tree.find(neighbour_index) == path_in_tree.end() && 
+            previous_children.find(neighbour_index) == previous_children.end())
+            {
+                neighbours_in_s_not_in_tree_path.push_back(s_list[this->m_root->index].get_vertex_color(neighbour_index));
+            }
         }
     } 
 
-    for (auto index_neighbours = neighbours.begin(); index_neighbours != neighbours.end(); index_neighbours++)
-    {
-        if (path_in_tree.find((*index_neighbours).first) == path_in_tree.end())
-        {
-            neighbours_in_s_not_in_tree_path.push_back((*index_neighbours).second);
-        }
-    }
     
     return neighbours_in_s_not_in_tree_path;
 }
@@ -180,6 +167,8 @@ std::unordered_map<uint32_t, uint32_t>
 Tree::get_tree_path_map(const NodePtr& last_node_in_path)
 {
     std::unordered_map<uint32_t, uint32_t> path;
+    path.reserve(last_node_in_path->depth + 1); // Pre-allocate
+    
     NodePtr current = last_node_in_path;
 
     while (current && !current->parent.expired()) {
@@ -219,6 +208,9 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
         // update histogram
         int new_child_index = 0;
         NodePtr last_parent_node = nullptr;
+        std::unordered_multimap<uint32_t,uint32_t> decrease_neighbours_in_hist_map;
+        std::unordered_set<uint32_t> empty_previous_children;
+
         while (new_child_index < new_indexes.size())
         {
             // get all children of the same parent
@@ -236,29 +228,41 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
             {
                 NodePtr last_parent_iterate = last_parent_node;
                 NodePtr current_parent_iterate = current_parent;
+                std::unordered_set<uint32_t> replaced_value_in_key;
                 while(last_parent_iterate != current_parent_iterate)
                 {
                     path_in_tree[current_parent_iterate->index] = current_parent_iterate->depth;
-                    path_in_tree.erase(last_parent_iterate->index);
+                    replaced_value_in_key.insert(current_parent_iterate->index);
+                    if (replaced_value_in_key.find(last_parent_iterate->index) == replaced_value_in_key.end())
+                    {
+                        path_in_tree.erase(last_parent_iterate->index);
+                    }
+                    
                     current_parent_iterate = current_parent_iterate->parent.lock();
                     last_parent_iterate = last_parent_iterate->parent.lock();
                 }
-                last_parent_node = current_parent;
             }
 
-            const std::vector<uint32_t> update_in_hist1 = 
-                _get_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree);
-            
-            uint32_t color = s_list[this->m_root->index][new_indexes[0].first].color;
-            hist->update_hist_decrease_from_neighbours(
-                color,update_in_hist1);
+            last_parent_node = current_parent;
+            _update_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, decrease_neighbours_in_hist_map);
+
+           
 
             const std::vector<uint32_t> update_in_hist2 =
-                _get_colors_of_neighbours_not_in_tree_path(new_indexes_same_parent, s_list, path_in_tree);
+                _get_colors_of_neighbours_not_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, empty_previous_children);
 
-            hist->update_neigbours_add_node_add_neighbours_to_hist(
+            hist.update_neigbours_add_node_add_neighbours_to_hist(
                 this->depth-1, update_in_hist2);
         }
+
+        std::vector<uint32_t> decrease_neighbours_in_hist;
+        for (const auto& pair : decrease_neighbours_in_hist_map) {
+            decrease_neighbours_in_hist.push_back(pair.second);
+        }
+
+        uint32_t color = s_list[this->m_root->index].get_vertex_color(new_indexes[0].first);
+        hist.update_hist_decrease_from_neighbours(
+            color, decrease_neighbours_in_hist);
     }
 
     return added_nodes;
@@ -272,16 +276,22 @@ void Tree::remove_node(const NodePtr& node,
         get_tree_path_map(node_to_remove);
 
     while (node_to_remove) {
+        NodePtr parent = nullptr;
+
         if (node_to_remove->depth != 0)
         {
             const std::vector<uint32_t> update_in_hist =
-                _get_colors_of_neighbours_not_in_tree_path({node_to_remove->index}, s_list, path_in_tree);
+                _get_colors_of_neighbours_not_in_tree_path({node_to_remove->index}, s_list, path_in_tree, node_to_remove->previous_children);
 
-            hist->update_neigbours_remove_node_decrease_neighbours_from_hist(
+            hist.update_neigbours_remove_node_decrease_neighbours_from_hist(
                 node_to_remove->depth-1, update_in_hist);
+            parent = node_to_remove->parent.lock();
+            _delete_node(node_to_remove);
         }
-        NodePtr parent = node_to_remove->parent.lock();
-        _delete_node(node_to_remove);
+        else{
+            m_root.reset();
+            //std::cout << "deleted_root" << std::endl;
+        }
 
         if (parent && !parent->son)
         {

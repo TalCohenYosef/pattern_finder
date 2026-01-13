@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <unordered_set>
 #include <cstdint>
 
 struct Node {
@@ -7,6 +8,8 @@ struct Node {
     std::shared_ptr<Node> right;    // sibling
     std::shared_ptr<Node> son;      // first child
     std::weak_ptr<Node> parent;     // back-reference (NO ownership)
+
+    std::unordered_set<uint32_t> previous_children;
 
     uint32_t index;
     int32_t depth;
