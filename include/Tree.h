@@ -23,21 +23,19 @@
  */
 class Tree {
 private:
-    NodePtr m_root;          ///< Root node of the tree
-    int32_t depth;           ///< Maximum depth reached
-    IndevidualColorHist hist;       ///< Color histogram for heuristic updates
+    std::vector<Node> m_tree;          ///< Root node of the tree
+    std::vector<uint32_t> m_children_start_index;
+    std::vector<uint32_t> m_parent_index;  ///< Parent index for each node
+    IndevidualColorHist m_hist;       ///< Color histogram for heuristic updates
 
 private:
 
-    /**
-     * @brief Add a node as a child of a given parent.
-     */
-    NodePtr _add_node(const NodePtr& node_parent, int32_t index_in_s);
+    void _add_node(const uint32_t node_parent, const int32_t index_in_s);
 
     /**
      * @brief Delete a leaf node from the tree.
      */
-    void _delete_node(const NodePtr& node);
+    void _delete_node(const uint32_t node);
 
     /**
     * @brief Get neighbors in S that are already in the tree path.
@@ -56,8 +54,7 @@ private:
     std::vector<uint32_t> _get_colors_of_neighbours_not_in_tree_path(
         std::vector<uint32_t> indexes_in_s, 
         const std::vector<Graph>& s_list,
-        std::unordered_map<uint32_t, uint32_t> path_in_tree,
-        std::unordered_set<uint32_t>& previous_children);
+        std::unordered_map<uint32_t, uint32_t> path_in_tree);
 
 
 public:
@@ -76,10 +73,8 @@ public:
      * @brief Get map of pattern index → depth along a tree path.
      */
     std::unordered_map<uint32_t, uint32_t>
-    get_tree_path_map(const NodePtr& last_node_in_path);
+    get_tree_path_map(const uint32_t last_node_in_path);
 
-    /// @return Root node
-    NodePtr get_root();
 
     /// @return True if tree is empty
     bool is_empty();
@@ -87,19 +82,27 @@ public:
     /**
      * @brief Add a new level under a parent node.
      */
-    std::vector<NodePtr>
-    add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexes,
+    std::pair<uint32_t, uint32_t>
+    add_tree_level(const std::vector<std::pair<uint32_t, uint32_t>>& new_indexes,
                    const std::vector<Graph>& s_list);
 
     /**
      * @brief Remove a node and backtrack if needed.
      */
-    void remove_node(const NodePtr& node,
+    void remove_node(const uint32_t node,
                      const std::vector<Graph>& s_list);
 
     /**
      * @brief Get ancestor of a node at a given depth.
      */
-    NodePtr get_node_by_depth(const NodePtr& lowest_node_in_match,
+    uint32_t get_node_by_depth(const uint32_t lowest_node_in_match,
                               int32_t depth);
+
+    bool is_alive(uint32_t node) {
+        return this->m_tree[node].is_alive;
+    }
+
+    uint32_t get_s_index(uint32_t node) {
+        return this->m_tree[node].index;
+    }
 };

@@ -121,47 +121,49 @@ std::pair<int32_t,int32_t> PatternFinder::extend_pattern_at_node_find_matches_in
     uint32_t new_node_id,
     uint32_t new_color,
     uint32_t node_to_connect_id,
-    std::vector<std::vector<NodePtr>>& last_nodes,
+    std::vector<std::pair<uint32_t,uint32_t>>& last_nodes,
     std::unordered_set<uint32_t>& alive_indexes)
 {
 
     for (int i = 0; i < s_size; ++i) {
         if (!trees[i]) continue;
 
-        std::vector<std::pair<uint32_t, NodePtr>> candidates;
+        std::vector<std::pair<uint32_t, uint32_t>> candidates;
 
-        for (const NodePtr& lowest : last_nodes[i]) {
+        for (uint32_t lowest = last_nodes[i].first; lowest < last_nodes[i].second; ++lowest) {
+            if (!trees[i]->is_alive(lowest)) {
+                continue;
+            }
+
             auto node_in_tree =
                 trees[i]->get_node_by_depth(lowest, node_to_connect_id+1);
 
             std::unordered_map<uint32_t, uint32_t> in_match= trees[i]->get_tree_path_map(lowest);
            
             bool found_child = false;
-            auto[first_neigbhour, last_neighbour] = s_list[i].get_neighbours(node_in_tree->index);
+            auto [first_neigbhour, last_neighbour] = s_list[i].get_neighbours(trees[i]->get_s_index(node_in_tree));
             for (auto e = first_neigbhour; e != last_neighbour; ++e) {
 
                 if (s_list[i].get_vertex_color(*e) == new_color)
                 {
                     if (in_match.find(static_cast<uint32_t>(*e)) == in_match.end())
                     {
+                        std::cout << "Adding candidate node " << *e << " under parent node " << trees[i]->get_s_index(node_in_tree) << " in tree " << i << "\n";
                         candidates.push_back({*e, lowest});
                         found_child = true;
                     }
                 }
             }
 
-        }
-
-        std::vector<NodePtr> new_last_nodes = trees[i]->add_tree_level(
-            candidates, s_list);
-        
-        for (const NodePtr& node : last_nodes[i]) {
-            if (node->son == nullptr) {
-                trees[i]->remove_node(node, s_list);
+            if (!found_child) {
+                std::cout << "Removing node " << trees[i]->get_s_index(lowest) << " from tree " << i << "\n";
+                trees[i]->remove_node(lowest, s_list);
             }
+
         }
 
-        last_nodes[i] = std::move(new_last_nodes);
+        last_nodes[i] = trees[i]->add_tree_level(candidates, s_list);
+  
 
         if (trees[i]->is_empty())
         {
@@ -170,8 +172,9 @@ std::pair<int32_t,int32_t> PatternFinder::extend_pattern_at_node_find_matches_in
         }
     }
     uint32_t sum_last_nodes_sizes = 0;
+
     for (const auto& nodes : last_nodes) {
-        sum_last_nodes_sizes += nodes.size();
+        sum_last_nodes_sizes += nodes.second - nodes.first;
     }
 
     return {alive_indexes.size(),sum_last_nodes_sizes};
@@ -181,7 +184,7 @@ uint32_t PatternFinder::score_edge_support(
     uint32_t uP,
     uint32_t vP,
     const std::vector<std::shared_ptr<Tree>>& trees,
-    const std::vector<std::vector<NodePtr>>& last_nodes,
+    const std::vector<std::pair<uint32_t,uint32_t>>& last_nodes,
     const std::vector<Graph>& s_list,
     uint32_t s_size) {
     uint64_t key = (static_cast<uint64_t>(std::min(uP, vP)) << 32) | std::max(uP, vP);
@@ -193,24 +196,26 @@ uint32_t PatternFinder::score_edge_support(
 
         bool supported = false;
 
-        for (const NodePtr& last_node : last_nodes[s]) {
-            NodePtr uS = trees[s]->get_node_by_depth(last_node, uP+1);
-            NodePtr vS = trees[s]->get_node_by_depth(last_node, vP+1);
+        for (uint32_t last_node = last_nodes[s].first; last_node < last_nodes[s].second; ++last_node) {
+            if (!trees[s]->is_alive(last_node)) {
+                continue;
+            }
+
+            uint32_t uS = trees[s]->get_node_by_depth(last_node, uP+1);
+            uint32_t vS = trees[s]->get_node_by_depth(last_node, vP+1);
 
             if (!uS || !vS)
-                {
+            {
                     // std::cout << "  [DEBUG] S " << s
                     //         << " missing mapping: "
                     //         << "uS=" << (uS ? "ok" : "null")
                     //         << ", vS=" << (vS ? "ok" : "null")
                     //         << "\n";
-                    continue;
-                }
+                continue;
+            }
 
-            auto u = static_cast<BoostGraph::vertex_descriptor>(uS->index);
-            auto v = static_cast<BoostGraph::vertex_descriptor>(vS->index);
 
-            if (s_list[s].is_edge(u, v)) {
+            if (!s_list[s].is_edge(trees[s]->get_s_index(uS), trees[s]->get_s_index(vS))) {
                 supported = true;
                 break;
             }
@@ -230,7 +235,7 @@ void PatternFinder::apply_edge_and_prune(
     uint32_t uP,
     uint32_t vP,
     std::vector<std::shared_ptr<Tree>>& trees,
-    std::vector<std::vector<NodePtr>>& last_nodes,
+    std::vector<std::pair<uint32_t,uint32_t>>& last_nodes,
     std::unordered_set<uint32_t>& alive_indexes,
     const std::vector<Graph>& s_list
 ) {
@@ -239,25 +244,20 @@ void PatternFinder::apply_edge_and_prune(
     for (uint32_t s = 0; s < trees.size(); ++s) {
         if (!trees[s]) continue;
 
-        std::vector<NodePtr> updated_matches;
+        for (uint32_t& match = last_nodes[s].first; match < last_nodes[s].second; ++match) {
+            if (trees[s]->is_alive(match) == false) {
+                continue;
+            }
 
-        for (const NodePtr& match : last_nodes[s]) {
-            NodePtr uS = trees[s]->get_node_by_depth(match, uP+1);
-            NodePtr vS = trees[s]->get_node_by_depth(match, vP+1);
+            uint32_t uS = trees[s]->get_node_by_depth(match, uP+1);
+            uint32_t vS = trees[s]->get_node_by_depth(match, vP+1);
 
             if (!uS || !vS) continue;
 
-            auto u = static_cast<BoostGraph::vertex_descriptor>(uS->index);
-            auto v = static_cast<BoostGraph::vertex_descriptor>(vS->index);
-
-            if (s_list[s].is_edge(u, v)) {
-                updated_matches.push_back(match);
-            } else {
+            if (!s_list[s].is_edge(trees[s]->get_s_index(uS), trees[s]->get_s_index(vS))) {
                 trees[s]->remove_node(match, s_list);
             }
         }
-
-        last_nodes[s] = std::move(updated_matches);
 
         if (trees[s]->is_empty()) {
             trees[s].reset();
@@ -269,7 +269,7 @@ void PatternFinder::apply_edge_and_prune(
 bool PatternFinder::add_edge(
     BoostGraph& pattern,
     std::vector<std::shared_ptr<Tree>>& trees,
-    std::vector<std::vector<NodePtr>>& last_nodes,
+    std::vector<std::pair<uint32_t,uint32_t>>& last_nodes,
     std::unordered_set<uint32_t>& alive_indexes,
     uint32_t s_size,
     const std::vector<Graph>& s_list,
@@ -363,7 +363,7 @@ PatternFinder::find_pattern(
     for (int i = 0; i < s_size; ++i)
         trees[i] = std::make_shared<Tree>(i, color_hist);
 
-    std::vector<std::vector<NodePtr>> last_nodes(s_size);
+    std::vector<std::pair<uint32_t,uint32_t>> last_nodes(s_size);
 
     
     std::vector<std::pair<double, uint32_t>> colors; // (probability, color)
@@ -399,9 +399,9 @@ PatternFinder::find_pattern(
         std::vector<uint32_t> matches =
             find_initial_matches(s_list[i], first_color);
 
-        std::vector<std::pair<uint32_t, NodePtr>> initial_indexes;
+        std::vector<std::pair<uint32_t, uint32_t>> initial_indexes;
         for (uint32_t match : matches) {
-            initial_indexes.push_back({match, trees[i]->get_root()});
+            initial_indexes.push_back({match, 0});
         }
 
         last_nodes[i] =
@@ -443,7 +443,7 @@ PatternFinder::find_pattern(
     {
         i++;
     
-        std::cout << "number of alive: " << alive_indexes.size() << std::endl;
+//        std::cout << "number of alive: " << alive_indexes.size() << std::endl;
     
         double p = 1.0 / std::cbrt(boost::num_vertices(pattern));
         

@@ -31,7 +31,7 @@ void GeneralColorHist::update_hist_decrease_tree_count(
 }
 
 std::pair<int32_t, int32_t>
-GeneralColorHist::get_color_to_add(uint32_t threshold)
+GeneralColorHist::get_color_to_add(double threshold_percent)
 {
     struct Candidate {
         int32_t color;
@@ -40,49 +40,73 @@ GeneralColorHist::get_color_to_add(uint32_t threshold)
     };
 
     std::vector<Candidate> candidates;
-    double total_weight = 0.0;
 
-    // 1. Collect all legal candidates
+    if (m_number_of_trees.empty())
+        return {-1, -1};
+
+    const uint32_t num_trees = m_number_of_trees.size();
+
+    /* ---------------------------
+       1. Collect legal candidates
+       --------------------------- */
     for (uint32_t c = 0; c < static_cast<uint32_t>(C); ++c) {
         for (uint32_t d = 0; d < m_number_of_trees.size(); ++d) {
 
             uint32_t support = m_number_of_trees[d][c];
-            if (support < threshold)
-                continue;
 
-            // linear weight (you can change this later)
-            double w = static_cast<double>(support);
+            // B: percentage threshold
+            const uint32_t min_support =
+            static_cast<uint32_t>(
+                std::ceil(threshold_percent * num_trees)
+            );
+            if (support < min_support)
+                continue;
 
             candidates.push_back({
                 static_cast<int32_t>(c),
                 static_cast<int32_t>(d),
-                w
+                static_cast<double>(support) // raw value for now
             });
-
-            total_weight += w;
         }
     }
 
-    // no legal extension
     if (candidates.empty())
         return {-1, -1};
 
-    // 2. Sample
+    /* ---------------------------
+       2. Softmax over supports
+       --------------------------- */
+    std::vector<double> supports;
+    supports.reserve(candidates.size());
+
+    for (const auto& c : candidates)
+        supports.push_back(c.weight);
+
+    std::vector<double> probs = compute_softmax(
+        std::vector<uint32_t>(supports.begin(), supports.end())
+    );
+
+    /* ---------------------------
+       3. Sample using softmax
+       --------------------------- */
     static thread_local std::mt19937 rng{std::random_device{}()};
-    std::uniform_real_distribution<double> dist(0.0, total_weight);
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
 
     double r = dist(rng);
     double acc = 0.0;
 
-    for (const auto& cand : candidates) {
-        acc += cand.weight;
+    for (size_t i = 0; i < candidates.size(); ++i) {
+        acc += probs[i];
         if (r <= acc) {
-            return {cand.color, cand.node};
+            return {candidates[i].color, candidates[i].node};
         }
     }
 
-    // fallback (numerical safety)
-    return {candidates.back().color, candidates.back().node};
+    // Numerical fallback
+    return {
+        candidates.back().color,
+        candidates.back().node
+    };
 }
 
 

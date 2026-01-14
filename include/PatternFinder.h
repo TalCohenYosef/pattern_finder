@@ -35,7 +35,7 @@ private:
      * Returns true if an edge was added, false otherwise.
      */
     static bool add_edge(BoostGraph& pattern, std::vector<std::shared_ptr<Tree>>& trees,
-        std::vector<std::vector<NodePtr>>& last_nodes, std::unordered_set<uint32_t>& alive_indexes, uint32_t s_size,
+        std::vector<std::pair<uint32_t,uint32_t>>& last_nodes, std::unordered_set<uint32_t>& alive_indexes, uint32_t s_size,
         const std::vector<Graph>& s_list, 
         double threshold, double alive_threshold);
 
@@ -45,7 +45,7 @@ private:
     static uint32_t score_edge_support(
         uint32_t uP, uint32_t vP,
         const std::vector<std::shared_ptr<Tree>>& trees,
-        const std::vector<std::vector<NodePtr>>& last_nodes,
+        const std::vector<std::pair<uint32_t,uint32_t>>& last_nodes,
         const std::vector<Graph>& s_list, uint32_t s_size
     );
 
@@ -55,7 +55,7 @@ private:
     static void apply_edge_and_prune(
         BoostGraph& pattern, uint32_t uP, uint32_t vP,
         std::vector<std::shared_ptr<Tree>>& trees,
-        std::vector<std::vector<NodePtr>>& last_nodes,
+        std::vector<std::pair<uint32_t,uint32_t>>& last_nodes,
         std::unordered_set<uint32_t>& alive_indexes,
         const std::vector<Graph>& s_list
     );
@@ -87,7 +87,7 @@ private:
         uint32_t new_node_id,
         uint32_t new_color,
         uint32_t node_to_connect_id,
-        std::vector<std::vector<NodePtr>>& last_nodes,
+        std::vector<std::pair<uint32_t,uint32_t>>& last_nodes,
         std::unordered_set<uint32_t>& alive_indexes);
 
 public:
