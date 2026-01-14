@@ -183,67 +183,45 @@ uint32_t PatternFinder::score_edge_support(
     const std::vector<std::shared_ptr<Tree>>& trees,
     const std::vector<std::vector<NodePtr>>& last_nodes,
     const std::vector<Graph>& s_list,
-    uint32_t s_size,
-    std::unordered_map<uint64_t, std::unordered_set<uint32_t>>& edge_support_map
-) {
+    uint32_t s_size) {
     uint64_t key = (static_cast<uint64_t>(std::min(uP, vP)) << 32) | std::max(uP, vP);
 
     uint32_t score = 0;
 
-    if (edge_support_map.find(key) != edge_support_map.end()) 
-    {
-        std::vector<uint32_t> to_remove;
-        for (const auto& s_index : edge_support_map[key])
-        {
-            if (trees[s_index] == nullptr)
-            {
-                to_remove.push_back(s_index);
-            }
-            for (auto it = to_remove.begin(); it != to_remove.end(); ++it) {
-                edge_support_map[key].erase(*it);
-            }
+    for (uint32_t s = 0; s < s_size; ++s) {
+        if (!trees[s]) continue;
 
-            return static_cast<uint32_t>(edge_support_map[key].size());
-        }
-    }
-    else
-    {
-        edge_support_map[key] = std::unordered_set<uint32_t>();
-        for (uint32_t s = 0; s < s_size; ++s) {
-            if (!trees[s]) continue;
+        bool supported = false;
 
-            bool supported = false;
+        for (const NodePtr& last_node : last_nodes[s]) {
+            NodePtr uS = trees[s]->get_node_by_depth(last_node, uP+1);
+            NodePtr vS = trees[s]->get_node_by_depth(last_node, vP+1);
 
-            for (const NodePtr& last_node : last_nodes[s]) {
-                NodePtr uS = trees[s]->get_node_by_depth(last_node, uP+1);
-                NodePtr vS = trees[s]->get_node_by_depth(last_node, vP+1);
-
-                if (!uS || !vS)
-                    {
-                        // std::cout << "  [DEBUG] S " << s
-                        //         << " missing mapping: "
-                        //         << "uS=" << (uS ? "ok" : "null")
-                        //         << ", vS=" << (vS ? "ok" : "null")
-                        //         << "\n";
-                        continue;
-                    }
-
-                auto u = static_cast<BoostGraph::vertex_descriptor>(uS->index);
-                auto v = static_cast<BoostGraph::vertex_descriptor>(vS->index);
-
-                if (s_list[s].is_edge(u, v)) {
-                    supported = true;
-                    break;
+            if (!uS || !vS)
+                {
+                    // std::cout << "  [DEBUG] S " << s
+                    //         << " missing mapping: "
+                    //         << "uS=" << (uS ? "ok" : "null")
+                    //         << ", vS=" << (vS ? "ok" : "null")
+                    //         << "\n";
+                    continue;
                 }
-            }
 
-            if (supported) 
-            {
-                edge_support_map[key].insert(s);
-                score++;
+            auto u = static_cast<BoostGraph::vertex_descriptor>(uS->index);
+            auto v = static_cast<BoostGraph::vertex_descriptor>(vS->index);
+
+            if (s_list[s].is_edge(u, v)) {
+                supported = true;
+                break;
             }
         }
+
+        if (supported) 
+        {
+            score++;
+        }
     }
+
     return score;
 }
 
@@ -295,7 +273,6 @@ bool PatternFinder::add_edge(
     std::unordered_set<uint32_t>& alive_indexes,
     uint32_t s_size,
     const std::vector<Graph>& s_list,
-    std::unordered_map<uint64_t, std::unordered_set<uint32_t>>& edge_support_map,
     double threshold,
     double alive_threshold
 ) {
@@ -317,7 +294,7 @@ bool PatternFinder::add_edge(
             if (uP >= vP) continue;
             if (boost::edge(uP, vP, pattern).second) continue;
             uint32_t score = score_edge_support(
-                uP, vP, trees, last_nodes, s_list, s_size, edge_support_map
+                uP, vP, trees, last_nodes, s_list, s_size
             );
            
             if (score > best_score) {
@@ -329,7 +306,6 @@ bool PatternFinder::add_edge(
         }
     }
 
-   
 
     if (!found) {
         return false;
@@ -440,7 +416,6 @@ PatternFinder::find_pattern(
 
     bool failed_add_edge = false;
     bool done_adding_vertices = false;
-    std::unordered_map<uint64_t, std::unordered_set<uint32_t>> edge_support_map;
     
     std::mt19937_64 rng;
     // initialize the random number generator with time-dependent seed
@@ -483,7 +458,6 @@ PatternFinder::find_pattern(
             }
             else
             {
-                // Choose the candidate with the rarest color (minimum qc)
                 int32_t color_new = candidates.first;
                 int32_t node_to_connect = candidates.second;
     
@@ -527,7 +501,6 @@ PatternFinder::find_pattern(
                 alive_indexes,
                 s_size,
                 s_list,
-                edge_support_map,
                 0,
                 alive_threshold
             );

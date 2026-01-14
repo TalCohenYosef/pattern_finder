@@ -37,7 +37,6 @@ private:
     static bool add_edge(BoostGraph& pattern, std::vector<std::shared_ptr<Tree>>& trees,
         std::vector<std::vector<NodePtr>>& last_nodes, std::unordered_set<uint32_t>& alive_indexes, uint32_t s_size,
         const std::vector<Graph>& s_list, 
-        std::unordered_map<uint64_t, std::unordered_set<uint32_t>>& edge_support_map,
         double threshold, double alive_threshold);
 
     /**
@@ -47,8 +46,7 @@ private:
         uint32_t uP, uint32_t vP,
         const std::vector<std::shared_ptr<Tree>>& trees,
         const std::vector<std::vector<NodePtr>>& last_nodes,
-        const std::vector<Graph>& s_list, uint32_t s_size,
-        std::unordered_map<uint64_t, std::unordered_set<uint32_t>>& edge_support_map
+        const std::vector<Graph>& s_list, uint32_t s_size
     );
 
     /**
