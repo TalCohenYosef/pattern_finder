@@ -10,7 +10,7 @@
    Read graph from JSON
    ===================== */
 
-Graph JsonGraphManager::read_graph(const std::string& path)
+Graph JsonGraphManager::read_graph(const std::string& path, const bool directed)
 {
     json_object* root = json_object_from_file(path.c_str());
     if (!root)
@@ -56,8 +56,9 @@ Graph JsonGraphManager::read_graph(const std::string& path)
     std::vector<std::pair<uint32_t, uint32_t>> edges;
 
     const uint32_t num_edges = json_object_array_length(links);
-    edges.reserve(num_edges * 2); // undirected
-
+    
+        edges.reserve(num_edges); 
+    
     for (uint32_t i = 0; i < num_edges; ++i) {
         json_object* edge = json_object_array_get_idx(links, i);
 
@@ -74,14 +75,13 @@ Graph JsonGraphManager::read_graph(const std::string& path)
         uint32_t src = id_to_index.at(json_object_get_int(src_obj));
         uint32_t tgt = id_to_index.at(json_object_get_int(tgt_obj));
 
-        // undirected → add both
+        // if undirected → add both
         edges.emplace_back(src, tgt);
-        edges.emplace_back(tgt, src);
     }
 
     json_object_put(root);
 
-    return Graph(num_nodes, edges, colors);
+    return Graph(num_nodes, edges, colors, directed);
 }
 
 

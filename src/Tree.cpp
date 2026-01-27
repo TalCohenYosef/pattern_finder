@@ -117,7 +117,7 @@ void Tree::_update_neighbours_in_tree_path(
     {
         auto src_vertex = index_in_s;
 
-        auto[first_neigbhour, last_neighbour] = graph.get_neighbours(src_vertex);
+        auto[first_neigbhour, last_neighbour] = graph.get_neighbours(src_vertex, true);
         for (auto edge = first_neigbhour; edge != last_neighbour; ++edge) 
         {
             uint32_t neighbour = *edge;

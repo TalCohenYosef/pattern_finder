@@ -16,8 +16,8 @@ public:
     /// Path to S graphs folder
     std::string s_path;
 
-    /// Number of S graphs to parse
-    int32_t s_size = 0;
+    /// Are the graphs directed
+    bool directed = false;
 
     /// Alive threshold parameter
     double alive_threshold = 0.0;

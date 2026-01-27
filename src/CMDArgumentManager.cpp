@@ -13,9 +13,9 @@ void CMDArgumentManager::read_arguments(int argc, char** argv)
 
     desc.add_options()
         ("help,h", "Show help message")
-        ("m", po::value<int32_t>()->required(), "Number of S graphs to parse")
-        ("p", po::value<std::string>()->required(), "Path to S graphs folder")
-        ("a", po::value<double>()->required(), "Alive threshold");
+        ("directed", po::bool_switch(&directed), "Treat the graph as directed")
+        ("path", po::value<std::string>()->required(), "Path to S graphs folder")
+        ("alive", po::value<double>()->required(), "Alive threshold");
 
     try {
         po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -34,7 +34,6 @@ void CMDArgumentManager::read_arguments(int argc, char** argv)
     }
 
     // Assign parsed values
-    s_size = vm["m"].as<int32_t>();
-    s_path = vm["p"].as<std::string>();
-    alive_threshold = vm["a"].as<double>();
+    s_path = vm["path"].as<std::string>();
+    alive_threshold = vm["alive"].as<double>();
 }

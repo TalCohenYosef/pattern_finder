@@ -19,23 +19,13 @@ static std::pair<std::vector<Graph>, std::vector<std::string>> load_s_files(cons
     for (const auto& entry :
          std::filesystem::directory_iterator(options.s_path)) {
 
-        if (count >= options.s_size)
-            break;
-
         if (entry.path().extension() == ".json") {
             std::string filename = entry.path().filename().string();
             s_list.push_back(JsonGraphManager::read_graph(
-                entry.path().string()));
+                entry.path().string(), options.directed));
             names.push_back(filename);
             ++count;
         }
-    }
-
-    if (s_list.size() != static_cast<size_t>(options.s_size)) {
-        std::cerr << "Warning: loaded "
-                  << s_list.size()
-                  << " graphs instead of "
-                  << options.s_size << "\n";
     }
 
     return {s_list, names};
@@ -54,10 +44,18 @@ int main(int32_t argc, char** argv)
         /* ---------- Load input graphs ---------- */
         auto [s_list, s_names] = load_s_files(options);
 
+        for(int i = 0; i < 4; i++)
+        {
+            std::pair<std::vector<uint32_t>::const_iterator, std::vector<uint32_t>::const_iterator> n = s_list[0].get_neighbours(i);
+            for(auto j = n.first; j != n.second; ++j)
+            {
+                std::cout << "Neighbour of " << i << ": " << *j << std::endl;
+            }
+        }
+
         /* ---------- Run pattern finder ---------- */
         auto [pattern, alive_indexes] =
             PatternFinder::find_pattern(
-                options.s_size,
                 s_list,
                 options.alive_threshold);
     

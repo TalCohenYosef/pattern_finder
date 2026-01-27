@@ -30,7 +30,7 @@ public:
      * @return Constructed Boost graph
      * @throws std::runtime_error on file or parse error
      */
-    static Graph read_graph(const std::string& path);
+    static Graph read_graph(const std::string& path, const bool directed);
 
     /**
      * @brief Write a graph to a JSON file.

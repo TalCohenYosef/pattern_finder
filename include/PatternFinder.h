@@ -101,7 +101,6 @@ public:
      */
     static std::pair<BoostGraph, std::unordered_set<uint32_t>>
     find_pattern(
-    int32_t s_size,
     std::vector<Graph>& s_list,
     double alive_threshold);
 

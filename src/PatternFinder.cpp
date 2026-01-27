@@ -344,26 +344,25 @@ void PatternFinder::recolor_pattern(BoostGraph& pattern,
 
 std::pair<BoostGraph, std::unordered_set<u_int32_t>>
 PatternFinder::find_pattern(
-    int32_t s_size,
     std::vector<Graph>& s_list,
     double alive_threshold)
 {
     auto start = std::chrono::high_resolution_clock::now();
     PatternFinder pf;
-    std::vector<int32_t> m_color_map = pf.map_colors(s_size, s_list);
+    std::vector<int32_t> m_color_map = pf.map_colors(s_list.size(), s_list);
     pf.compute_global_color_distribution(
         static_cast<uint32_t>(m_color_map.size()),
-        s_size,
+        s_list.size(),
         s_list
     );
     
     GeneralColorHist color_hist(m_color_map.size());
 
-    std::vector<std::shared_ptr<Tree>> trees(s_size);
-    for (int i = 0; i < s_size; ++i)
+    std::vector<std::shared_ptr<Tree>> trees(s_list.size());
+    for (int i = 0; i < s_list.size(); ++i)
         trees[i] = std::make_shared<Tree>(i, color_hist);
 
-    std::vector<std::vector<NodePtr>> last_nodes(s_size);
+    std::vector<std::vector<NodePtr>> last_nodes(s_list.size());
 
     
     std::vector<std::pair<double, uint32_t>> colors; // (probability, color)
@@ -382,20 +381,22 @@ PatternFinder::find_pattern(
     
     uint32_t first_color;
     if (colors.size() >= 2) {
-        first_color = colors[0].second;  // second most common
-    } else {
+        first_color = colors.front().second;
+    } 
+    else
+    {
         first_color = colors[0].second;  // fallback
     }
     
     std::cout << "first_color: " << m_color_map[first_color] << std::endl;
 
     BoostGraph pattern;
-    uint32_t alive_s = s_size;
+    uint32_t alive_s = s_list.size();
 
     boost::add_vertex(
         VertexProperty{static_cast<int32_t>(first_color)}, pattern);
 
-    for (int i = 0; i < s_size; ++i) {        
+    for (int i = 0; i < s_list.size(); ++i) {        
         std::vector<uint32_t> matches =
             find_initial_matches(s_list[i], first_color);
 
@@ -430,7 +431,7 @@ PatternFinder::find_pattern(
     uint32_t last_color_amount_of_pcicks = 0;
 
     std::unordered_set<uint32_t> alive_indexes;
-    for (uint32_t i = 0; i < s_size; ++i)
+    for (uint32_t i = 0; i < s_list.size(); ++i)
     {
         if (trees[i])
         {
@@ -439,7 +440,7 @@ PatternFinder::find_pattern(
     }
 
     int i = 0;
-    while (alive_s > alive_threshold * s_size) 
+    while (alive_s > alive_threshold * s_list.size()) 
     {
         i++;
     
@@ -448,7 +449,7 @@ PatternFinder::find_pattern(
         double p = 1.0 / std::cbrt(boost::num_vertices(pattern));
         
     
-        if ((unif(rng) < p) && !done_adding_vertices && failed_add_edge)
+        if (((unif(rng) < p) && !done_adding_vertices) || failed_add_edge)
         {
             std::pair<int32_t,int32_t> candidates = color_hist.get_color_to_add(alive_threshold);
     
@@ -476,7 +477,7 @@ PatternFinder::find_pattern(
                     auto alive_and_matches =
                         extend_pattern_at_node_find_matches_in_s(
                             trees,
-                            s_size,
+                            s_list.size(),
                             s_list,
                             new_node_id,
                             color_new,
@@ -499,7 +500,7 @@ PatternFinder::find_pattern(
                 trees,
                 last_nodes,
                 alive_indexes,
-                s_size,
+                s_list.size(),
                 s_list,
                 0,
                 alive_threshold
