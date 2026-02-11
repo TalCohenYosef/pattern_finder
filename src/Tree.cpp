@@ -109,7 +109,10 @@ void Tree::_update_neighbours_in_tree_path(
     std::vector<uint32_t> indexes_in_s, 
     const std::vector<Graph>& s_list,
     std::unordered_map<uint32_t, uint32_t> path_in_tree,
-    std::unordered_multimap<uint32_t,uint32_t>& found_neibours_in_tree_path)
+
+
+
+    std::unordered_map<uint32_t,uint32_t>& found_neibours_in_tree_path)
 {
     // return all the neighbours of the indexes in s that are also in the tree path
     const Graph& graph = s_list[this->m_root->index];
@@ -138,14 +141,14 @@ std::vector<uint32_t> Tree::_get_colors_of_neighbours_not_in_tree_path(
      std::unordered_map<uint32_t, uint32_t> path_in_tree,
     std::unordered_set<uint32_t>& previous_children)
 {
-    // return all the neighbours of the indexes in s that are also in the tree path
+    // return all the neighbours of the indexes in s that are also not in the tree path
     std::vector<uint32_t> neighbours_in_s_not_in_tree_path;
 
     for (uint32_t index_in_s : indexes_in_s)
     {
         auto src_vertex = index_in_s;
 
-        auto[first_neigbhour, last_neighbour] = s_list[this->m_root->index].get_neighbours(src_vertex);
+        auto[first_neigbhour, last_neighbour] = s_list[this->m_root->index].get_neighbours(src_vertex, false);
         for (auto edge = first_neigbhour; edge != last_neighbour; ++edge) {
             uint32_t neighbour_index = *edge;
             if (path_in_tree.find(neighbour_index) == path_in_tree.end() && 
@@ -208,7 +211,7 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
         // update histogram
         int new_child_index = 0;
         NodePtr last_parent_node = nullptr;
-        std::unordered_multimap<uint32_t,uint32_t> decrease_neighbours_in_hist_map;
+        std::unordered_map<uint32_t,uint32_t> decrease_neighbours_in_hist_map;
         std::unordered_set<uint32_t> empty_previous_children;
 
         while (new_child_index < new_indexes.size())
@@ -248,11 +251,11 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
 
            
 
-            const std::vector<uint32_t> update_in_hist2 =
+            const std::vector<uint32_t> update_in_hist =
                 _get_colors_of_neighbours_not_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, empty_previous_children);
 
             hist.update_neigbours_add_node_add_neighbours_to_hist(
-                this->depth-1, update_in_hist2);
+                this->depth-1, update_in_hist);
         }
 
         std::vector<uint32_t> decrease_neighbours_in_hist;

@@ -36,7 +36,7 @@ void IndevidualColorHist::update_neigbours_add_node_add_neighbours_to_hist(
     uint32_t new_node_depth,
     const std::vector<uint32_t>& update_in_hist)
 {
-    if(new_node_depth >= m_number_of_neighbours.size())
+    while(new_node_depth >= m_number_of_neighbours.size())
     {
         this->m_number_of_neighbours.push_back(std::vector<uint32_t>(C, 0));
     }

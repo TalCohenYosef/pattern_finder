@@ -342,7 +342,7 @@ void PatternFinder::recolor_pattern(BoostGraph& pattern,
 
 /* ---------- Main algorithm ---------- */
 
-std::pair<BoostGraph, std::unordered_set<u_int32_t>>
+std::pair<BoostGraph, std::unordered_set<uint32_t>>
 PatternFinder::find_pattern(
     std::vector<Graph>& s_list,
     double alive_threshold)
@@ -355,7 +355,12 @@ PatternFinder::find_pattern(
         s_list.size(),
         s_list
     );
-    
+    std::cout << "m_color_map: [";
+    for (size_t i = 0; i < m_color_map.size(); ++i) {
+        if (i) std::cout << ", ";
+        std::cout << m_color_map[i];
+    }
+    std::cout << "]" << std::endl;
     GeneralColorHist color_hist(m_color_map.size());
 
     std::vector<std::shared_ptr<Tree>> trees(s_list.size());
@@ -486,9 +491,9 @@ PatternFinder::find_pattern(
                             alive_indexes);
     
                     alive_s = alive_indexes.size();
-                    number_of_mathces = alive_and_matches.second;
+                     number_of_mathces = alive_and_matches.second;
             }
-    
+                    
             failed_add_edge = false;
         }
 

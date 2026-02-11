@@ -47,7 +47,7 @@ GeneralColorHist::get_color_to_add(uint32_t threshold)
         for (uint32_t d = 0; d < m_number_of_trees.size(); ++d) {
 
             uint32_t support = m_number_of_trees[d][c];
-            if (support < threshold)
+            if (support <= threshold)
                 continue;
 
             // linear weight (you can change this later)

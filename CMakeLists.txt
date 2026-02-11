@@ -20,7 +20,8 @@ find_package(Boost REQUIRED COMPONENTS program_options)
 # -----------------------------
 # Find nlohmann/json
 # -----------------------------
-find_package(nlohmann_json REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(JSONC REQUIRED json-c)
 
 # -----------------------------
 # Collect source files dynamically

@@ -61,7 +61,7 @@ void Graph::initiate_graph(const uint32_t vertex_count, std::vector<std::pair<ui
 
 bool Graph::is_edge(uint32_t u, uint32_t v) const
 {
-    auto [it, end] = this->get_neighbours(u);
+    auto [it, end] = this->get_neighbours(u,false);
     return std::find(it, end, v) != end;
 }
 

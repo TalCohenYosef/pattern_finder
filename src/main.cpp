@@ -44,14 +44,14 @@ int main(int32_t argc, char** argv)
         /* ---------- Load input graphs ---------- */
         auto [s_list, s_names] = load_s_files(options);
 
-        for(int i = 0; i < 4; i++)
-        {
-            std::pair<std::vector<uint32_t>::const_iterator, std::vector<uint32_t>::const_iterator> n = s_list[0].get_neighbours(i);
-            for(auto j = n.first; j != n.second; ++j)
-            {
-                std::cout << "Neighbour of " << i << ": " << *j << std::endl;
-            }
-        }
+        // for(int i = 0; i < 4; i++)
+        // {
+        //     std::pair<std::vector<uint32_t>::const_iterator, std::vector<uint32_t>::const_iterator> n = s_list[0].get_neighbours(i);
+        //     for(auto j = n.first; j != n.second; ++j)
+        //     {
+        //         std::cout << "Neighbour of " << i << ": " << *j << std::endl;
+        //     }
+        // }
 
         /* ---------- Run pattern finder ---------- */
         auto [pattern, alive_indexes] =
