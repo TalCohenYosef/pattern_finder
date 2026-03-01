@@ -1,5 +1,6 @@
 #include "JsonGraphManager.h"
-#include <json-c/json.h>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <unordered_map>
 #include <vector>
@@ -12,74 +13,51 @@
 
 Graph JsonGraphManager::read_graph(const std::string& path, const bool directed)
 {
-    json_object* root = json_object_from_file(path.c_str());
-    if (!root)
-        throw std::runtime_error("JsonGraphManager: cannot open JSON");
+    boost::property_tree::ptree root;
+    
+    try {
+        boost::property_tree::read_json(path, root);
+    } catch (const std::exception& e) {
+        throw std::runtime_error("JsonGraphManager: cannot open JSON: " + std::string(e.what()));
+    }
 
-    json_object* nodes = nullptr;
-    json_object* links = nullptr;
-
-    if (!json_object_object_get_ex(root, "nodes", &nodes) ||
-        !json_object_object_get_ex(root, "links", &links))
-    {
-        json_object_put(root);
+    // Check if nodes and links exist
+    if (root.find("nodes") == root.not_found() || root.find("links") == root.not_found()) {
         throw std::runtime_error("JsonGraphManager: missing nodes/links");
     }
 
-    const uint32_t num_nodes = json_object_array_length(nodes);
-
     /* ---- colors ---- */
-    std::vector<int32_t> colors(num_nodes);
+    std::vector<int32_t> colors;
     std::unordered_map<int, uint32_t> id_to_index;
+    uint32_t node_index = 0;
 
-    for (uint32_t i = 0; i < num_nodes; ++i) {
-        json_object* node = json_object_array_get_idx(nodes, i);
+    for (const auto& node_pair : root.get_child("nodes")) {
+        const auto& node = node_pair.second;
+        
+        int id = node.get<int>("id");
+        int color = node.get<int>("color");
 
-        json_object* id_obj = nullptr;
-        json_object* color_obj = nullptr;
-
-        if (!json_object_object_get_ex(node, "id", &id_obj) ||
-            !json_object_object_get_ex(node, "color", &color_obj))
-        {
-            json_object_put(root);
-            throw std::runtime_error("Invalid node entry");
-        }
-
-        int id = json_object_get_int(id_obj);
-        int color = json_object_get_int(color_obj);
-
-        id_to_index[id] = i;
-        colors[i] = static_cast<uint32_t>(color);
+        id_to_index[id] = node_index;
+        colors.push_back(static_cast<int32_t>(color));
+        ++node_index;
     }
+
+    const uint32_t num_nodes = node_index;
 
     /* ---- edges ---- */
     std::vector<std::pair<uint32_t, uint32_t>> edges;
 
-    const uint32_t num_edges = json_object_array_length(links);
-    
-        edges.reserve(num_edges); 
-    
-    for (uint32_t i = 0; i < num_edges; ++i) {
-        json_object* edge = json_object_array_get_idx(links, i);
+    for (const auto& edge_pair : root.get_child("links")) {
+        const auto& edge = edge_pair.second;
+        
+        int src = edge.get<int>("source");
+        int tgt = edge.get<int>("target");
 
-        json_object* src_obj = nullptr;
-        json_object* tgt_obj = nullptr;
+        uint32_t src_idx = id_to_index.at(src);
+        uint32_t tgt_idx = id_to_index.at(tgt);
 
-        if (!json_object_object_get_ex(edge, "source", &src_obj) ||
-            !json_object_object_get_ex(edge, "target", &tgt_obj))
-        {
-            json_object_put(root);
-            throw std::runtime_error("Invalid edge entry");
-        }
-
-        uint32_t src = id_to_index.at(json_object_get_int(src_obj));
-        uint32_t tgt = id_to_index.at(json_object_get_int(tgt_obj));
-
-        // if undirected → add both
-        edges.emplace_back(src, tgt);
+        edges.emplace_back(src_idx, tgt_idx);
     }
-
-    json_object_put(root);
 
     return Graph(num_nodes, edges, colors, directed);
 }
@@ -93,27 +71,16 @@ Graph JsonGraphManager::read_graph(const std::string& path, const bool directed)
     const std::string& path,
     const BoostGraph& graph)
 {
-    json_object* root  = json_object_new_object();
-    json_object* nodes = json_object_new_array();
-    json_object* links = json_object_new_array();
+    boost::property_tree::ptree root;
+    boost::property_tree::ptree nodes;
+    boost::property_tree::ptree links;
 
     /* ---- vertices ---- */
     for (auto v : boost::make_iterator_range(vertices(graph))) {
-        json_object* node = json_object_new_object();
-
-        json_object_object_add(
-            node,
-            "id",
-            json_object_new_int(static_cast<int>(v))
-        );
-
-        json_object_object_add(
-            node,
-            "color",
-            json_object_new_int(graph[v].color)
-        );
-
-        json_object_array_add(nodes, node);
+        boost::property_tree::ptree node;
+        node.put("id", static_cast<int>(v));
+        node.put("color", graph[v].color);
+        nodes.push_back(std::make_pair("", node));
     }
 
     /* ---- edges ---- */
@@ -123,36 +90,20 @@ Graph JsonGraphManager::read_graph(const std::string& path, const bool directed)
 
         // avoid duplicating undirected edges
         if (u < v) {
-            json_object* edge = json_object_new_object();
-
-            json_object_object_add(
-                edge,
-                "source",
-                json_object_new_int(static_cast<int>(u))
-            );
-
-            json_object_object_add(
-                edge,
-                "target",
-                json_object_new_int(static_cast<int>(v))
-            );
-
-            json_object_array_add(links, edge);
+            boost::property_tree::ptree edge;
+            edge.put("source", static_cast<int>(u));
+            edge.put("target", static_cast<int>(v));
+            links.push_back(std::make_pair("", edge));
         }
     }
 
-    json_object_object_add(root, "nodes", nodes);
-    json_object_object_add(root, "links", links);
+    root.add_child("nodes", nodes);
+    root.add_child("links", links);
 
-    if (json_object_to_file_ext(
-            path.c_str(),
-            root,
-            JSON_C_TO_STRING_PRETTY) != 0)
-    {
-        json_object_put(root);
-        throw std::runtime_error("JsonGraphManager: failed to write JSON");
+    try {
+        boost::property_tree::write_json(path, root);
+    } catch (const std::exception& e) {
+        throw std::runtime_error("JsonGraphManager: failed to write JSON: " + std::string(e.what()));
     }
-
-    json_object_put(root);
 }
 
