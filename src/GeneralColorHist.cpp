@@ -47,6 +47,10 @@ GeneralColorHist::get_color_to_add(uint32_t threshold)
         for (uint32_t d = 0; d < m_number_of_trees.size(); ++d) {
 
             uint32_t support = m_number_of_trees[d][c];
+            
+            // Debug output for large graphs
+            //std::cout << "Color " << c << ", Depth " << d << ", Support: " << support << ", Threshold: " << threshold << std::endl;
+            
             if (support <= threshold)
                 continue;
 
@@ -64,8 +68,10 @@ GeneralColorHist::get_color_to_add(uint32_t threshold)
     }
 
     // no legal extension
-    if (candidates.empty())
+    if (candidates.empty()) {
+        std::cout <<"No valid candidates found" ", colors=" << C << ", depths=" << m_number_of_trees.size() << std::endl;
         return {-1, -1};
+    }
 
     // 2. Sample
     static thread_local std::mt19937 rng{std::random_device{}()};

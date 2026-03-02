@@ -151,7 +151,10 @@ std::pair<int32_t,int32_t> PatternFinder::extend_pattern_at_node_find_matches_in
             }
 
         }
-
+if (i == 0) {
+    std::cout << "candidates size:"<< candidates.size() << std::endl; 
+}
+            
         std::vector<NodePtr> new_last_nodes = trees[i]->add_tree_level(
             candidates, s_list);
         
@@ -405,6 +408,11 @@ PatternFinder::find_pattern(
         std::vector<uint32_t> matches =
             find_initial_matches(s_list[i], first_color);
 
+        if(i==0)
+        {
+            std::cout << "number of matches: " << matches.size() << std::endl;
+        }
+
         std::vector<std::pair<uint32_t, NodePtr>> initial_indexes;
         for (uint32_t match : matches) {
             initial_indexes.push_back({match, trees[i]->get_root()});
@@ -457,6 +465,13 @@ PatternFinder::find_pattern(
         if (((unif(rng) < p) && !done_adding_vertices) || failed_add_edge)
         {
             std::pair<int32_t,int32_t> candidates = color_hist.get_color_to_add(alive_threshold);
+    
+            // If no candidates found, try with lower threshold for large graphs
+            if (candidates.first == -1 && alive_threshold > 0.1) {
+                std::cout << "No candidates with threshold " << alive_threshold 
+                         << ", trying with lower threshold..." << std::endl;
+                candidates = color_hist.get_color_to_add(std::max(1u, static_cast<uint32_t>(alive_threshold * s_list.size() * 0.5)));
+            }
     
             if (candidates.first == -1)
             {

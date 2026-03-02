@@ -112,7 +112,7 @@ void Tree::_update_neighbours_in_tree_path(
 
 
 
-    std::unordered_map<uint32_t,uint32_t>& found_neibours_in_tree_path)
+    std::unordered_multimap<uint32_t,uint32_t>& found_neibours_in_tree_path)
 {
     // return all the neighbours of the indexes in s that are also in the tree path
     const Graph& graph = s_list[this->m_root->index];
@@ -211,7 +211,7 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
         // update histogram
         int new_child_index = 0;
         NodePtr last_parent_node = nullptr;
-        std::unordered_map<uint32_t,uint32_t> decrease_neighbours_in_hist_map;
+        std::unordered_multimap<uint32_t,uint32_t> decrease_neighbours_in_hist_map;
         std::unordered_set<uint32_t> empty_previous_children;
 
         while (new_child_index < new_indexes.size())

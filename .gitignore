@@ -1,6 +1,10 @@
 build/*
-Graph-Search/*
+Graph-Search
 local_test/*
 .vscode/*
 venv/*
 __pycache__/*
+realgraphs/s_jsons
+test/inputs/*
+local_test/*
+*.json

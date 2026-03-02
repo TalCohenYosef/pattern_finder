@@ -47,7 +47,7 @@ private:
         std::vector<uint32_t> indexes_in_s, 
         const std::vector<Graph>& s_list,
         std::unordered_map<uint32_t, uint32_t> path_in_tree,
-        std::unordered_map<uint32_t,uint32_t>& found_neibours_in_tree_path);
+        std::unordered_multimap<uint32_t,uint32_t>& found_neibours_in_tree_path);
 
     /**
     * @brief Get neighbors in S that are not in the tree path.
