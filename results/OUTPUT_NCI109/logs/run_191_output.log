@@ -1,0 +1,79 @@
+first_color: 3
+number of alive: 995
+adding vertex with color number: 3 to node: 0
+number of alive: 994
+number of alive: 994
+adding vertex with color number: 1 to node: 1
+number of alive: 865
+adding vertex with color number: 3 to node: 2
+number of alive: 621
+adding vertex with color number: 3 to node: 1
+number of alive: 538
+Added edge (0, 3) with score 23
+number of alive: 23
+number of alive: 23
+adding vertex with color number: 3 to node: 4
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 3 to node: 5
+number of alive: 22
+adding vertex with color number: 1 to node: 5
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 3 to node: 6
+number of alive: 22
+adding vertex with color number: 3 to node: 8
+number of alive: 22
+Added edge (0, 8) with score 22
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 1 to node: 9
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 3 to node: 9
+number of alive: 22
+adding vertex with color number: 1 to node: 11
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 10
+number of alive: 21
+adding vertex with color number: 1 to node: 0
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 13
+number of alive: 21
+adding vertex with color number: 3 to node: 11
+number of alive: 21
+adding vertex with color number: 3 to node: 15
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 16
+number of alive: 21
+adding vertex with color number: 1 to node: 13
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 18
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 14
+number of alive: 21
+adding vertex with color number: 3 to node: 17
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 1 to node: 18
+number of alive: 21
+adding vertex with color number: 3 to node: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 22
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 20
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 2 to node: 22
+Time taken: 0.12327 seconds
+
+Pattern appears in 2 graphs:
+S[394] -> S_453.json
+S[839] -> S_854.json
+Pattern written to pattern.json

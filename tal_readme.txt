@@ -1,5 +1,10 @@
 1. run code:
 ./pattern_finder --path inputs_si/ --alive 0.7
+
+compile - 
+cd /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder
+g++ -std=c++17 -O2 -g -Wall -Wextra -Wpedantic -Iinclude -I/usr/local/anaconda3/include -o pattern_finder src/*.cpp -lboost_program_options
+
 2.Clone devora project:
     git clone https://github.com/tsents/Graph-Search.git
     cd Graph-Search

@@ -1,0 +1,15 @@
+COMPREHENSIVE PATTERN ANALYSIS SUMMARY - rare DEG 8 (FIXED)
+=================================================================
+Date: Fri Mar  6 01:55:33 PM IST 2026
+Total patterns tested: 850
+Total target graphs: 2
+Total execution time: 339.981510659 seconds
+
+Results for G_induced:
+  S files not in G: 568
+  Total subgraph testing time: 193.624774843 seconds
+
+Results for G_non_induced:
+  S files not in G: 597
+  Total subgraph testing time: 146.276021349 seconds
+

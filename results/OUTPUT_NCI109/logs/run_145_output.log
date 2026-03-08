@@ -1,0 +1,135 @@
+first_color: 3
+number of alive: 995
+adding vertex with color number: 1 to node: 0
+number of alive: 871
+number of alive: 871
+adding vertex with color number: 3 to node: 0
+number of alive: 865
+adding vertex with color number: 3 to node: 2
+number of alive: 843
+Added edge (1, 3) with score 23
+number of alive: 23
+adding vertex with color number: 3 to node: 3
+number of alive: 23
+number of alive: 23
+adding vertex with color number: 3 to node: 4
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 1 to node: 5
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 1 to node: 2
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 3 to node: 5
+number of alive: 22
+adding vertex with color number: 3 to node: 8
+number of alive: 22
+adding vertex with color number: 3 to node: 9
+number of alive: 22
+adding vertex with color number: 3 to node: 7
+number of alive: 22
+Added edge (2, 9) with score 22
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 3 to node: 10
+number of alive: 22
+adding vertex with color number: 3 to node: 11
+number of alive: 22
+number of alive: 22
+adding vertex with color number: 1 to node: 12
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 12
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 1 to node: 10
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 15
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 1 to node: 17
+number of alive: 21
+adding vertex with color number: 3 to node: 18
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 17
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 20
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 1 to node: 19
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 16
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 21
+number of alive: 21
+Added edge (12, 24) with score 21
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 19
+number of alive: 21
+adding vertex with color number: 3 to node: 24
+number of alive: 21
+adding vertex with color number: 1 to node: 23
+number of alive: 21
+adding vertex with color number: 3 to node: 25
+number of alive: 21
+adding vertex with color number: 3 to node: 28
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 3 to node: 29
+number of alive: 21
+adding vertex with color number: 3 to node: 30
+number of alive: 21
+adding vertex with color number: 3 to node: 31
+number of alive: 21
+number of alive: 21
+adding vertex with color number: 1 to node: 25
+number of alive: 21
+adding vertex with color number: 3 to node: 32
+number of alive: 19
+adding vertex with color number: 2 to node: 28
+number of alive: 19
+number of alive: 19
+adding vertex with color number: 3 to node: 34
+number of alive: 19
+Added edge (29, 36) with score 19
+number of alive: 19
+number of alive: 19
+adding vertex with color number: 3 to node: 23
+number of alive: 19
+number of alive: 19
+adding vertex with color number: 3 to node: 35
+number of alive: 19
+number of alive: 19
+adding vertex with color number: 1 to node: 11
+number of alive: 19
+number of alive: 19
+adding vertex with color number: 3 to node: 38
+number of alive: 18
+number of alive: 18
+adding vertex with color number: 1 to node: 38
+number of alive: 18
+number of alive: 18
+adding vertex with color number: 3 to node: 37
+number of alive: 18
+adding vertex with color number: 3 to node: 40
+number of alive: 18
+adding vertex with color number: 3 to node: 42
+number of alive: 18
+number of alive: 18
+adding vertex with color number: 3 to node: 43
+number of alive: 18
+number of alive: 18
+adding vertex with color number: 8 to node: 32
+Time taken: 0.556176 seconds
+
+Pattern appears in 2 graphs:
+S[475] -> S_526.json
+S[683] -> S_713.json
+Pattern written to pattern.json

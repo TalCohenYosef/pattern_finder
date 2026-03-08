@@ -1,6 +1,7 @@
 #include "JsonGraphManager.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <fstream>
 
 #include <unordered_map>
 #include <vector>
@@ -78,8 +79,8 @@ Graph JsonGraphManager::read_graph(const std::string& path, const bool directed)
     /* ---- vertices ---- */
     for (auto v : boost::make_iterator_range(vertices(graph))) {
         boost::property_tree::ptree node;
-        node.put("id", static_cast<int>(v));
-        node.put("color", graph[v].color);
+        node.put<int>("id", static_cast<int>(v));
+        node.put<int>("color", static_cast<int>(graph[v].color));
         nodes.push_back(std::make_pair("", node));
     }
 
@@ -91,8 +92,8 @@ Graph JsonGraphManager::read_graph(const std::string& path, const bool directed)
         // avoid duplicating undirected edges
         if (u < v) {
             boost::property_tree::ptree edge;
-            edge.put("source", static_cast<int>(u));
-            edge.put("target", static_cast<int>(v));
+            edge.put<int>("source", static_cast<int>(u));
+            edge.put<int>("target", static_cast<int>(v));
             links.push_back(std::make_pair("", edge));
         }
     }
@@ -101,7 +102,49 @@ Graph JsonGraphManager::read_graph(const std::string& path, const bool directed)
     root.add_child("links", links);
 
     try {
-        boost::property_tree::write_json(path, root);
+        // Write JSON with proper numeric values
+        std::ofstream json_file(path);
+        if (!json_file.is_open()) {
+            throw std::runtime_error("JsonGraphManager: failed to open file for writing: " + path);
+        }
+        
+        json_file << "{\n";
+        json_file << "    \"nodes\": [\n";
+        
+        // Write nodes
+        bool first_node = true;
+        for (auto v : boost::make_iterator_range(vertices(graph))) {
+            if (!first_node) json_file << ",\n";
+            json_file << "        {\n";
+            json_file << "            \"id\": " << static_cast<int>(v) << ",\n";
+            json_file << "            \"color\": " << static_cast<int>(graph[v].color) << "\n";
+            json_file << "        }";
+            first_node = false;
+        }
+        json_file << "\n    ],\n";
+        
+        json_file << "    \"links\": [\n";
+        
+        // Write edges
+        bool first_edge = true;
+        for (auto e : boost::make_iterator_range(edges(graph))) {
+            auto u = source(e, graph);
+            auto v = target(e, graph);
+            
+            // avoid duplicating undirected edges
+            if (u < v) {
+                if (!first_edge) json_file << ",\n";
+                json_file << "        {\n";
+                json_file << "            \"source\": " << static_cast<int>(u) << ",\n";
+                json_file << "            \"target\": " << static_cast<int>(v) << "\n";
+                json_file << "        }";
+                first_edge = false;
+            }
+        }
+        json_file << "\n    ]\n";
+        json_file << "}\n";
+        
+        json_file.close();
     } catch (const std::exception& e) {
         throw std::runtime_error("JsonGraphManager: failed to write JSON: " + std::string(e.what()));
     }

@@ -1,0 +1,9 @@
+color_uniform_deg_3 | sum_only=10
+color_average_deg_3 | sum_only=10
+color_rare_deg_3 | sum_only=10
+color_uniform_deg_8 | sum_only=10
+color_average_deg_8 | sum_only=10
+color_rare_deg_8 | sum_only=10
+color_uniform_deg_15 | sum_only=10
+color_average_deg_15 | sum_only=10
+color_rare_deg_15 | sum_only=10

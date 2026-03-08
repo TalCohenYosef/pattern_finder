@@ -1,0 +1,729 @@
+Analyzing pattern matching results for rare_deg_3...
+======================================================
+Patterns directory: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/OUTPUT_input_color_rare_deg_3/patterns
+Number of target graphs: 2
+
+Testing graph: G_induced
+Testing P_1... NOT found
+Testing P_2... NOT found
+Testing P_3... FOUND (3 matches)
+Testing P_4... FOUND (264 matches)
+Testing P_5... FOUND (3 matches)
+Testing P_6... NOT found
+Testing P_7... FOUND (3 matches)
+Testing P_8... FOUND (12 matches)
+Testing P_9... NOT found
+Testing P_10... FOUND (16 matches)
+Testing P_11... NOT found
+Testing P_12... NOT found
+Testing P_13... FOUND (17 matches)
+Testing P_14... FOUND (2 matches)
+Testing P_15... NOT found
+Testing P_16... NOT found
+Testing P_17... NOT found
+Testing P_18... NOT found
+Testing P_19... NOT found
+Testing P_20... NOT found
+Testing P_21... FOUND (15 matches)
+Testing P_22... NOT found
+Testing P_23... FOUND (59 matches)
+Testing P_24... FOUND (4 matches)
+Testing P_25... NOT found
+Testing P_26... NOT found
+Testing P_27... NOT found
+Testing P_28... FOUND (1 matches)
+Testing P_29... FOUND (23 matches)
+Testing P_30... NOT found
+Testing P_31... NOT found
+Testing P_32... NOT found
+Testing P_33... FOUND (9 matches)
+Testing P_34... NOT found
+Testing P_35... NOT found
+Testing P_36... FOUND (18 matches)
+Testing P_37... NOT found
+Testing P_38... FOUND (12 matches)
+Testing P_39... FOUND (1 matches)
+Testing P_40... FOUND (1 matches)
+Testing P_41... NOT found
+Testing P_42... NOT found
+Testing P_43... NOT found
+Testing P_44... NOT found
+Testing P_45... NOT found
+Testing P_46... NOT found
+Testing P_47... FOUND (14 matches)
+Testing P_48... NOT found
+Testing P_49... FOUND (11 matches)
+Testing P_50... NOT found
+Testing P_51... NOT found
+Testing P_52... FOUND (136 matches)
+Testing P_53... FOUND (6 matches)
+Testing P_54... NOT found
+Testing P_55... NOT found
+Testing P_56... NOT found
+Testing P_57... NOT found
+Testing P_58... FOUND (1 matches)
+Testing P_59... NOT found
+Testing P_60... FOUND (10 matches)
+Testing P_61... FOUND (20 matches)
+Testing P_62... FOUND (14 matches)
+Testing P_63... NOT found
+Testing P_64... NOT found
+Testing P_65... FOUND (9 matches)
+Testing P_66... NOT found
+Testing P_67... NOT found
+Testing P_68... NOT found
+Testing P_69... NOT found
+Testing P_70... NOT found
+Testing P_71... NOT found
+Testing P_72... FOUND (27 matches)
+Testing P_73... FOUND (4 matches)
+Testing P_74... NOT found
+Testing P_75... NOT found
+Testing P_76... NOT found
+Testing P_77... NOT found
+Testing P_78... NOT found
+Testing P_79... FOUND (11 matches)
+Testing P_80... NOT found
+Testing P_81... NOT found
+Testing P_82... FOUND (12 matches)
+Testing P_83... NOT found
+Testing P_84... NOT found
+Testing P_85... NOT found
+Testing P_86... NOT found
+Testing P_87... NOT found
+Testing P_88... NOT found
+Testing P_89... NOT found
+Testing P_90... NOT found
+Testing P_91... FOUND (1 matches)
+Testing P_92... NOT found
+Testing P_93... FOUND (8 matches)
+Testing P_94... NOT found
+Testing P_95... FOUND (6 matches)
+Testing P_96... NOT found
+Testing P_97... NOT found
+Testing P_98... FOUND (38 matches)
+Testing P_99... NOT found
+Testing P_100... FOUND (9 matches)
+Testing P_101... NOT found
+Testing P_102... NOT found
+Testing P_103... NOT found
+Testing P_104... FOUND (21 matches)
+Testing P_105... FOUND (2 matches)
+Testing P_106... NOT found
+Testing P_107... NOT found
+Testing P_108... FOUND (3 matches)
+Testing P_109... NOT found
+Testing P_110... NOT found
+Testing P_111... FOUND (1 matches)
+Testing P_112... NOT found
+Testing P_113... NOT found
+Testing P_114... FOUND (6 matches)
+Testing P_115... NOT found
+Testing P_116... NOT found
+Testing P_117... FOUND (4 matches)
+Testing P_118... NOT found
+Testing P_119... FOUND (1 matches)
+Testing P_120... NOT found
+Testing P_121... NOT found
+Testing P_122... NOT found
+Testing P_123... NOT found
+Testing P_124... NOT found
+Testing P_125... NOT found
+Testing P_126... NOT found
+Testing P_127... NOT found
+Testing P_128... FOUND (6 matches)
+Testing P_129... NOT found
+Testing P_130... NOT found
+Testing P_131... NOT found
+Testing P_132... FOUND (9 matches)
+Testing P_133... FOUND (6 matches)
+Testing P_134... NOT found
+Testing P_135... NOT found
+Testing P_136... FOUND (10 matches)
+Testing P_137... NOT found
+Testing P_138... FOUND (2 matches)
+Testing P_139... NOT found
+Testing P_140... FOUND (3 matches)
+Testing P_141... FOUND (1 matches)
+Testing P_142... FOUND (38 matches)
+Testing P_143... NOT found
+Testing P_144... FOUND (4 matches)
+Testing P_145... NOT found
+Testing P_146... NOT found
+Testing P_147... FOUND (1 matches)
+Testing P_148... NOT found
+Testing P_149... FOUND (4 matches)
+Testing P_150... FOUND (6 matches)
+Testing P_151... FOUND (1 matches)
+Testing P_152... FOUND (5 matches)
+Testing P_153... FOUND (2 matches)
+Testing P_154... NOT found
+Testing P_155... NOT found
+Testing P_156... NOT found
+Testing P_157... FOUND (24 matches)
+Testing P_158... FOUND (1 matches)
+Testing P_159... NOT found
+Testing P_160... NOT found
+Testing P_161... FOUND (2 matches)
+Testing P_162... NOT found
+Testing P_163... FOUND (16 matches)
+Testing P_164... FOUND (12 matches)
+Testing P_165... FOUND (2 matches)
+Testing P_166... FOUND (2 matches)
+Testing P_167... NOT found
+Testing P_168... NOT found
+Testing P_169... NOT found
+Testing P_170... NOT found
+Testing P_171... NOT found
+Testing P_172... FOUND (6 matches)
+Testing P_173... FOUND (9 matches)
+Testing P_174... NOT found
+Testing P_175... FOUND (3 matches)
+Testing P_176... NOT found
+Testing P_177... NOT found
+Testing P_178... FOUND (8 matches)
+Testing P_179... NOT found
+Testing P_180... FOUND (13 matches)
+Testing P_181... FOUND (7 matches)
+Testing P_182... FOUND (2 matches)
+Testing P_183... NOT found
+Testing P_184... NOT found
+Testing P_185... FOUND (25 matches)
+Testing P_186... NOT found
+Testing P_187... NOT found
+Testing P_188... NOT found
+Testing P_189... NOT found
+Testing P_190... NOT found
+Testing P_191... NOT found
+Testing P_192... NOT found
+Testing P_193... FOUND (25 matches)
+Testing P_194... NOT found
+Testing P_195... NOT found
+Testing P_196... NOT found
+Testing P_197... FOUND (4 matches)
+Testing P_198... NOT found
+Testing P_199... FOUND (10 matches)
+Testing P_200... NOT found
+Testing P_201... NOT found
+Testing P_202... FOUND (26 matches)
+Testing P_203... NOT found
+Testing P_204... NOT found
+Testing P_205... NOT found
+Testing P_206... FOUND (28 matches)
+Testing P_207... FOUND (6 matches)
+Testing P_208... NOT found
+Testing P_209... NOT found
+Testing P_210... NOT found
+Testing P_211... FOUND (9 matches)
+Testing P_212... NOT found
+Testing P_213... NOT found
+Testing P_214... FOUND (1 matches)
+Testing P_215... NOT found
+Testing P_216... FOUND (3 matches)
+Testing P_217... NOT found
+Testing P_218... NOT found
+Testing P_219... FOUND (4 matches)
+Testing P_220... NOT found
+Testing P_221... NOT found
+Testing P_222... NOT found
+Testing P_223... NOT found
+Testing P_224... NOT found
+Testing P_225... FOUND (2 matches)
+Testing P_226... FOUND (4 matches)
+Testing P_227... FOUND (14 matches)
+Testing P_228... FOUND (4 matches)
+Testing P_229... FOUND (177 matches)
+Testing P_230... FOUND (15 matches)
+Testing P_231... NOT found
+Testing P_232... FOUND (20 matches)
+Testing P_233... NOT found
+Testing P_234... FOUND (1 matches)
+Testing P_235... NOT found
+Testing P_236... NOT found
+Testing P_237... NOT found
+Testing P_238... FOUND (22 matches)
+Testing P_239... FOUND (12 matches)
+Testing P_240... FOUND (10 matches)
+Testing P_241... FOUND (2 matches)
+Testing P_242... NOT found
+Testing P_243... FOUND (3 matches)
+Testing P_244... FOUND (2 matches)
+Testing P_245... FOUND (3 matches)
+Testing P_246... NOT found
+Testing P_247... NOT found
+Testing P_248... NOT found
+Testing P_249... NOT found
+Testing P_250... FOUND (8 matches)
+Testing P_251... FOUND (2 matches)
+Testing P_252... NOT found
+Testing P_253... NOT found
+Testing P_254... FOUND (1 matches)
+Testing P_255... FOUND (22 matches)
+Testing P_256... NOT found
+Testing P_257... NOT found
+Testing P_258... NOT found
+Testing P_259... FOUND (14 matches)
+Testing P_260... FOUND (28 matches)
+Testing P_261... NOT found
+Testing P_262... NOT found
+Testing P_263... NOT found
+Testing P_264... FOUND (1 matches)
+Testing P_265... FOUND (8 matches)
+Testing P_266... NOT found
+Testing P_267... FOUND (11 matches)
+Testing P_268... NOT found
+Testing P_269... FOUND (1 matches)
+Testing P_270... NOT found
+Testing P_271... FOUND (5 matches)
+Testing P_272... FOUND (20 matches)
+Testing P_273... FOUND (4 matches)
+Testing P_274... NOT found
+Testing P_275... FOUND (166 matches)
+Testing P_276... NOT found
+Testing P_277... FOUND (6 matches)
+Testing P_278... NOT found
+Testing P_279... FOUND (6 matches)
+Testing P_280... NOT found
+Testing P_281... NOT found
+Testing P_282... FOUND (5 matches)
+Testing P_283... NOT found
+Testing P_284... FOUND (8 matches)
+Testing P_285... NOT found
+Testing P_286... FOUND (40 matches)
+Testing P_287... FOUND (73 matches)
+Testing P_288... FOUND (1 matches)
+Testing P_289... FOUND (1 matches)
+Testing P_290... FOUND (7 matches)
+Testing P_291... NOT found
+Testing P_292... NOT found
+Testing P_293... NOT found
+Testing P_294... FOUND (1 matches)
+Testing P_295... NOT found
+Testing P_296... NOT found
+Testing P_297... NOT found
+Testing P_298... NOT found
+Testing P_299... FOUND (8 matches)
+Testing P_300... NOT found
+Testing P_301... FOUND (2 matches)
+Testing P_302... NOT found
+Testing P_303... NOT found
+Testing P_304... NOT found
+Testing P_305... FOUND (13 matches)
+Testing P_306... FOUND (30 matches)
+Testing P_307... FOUND (1 matches)
+Testing P_308... NOT found
+Testing P_309... NOT found
+Testing P_310... FOUND (3 matches)
+Testing P_311... FOUND (1 matches)
+Testing P_312... FOUND (2 matches)
+Testing P_313... NOT found
+Testing P_314... NOT found
+Testing P_315... FOUND (2 matches)
+Testing P_316... NOT found
+Testing P_317... FOUND (23 matches)
+Testing P_318... FOUND (4 matches)
+Testing P_319... NOT found
+Testing P_320... FOUND (1 matches)
+Testing P_321... FOUND (20 matches)
+Testing P_322... FOUND (3 matches)
+Testing P_323... NOT found
+Testing P_324... NOT found
+Testing P_325... FOUND (1 matches)
+Testing P_326... NOT found
+Testing P_327... NOT found
+Testing P_328... NOT found
+Testing P_329... NOT found
+Testing P_330... NOT found
+Testing P_331... NOT found
+Testing P_332... NOT found
+Testing P_333... NOT found
+Testing P_334... FOUND (8 matches)
+Testing P_335... NOT found
+Testing P_336... NOT found
+Testing P_337... NOT found
+Testing P_338... FOUND (6 matches)
+Testing P_339... NOT found
+Testing P_340... FOUND (2 matches)
+Testing P_341... NOT found
+Testing P_342... FOUND (10 matches)
+Testing P_343... NOT found
+Testing P_344... FOUND (15 matches)
+Testing P_345... NOT found
+Testing P_346... NOT found
+Testing P_347... FOUND (21 matches)
+Testing P_348... FOUND (4 matches)
+Testing P_349... NOT found
+Testing P_350... NOT found
+Completed G_induced in 76.276820480 seconds
+
+Results saved in: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/OUTPUT_input_color_rare_deg_3/RESULTS_G_induced.log
+S files not in G (unique): 430
+
+Testing graph: G_non_induced
+Testing P_1... FOUND (1 matches)
+Testing P_2... FOUND (2 matches)
+Testing P_3... FOUND (6 matches)
+Testing P_4... FOUND (22 matches)
+Testing P_5... FOUND (4 matches)
+Testing P_6... NOT found
+Testing P_7... FOUND (3 matches)
+Testing P_8... FOUND (39 matches)
+Testing P_9... NOT found
+Testing P_10... FOUND (7 matches)
+Testing P_11... NOT found
+Testing P_12... FOUND (1 matches)
+Testing P_13... FOUND (23 matches)
+Testing P_14... NOT found
+Testing P_15... NOT found
+Testing P_16... FOUND (2 matches)
+Testing P_17... NOT found
+Testing P_18... NOT found
+Testing P_19... NOT found
+Testing P_20... FOUND (1 matches)
+Testing P_21... FOUND (10 matches)
+Testing P_22... NOT found
+Testing P_23... FOUND (47 matches)
+Testing P_24... NOT found
+Testing P_25... NOT found
+Testing P_26... NOT found
+Testing P_27... NOT found
+Testing P_28... FOUND (1 matches)
+Testing P_29... FOUND (27 matches)
+Testing P_30... FOUND (10 matches)
+Testing P_31... NOT found
+Testing P_32... FOUND (5 matches)
+Testing P_33... FOUND (5 matches)
+Testing P_34... FOUND (2 matches)
+Testing P_35... NOT found
+Testing P_36... NOT found
+Testing P_37... NOT found
+Testing P_38... FOUND (12 matches)
+Testing P_39... NOT found
+Testing P_40... NOT found
+Testing P_41... NOT found
+Testing P_42... NOT found
+Testing P_43... NOT found
+Testing P_44... NOT found
+Testing P_45... NOT found
+Testing P_46... NOT found
+Testing P_47... FOUND (11 matches)
+Testing P_48... FOUND (1 matches)
+Testing P_49... NOT found
+Testing P_50... NOT found
+Testing P_51... NOT found
+Testing P_52... FOUND (66 matches)
+Testing P_53... FOUND (23 matches)
+Testing P_54... FOUND (4 matches)
+Testing P_55... NOT found
+Testing P_56... NOT found
+Testing P_57... NOT found
+Testing P_58... NOT found
+Testing P_59... NOT found
+Testing P_60... FOUND (2 matches)
+Testing P_61... FOUND (12 matches)
+Testing P_62... FOUND (21 matches)
+Testing P_63... NOT found
+Testing P_64... NOT found
+Testing P_65... NOT found
+Testing P_66... NOT found
+Testing P_67... NOT found
+Testing P_68... NOT found
+Testing P_69... NOT found
+Testing P_70... FOUND (2 matches)
+Testing P_71... NOT found
+Testing P_72... FOUND (122 matches)
+Testing P_73... FOUND (13 matches)
+Testing P_74... NOT found
+Testing P_75... FOUND (8 matches)
+Testing P_76... FOUND (1 matches)
+Testing P_77... NOT found
+Testing P_78... NOT found
+Testing P_79... FOUND (2 matches)
+Testing P_80... NOT found
+Testing P_81... FOUND (8 matches)
+Testing P_82... NOT found
+Testing P_83... NOT found
+Testing P_84... NOT found
+Testing P_85... FOUND (4 matches)
+Testing P_86... NOT found
+Testing P_87... NOT found
+Testing P_88... NOT found
+Testing P_89... NOT found
+Testing P_90... NOT found
+Testing P_91... NOT found
+Testing P_92... NOT found
+Testing P_93... NOT found
+Testing P_94... NOT found
+Testing P_95... NOT found
+Testing P_96... NOT found
+Testing P_97... NOT found
+Testing P_98... FOUND (46 matches)
+Testing P_99... NOT found
+Testing P_100... FOUND (28 matches)
+Testing P_101... NOT found
+Testing P_102... NOT found
+Testing P_103... NOT found
+Testing P_104... FOUND (8 matches)
+Testing P_105... FOUND (12 matches)
+Testing P_106... FOUND (9 matches)
+Testing P_107... FOUND (1 matches)
+Testing P_108... FOUND (10 matches)
+Testing P_109... NOT found
+Testing P_110... NOT found
+Testing P_111... NOT found
+Testing P_112... NOT found
+Testing P_113... NOT found
+Testing P_114... FOUND (3 matches)
+Testing P_115... NOT found
+Testing P_116... NOT found
+Testing P_117... NOT found
+Testing P_118... NOT found
+Testing P_119... NOT found
+Testing P_120... NOT found
+Testing P_121... NOT found
+Testing P_122... NOT found
+Testing P_123... NOT found
+Testing P_124... NOT found
+Testing P_125... NOT found
+Testing P_126... NOT found
+Testing P_127... NOT found
+Testing P_128... FOUND (6 matches)
+Testing P_129... NOT found
+Testing P_130... FOUND (12 matches)
+Testing P_131... NOT found
+Testing P_132... NOT found
+Testing P_133... FOUND (2 matches)
+Testing P_134... NOT found
+Testing P_135... NOT found
+Testing P_136... FOUND (35 matches)
+Testing P_137... FOUND (18 matches)
+Testing P_138... NOT found
+Testing P_139... NOT found
+Testing P_140... FOUND (44 matches)
+Testing P_141... NOT found
+Testing P_142... FOUND (96 matches)
+Testing P_143... NOT found
+Testing P_144... NOT found
+Testing P_145... NOT found
+Testing P_146... NOT found
+Testing P_147... NOT found
+Testing P_148... FOUND (3 matches)
+Testing P_149... FOUND (8 matches)
+Testing P_150... FOUND (2 matches)
+Testing P_151... NOT found
+Testing P_152... NOT found
+Testing P_153... FOUND (3 matches)
+Testing P_154... NOT found
+Testing P_155... NOT found
+Testing P_156... NOT found
+Testing P_157... FOUND (34 matches)
+Testing P_158... NOT found
+Testing P_159... NOT found
+Testing P_160... NOT found
+Testing P_161... NOT found
+Testing P_162... NOT found
+Testing P_163... NOT found
+Testing P_164... NOT found
+Testing P_165... FOUND (4 matches)
+Testing P_166... FOUND (1 matches)
+Testing P_167... FOUND (3 matches)
+Testing P_168... NOT found
+Testing P_169... NOT found
+Testing P_170... NOT found
+Testing P_171... NOT found
+Testing P_172... FOUND (1 matches)
+Testing P_173... FOUND (2 matches)
+Testing P_174... NOT found
+Testing P_175... NOT found
+Testing P_176... NOT found
+Testing P_177... NOT found
+Testing P_178... NOT found
+Testing P_179... FOUND (12 matches)
+Testing P_180... FOUND (27 matches)
+Testing P_181... NOT found
+Testing P_182... FOUND (2 matches)
+Testing P_183... NOT found
+Testing P_184... NOT found
+Testing P_185... FOUND (37 matches)
+Testing P_186... NOT found
+Testing P_187... NOT found
+Testing P_188... NOT found
+Testing P_189... NOT found
+Testing P_190... FOUND (4 matches)
+Testing P_191... NOT found
+Testing P_192... NOT found
+Testing P_193... FOUND (80 matches)
+Testing P_194... NOT found
+Testing P_195... NOT found
+Testing P_196... NOT found
+Testing P_197... FOUND (24 matches)
+Testing P_198... NOT found
+Testing P_199... FOUND (5 matches)
+Testing P_200... NOT found
+Testing P_201... NOT found
+Testing P_202... FOUND (13 matches)
+Testing P_203... FOUND (4 matches)
+Testing P_204... NOT found
+Testing P_205... NOT found
+Testing P_206... NOT found
+Testing P_207... NOT found
+Testing P_208... FOUND (4 matches)
+Testing P_209... NOT found
+Testing P_210... NOT found
+Testing P_211... NOT found
+Testing P_212... NOT found
+Testing P_213... FOUND (2 matches)
+Testing P_214... FOUND (1 matches)
+Testing P_215... NOT found
+Testing P_216... FOUND (30 matches)
+Testing P_217... NOT found
+Testing P_218... NOT found
+Testing P_219... FOUND (9 matches)
+Testing P_220... NOT found
+Testing P_221... NOT found
+Testing P_222... NOT found
+Testing P_223... FOUND (4 matches)
+Testing P_224... NOT found
+Testing P_225... FOUND (52 matches)
+Testing P_226... NOT found
+Testing P_227... FOUND (3 matches)
+Testing P_228... FOUND (8 matches)
+Testing P_229... FOUND (121 matches)
+Testing P_230... FOUND (3 matches)
+Testing P_231... NOT found
+Testing P_232... FOUND (13 matches)
+Testing P_233... NOT found
+Testing P_234... NOT found
+Testing P_235... NOT found
+Testing P_236... FOUND (31 matches)
+Testing P_237... FOUND (24 matches)
+Testing P_238... FOUND (212 matches)
+Testing P_239... FOUND (50 matches)
+Testing P_240... FOUND (3 matches)
+Testing P_241... NOT found
+Testing P_242... NOT found
+Testing P_243... FOUND (1 matches)
+Testing P_244... NOT found
+Testing P_245... FOUND (2 matches)
+Testing P_246... FOUND (10 matches)
+Testing P_247... NOT found
+Testing P_248... NOT found
+Testing P_249... FOUND (1 matches)
+Testing P_250... FOUND (3 matches)
+Testing P_251... NOT found
+Testing P_252... NOT found
+Testing P_253... NOT found
+Testing P_254... NOT found
+Testing P_255... FOUND (10 matches)
+Testing P_256... FOUND (6 matches)
+Testing P_257... NOT found
+Testing P_258... NOT found
+Testing P_259... FOUND (2 matches)
+Testing P_260... FOUND (12 matches)
+Testing P_261... NOT found
+Testing P_262... NOT found
+Testing P_263... FOUND (12 matches)
+Testing P_264... FOUND (2 matches)
+Testing P_265... FOUND (34 matches)
+Testing P_266... NOT found
+Testing P_267... FOUND (3 matches)
+Testing P_268... FOUND (3 matches)
+Testing P_269... FOUND (2 matches)
+Testing P_270... NOT found
+Testing P_271... FOUND (15 matches)
+Testing P_272... FOUND (1 matches)
+Testing P_273... NOT found
+Testing P_274... NOT found
+Testing P_275... FOUND (97 matches)
+Testing P_276... FOUND (2 matches)
+Testing P_277... FOUND (9 matches)
+Testing P_278... NOT found
+Testing P_279... FOUND (18 matches)
+Testing P_280... NOT found
+Testing P_281... NOT found
+Testing P_282... FOUND (2 matches)
+Testing P_283... NOT found
+Testing P_284... FOUND (5 matches)
+Testing P_285... NOT found
+Testing P_286... FOUND (21 matches)
+Testing P_287... FOUND (40 matches)
+Testing P_288... NOT found
+Testing P_289... FOUND (1 matches)
+Testing P_290... FOUND (80 matches)
+Testing P_291... NOT found
+Testing P_292... NOT found
+Testing P_293... NOT found
+Testing P_294... NOT found
+Testing P_295... NOT found
+Testing P_296... NOT found
+Testing P_297... NOT found
+Testing P_298... FOUND (4 matches)
+Testing P_299... NOT found
+Testing P_300... NOT found
+Testing P_301... FOUND (9 matches)
+Testing P_302... FOUND (9 matches)
+Testing P_303... FOUND (8 matches)
+Testing P_304... NOT found
+Testing P_305... FOUND (2 matches)
+Testing P_306... FOUND (35 matches)
+Testing P_307... FOUND (1 matches)
+Testing P_308... FOUND (7 matches)
+Testing P_309... NOT found
+Testing P_310... FOUND (8 matches)
+Testing P_311... NOT found
+Testing P_312... FOUND (6 matches)
+Testing P_313... NOT found
+Testing P_314... NOT found
+Testing P_315... NOT found
+Testing P_316... FOUND (1 matches)
+Testing P_317... FOUND (6 matches)
+Testing P_318... FOUND (6 matches)
+Testing P_319... NOT found
+Testing P_320... NOT found
+Testing P_321... NOT found
+Testing P_322... FOUND (6 matches)
+Testing P_323... FOUND (24 matches)
+Testing P_324... FOUND (2 matches)
+Testing P_325... FOUND (5 matches)
+Testing P_326... NOT found
+Testing P_327... NOT found
+Testing P_328... NOT found
+Testing P_329... NOT found
+Testing P_330... NOT found
+Testing P_331... NOT found
+Testing P_332... NOT found
+Testing P_333... NOT found
+Testing P_334... FOUND (17 matches)
+Testing P_335... FOUND (1 matches)
+Testing P_336... NOT found
+Testing P_337... NOT found
+Testing P_338... FOUND (12 matches)
+Testing P_339... NOT found
+Testing P_340... FOUND (6 matches)
+Testing P_341... NOT found
+Testing P_342... NOT found
+Testing P_343... FOUND (2 matches)
+Testing P_344... NOT found
+Testing P_345... NOT found
+Testing P_346... NOT found
+Testing P_347... FOUND (12 matches)
+Testing P_348... NOT found
+Testing P_349... FOUND (1 matches)
+Testing P_350... NOT found
+Completed G_non_induced in 76.197886960 seconds
+
+Results saved in: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/OUTPUT_input_color_rare_deg_3/RESULTS_G_non_induced.log
+S files not in G (unique): 504
+
+======================================================
+SUMMARY
+======================================================
+Total time: 152.555626918 seconds
+Average time per graph: 76.277813 seconds
+
+Creating master summary...
+All results saved in: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/OUTPUT_input_color_rare_deg_3
+Individual results: RESULTS_*.log
+Master summary: MASTER_SUMMARY_rare3_FIXED.log
+
+Fixed pattern analysis for input_color_rare_deg_3 completed!

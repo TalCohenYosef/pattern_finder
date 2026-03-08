@@ -1,0 +1,477 @@
+Run 1: SUCCESS (22.472940154s) - Pattern appears in 3 graphs:
+Run 2: SUCCESS (22.012404707s) - Pattern appears in 5 graphs:
+Run 3: SUCCESS (21.368688046s) - Pattern appears in 3 graphs:
+Run 4: SUCCESS (21.352701584s) - Pattern appears in 4 graphs:
+Run 5: SUCCESS (21.259486706s) - Pattern appears in 5 graphs:
+Run 6: SUCCESS (21.673651042s) - Pattern appears in 4 graphs:
+Run 7: SUCCESS (21.341430212s) - Pattern appears in 3 graphs:
+Run 8: SUCCESS (21.417750050s) - Pattern appears in 4 graphs:
+Run 9: SUCCESS (21.508935233s) - Pattern appears in 4 graphs:
+Run 10: SUCCESS (21.251400285s) - Pattern appears in 5 graphs:
+Run 11: SUCCESS (21.459669367s) - Pattern appears in 3 graphs:
+Run 12: SUCCESS (21.324700879s) - Pattern appears in 2 graphs:
+Run 13: SUCCESS (21.728843998s) - Pattern appears in 3 graphs:
+Run 14: SUCCESS (21.551043673s) - Pattern appears in 2 graphs:
+Run 15: SUCCESS (21.303209652s) - Pattern appears in 2 graphs:
+Run 16: SUCCESS (21.400533462s) - Pattern appears in 3 graphs:
+Run 17: SUCCESS (21.257055722s) - Pattern appears in 4 graphs:
+Run 18: SUCCESS (21.481372972s) - Pattern appears in 5 graphs:
+Run 19: SUCCESS (21.379448911s) - Pattern appears in 4 graphs:
+Run 20: SUCCESS (21.325697271s) - Pattern appears in 4 graphs:
+Run 21: SUCCESS (21.383760115s) - Pattern appears in 1 graphs:
+Run 22: SUCCESS (21.325398834s) - Pattern appears in 3 graphs:
+Run 23: SUCCESS (21.209412924s) - Pattern appears in 5 graphs:
+Run 24: SUCCESS (21.497715093s) - Pattern appears in 3 graphs:
+Run 25: SUCCESS (21.965044871s) - Pattern appears in 4 graphs:
+Run 26: SUCCESS (21.983300896s) - Pattern appears in 3 graphs:
+Run 27: SUCCESS (22.026224551s) - Pattern appears in 2 graphs:
+Run 28: SUCCESS (22.188125958s) - Pattern appears in 5 graphs:
+Run 29: SUCCESS (21.987954484s) - Pattern appears in 3 graphs:
+Run 30: SUCCESS (22.463748791s) - Pattern appears in 5 graphs:
+Run 31: SUCCESS (22.071087355s) - Pattern appears in 5 graphs:
+Run 32: SUCCESS (21.292143483s) - Pattern appears in 5 graphs:
+Run 33: SUCCESS (21.954060871s) - Pattern appears in 4 graphs:
+Run 34: SUCCESS (22.032285379s) - Pattern appears in 3 graphs:
+Run 35: SUCCESS (21.627562854s) - Pattern appears in 3 graphs:
+Run 36: SUCCESS (21.865388986s) - Pattern appears in 4 graphs:
+Run 37: SUCCESS (21.938910397s) - Pattern appears in 3 graphs:
+Run 38: SUCCESS (21.979871608s) - Pattern appears in 4 graphs:
+Run 39: SUCCESS (21.878014291s) - Pattern appears in 5 graphs:
+Run 40: SUCCESS (21.837179626s) - Pattern appears in 3 graphs:
+Run 41: SUCCESS (22.049943657s) - Pattern appears in 1 graphs:
+Run 42: SUCCESS (21.789567922s) - Pattern appears in 3 graphs:
+Run 43: SUCCESS (21.846512009s) - Pattern appears in 5 graphs:
+Run 44: SUCCESS (21.751877739s) - Pattern appears in 3 graphs:
+Run 45: SUCCESS (22.089293534s) - Pattern appears in 4 graphs:
+Run 46: SUCCESS (21.789191795s) - Pattern appears in 4 graphs:
+Run 47: SUCCESS (21.745765296s) - Pattern appears in 4 graphs:
+Run 48: SUCCESS (22.329168730s) - Pattern appears in 4 graphs:
+Run 49: SUCCESS (22.045798886s) - Pattern appears in 3 graphs:
+Run 50: SUCCESS (21.893176690s) - Pattern appears in 3 graphs:
+Run 51: SUCCESS (21.954942357s) - Pattern appears in 4 graphs:
+Run 52: SUCCESS (21.711338002s) - Pattern appears in 3 graphs:
+Run 53: SUCCESS (21.765666228s) - Pattern appears in 4 graphs:
+Run 54: SUCCESS (21.760966055s) - Pattern appears in 5 graphs:
+Run 55: SUCCESS (22.183556886s) - Pattern appears in 5 graphs:
+Run 56: SUCCESS (21.995096136s) - Pattern appears in 5 graphs:
+Run 57: SUCCESS (21.880474556s) - Pattern appears in 5 graphs:
+Run 58: SUCCESS (21.826829524s) - Pattern appears in 1 graphs:
+Run 59: SUCCESS (21.823290142s) - Pattern appears in 2 graphs:
+Run 60: SUCCESS (21.577148565s) - Pattern appears in 3 graphs:
+Run 61: SUCCESS (21.750933244s) - Pattern appears in 5 graphs:
+Run 62: SUCCESS (22.041708173s) - Pattern appears in 2 graphs:
+Run 63: SUCCESS (21.706176617s) - Pattern appears in 4 graphs:
+Run 64: SUCCESS (21.791503161s) - Pattern appears in 5 graphs:
+Run 65: SUCCESS (21.617337252s) - Pattern appears in 5 graphs:
+Run 66: SUCCESS (21.737210092s) - Pattern appears in 2 graphs:
+Run 67: SUCCESS (21.696854930s) - Pattern appears in 5 graphs:
+Run 68: SUCCESS (21.703077473s) - Pattern appears in 2 graphs:
+Run 69: SUCCESS (21.937643758s) - Pattern appears in 5 graphs:
+Run 70: SUCCESS (21.862125109s) - Pattern appears in 5 graphs:
+Run 71: SUCCESS (21.929550155s) - Pattern appears in 4 graphs:
+Run 72: SUCCESS (21.866099258s) - Pattern appears in 5 graphs:
+Run 73: SUCCESS (21.802941183s) - Pattern appears in 1 graphs:
+Run 74: SUCCESS (22.061434318s) - Pattern appears in 5 graphs:
+Run 75: SUCCESS (21.840283634s) - Pattern appears in 3 graphs:
+Run 76: SUCCESS (21.791333149s) - Pattern appears in 4 graphs:
+Run 77: SUCCESS (21.613609796s) - Pattern appears in 5 graphs:
+Run 78: SUCCESS (21.642923311s) - Pattern appears in 5 graphs:
+Run 79: SUCCESS (21.789079450s) - Pattern appears in 2 graphs:
+Run 80: SUCCESS (21.741649157s) - Pattern appears in 4 graphs:
+Run 81: SUCCESS (21.733023713s) - Pattern appears in 2 graphs:
+Run 82: SUCCESS (21.981478051s) - Pattern appears in 3 graphs:
+Run 83: SUCCESS (21.933695345s) - Pattern appears in 3 graphs:
+Run 84: SUCCESS (21.859199553s) - Pattern appears in 4 graphs:
+Run 85: SUCCESS (22.223794868s) - Pattern appears in 4 graphs:
+Run 86: SUCCESS (22.222258842s) - Pattern appears in 3 graphs:
+Run 87: SUCCESS (21.767377061s) - Pattern appears in 1 graphs:
+Run 88: SUCCESS (21.852866440s) - Pattern appears in 4 graphs:
+Run 89: SUCCESS (23.951543755s) - Pattern appears in 3 graphs:
+Run 90: SUCCESS (22.805878425s) - Pattern appears in 2 graphs:
+Run 91: SUCCESS (21.802142210s) - Pattern appears in 4 graphs:
+Run 92: SUCCESS (21.798455547s) - Pattern appears in 5 graphs:
+Run 93: SUCCESS (22.419040999s) - Pattern appears in 3 graphs:
+Run 94: SUCCESS (21.648786427s) - Pattern appears in 2 graphs:
+Run 95: SUCCESS (21.985228301s) - Pattern appears in 4 graphs:
+Run 96: SUCCESS (22.473315340s) - Pattern appears in 3 graphs:
+Run 97: SUCCESS (21.709511332s) - Pattern appears in 3 graphs:
+Run 98: SUCCESS (21.876284534s) - Pattern appears in 4 graphs:
+Run 99: SUCCESS (21.374035806s) - Pattern appears in 4 graphs:
+Run 100: SUCCESS (21.890073871s) - Pattern appears in 5 graphs:
+Run 101: SUCCESS (21.684878868s) - Pattern appears in 5 graphs:
+Run 102: SUCCESS (21.736190706s) - Pattern appears in 2 graphs:
+Run 103: SUCCESS (21.765269212s) - Pattern appears in 5 graphs:
+Run 104: SUCCESS (21.722976024s) - Pattern appears in 4 graphs:
+Run 105: SUCCESS (21.735335136s) - Pattern appears in 5 graphs:
+Run 106: SUCCESS (21.808882806s) - Pattern appears in 5 graphs:
+Run 107: SUCCESS (21.804037513s) - Pattern appears in 4 graphs:
+Run 108: SUCCESS (21.790356620s) - Pattern appears in 4 graphs:
+Run 109: SUCCESS (21.773967493s) - Pattern appears in 5 graphs:
+Run 110: SUCCESS (21.434259463s) - Pattern appears in 3 graphs:
+Run 111: SUCCESS (21.815649063s) - Pattern appears in 4 graphs:
+Run 112: SUCCESS (22.418259559s) - Pattern appears in 4 graphs:
+Run 113: SUCCESS (21.890486128s) - Pattern appears in 3 graphs:
+Run 114: SUCCESS (22.447837764s) - Pattern appears in 1 graphs:
+Run 115: SUCCESS (41.426180900s) - Pattern appears in 5 graphs:
+Run 115: SUCCESS (26.342090557s) - Pattern appears in 3 graphs:
+Run 116: SUCCESS (24.334724141s) - Pattern appears in 5 graphs:
+Pattern appears in 2 graphs:
+Run 117: SUCCESS (23.868930746s) - Pattern appears in 4 graphs:
+Run 118: SUCCESS (26.950826755s) - Pattern appears in 5 graphs:
+Run 119: SUCCESS (26.925463063s) - Pattern appears in 5 graphs:
+Run 120: SUCCESS (23.930782000s) - Pattern appears in 5 graphs:
+Run 121: SUCCESS (24.896230165s) - Pattern appears in 3 graphs:
+Run 122: SUCCESS (24.929004563s) - Pattern appears in 3 graphs:
+Run 123: SUCCESS (25.691028808s) - Pattern appears in 5 graphs:
+Run 124: SUCCESS (26.549412512s) - Pattern appears in 3 graphs:
+Run 125: SUCCESS (21.146555629s) - Pattern appears in 2 graphs:
+Run 126: SUCCESS (21.170734655s) - Pattern appears in 5 graphs:
+Run 127: SUCCESS (21.112621521s) - Pattern appears in 4 graphs:
+Run 128: SUCCESS (21.307938496s) - Pattern appears in 4 graphs:
+Run 129: SUCCESS (21.547951165s) - Pattern appears in 3 graphs:
+Run 130: SUCCESS (21.197420718s) - Pattern appears in 4 graphs:
+Run 131: SUCCESS (21.119362907s) - Pattern appears in 2 graphs:
+Run 132: SUCCESS (21.222134225s) - Pattern appears in 2 graphs:
+Run 133: SUCCESS (21.077952381s) - Pattern appears in 4 graphs:
+Run 134: SUCCESS (21.264908399s) - Pattern appears in 3 graphs:
+Run 135: SUCCESS (21.108625373s) - Pattern appears in 2 graphs:
+Run 136: SUCCESS (21.124384713s) - Pattern appears in 2 graphs:
+Run 137: SUCCESS (21.219375773s) - Pattern appears in 3 graphs:
+Run 138: SUCCESS (21.218510708s) - Pattern appears in 5 graphs:
+Run 139: SUCCESS (21.268202195s) - Pattern appears in 5 graphs:
+Run 140: SUCCESS (21.212315028s) - Pattern appears in 3 graphs:
+Run 141: SUCCESS (21.104774079s) - Pattern appears in 2 graphs:
+Run 142: SUCCESS (21.173409494s) - Pattern appears in 5 graphs:
+Run 143: SUCCESS (21.161847700s) - Pattern appears in 3 graphs:
+Run 144: SUCCESS (21.248760322s) - Pattern appears in 2 graphs:
+Run 145: SUCCESS (21.162463073s) - Pattern appears in 4 graphs:
+Run 146: SUCCESS (21.206060781s) - Pattern appears in 1 graphs:
+Run 147: SUCCESS (21.134161351s) - Pattern appears in 4 graphs:
+Run 148: SUCCESS (21.088269609s) - Pattern appears in 5 graphs:
+Run 149: SUCCESS (21.192014066s) - Pattern appears in 5 graphs:
+Run 150: SUCCESS (21.027866740s) - Pattern appears in 2 graphs:
+Run 151: SUCCESS (21.157204262s) - Pattern appears in 5 graphs:
+Run 152: SUCCESS (21.106593254s) - Pattern appears in 3 graphs:
+Run 153: SUCCESS (21.421025890s) - Pattern appears in 3 graphs:
+Run 154: SUCCESS (21.151108950s) - Pattern appears in 3 graphs:
+Run 155: SUCCESS (21.256257904s) - Pattern appears in 5 graphs:
+Run 156: SUCCESS (21.226987264s) - Pattern appears in 4 graphs:
+Run 157: SUCCESS (21.282200347s) - Pattern appears in 2 graphs:
+Run 158: SUCCESS (21.180200378s) - Pattern appears in 3 graphs:
+Run 159: SUCCESS (21.146993193s) - Pattern appears in 4 graphs:
+Run 160: SUCCESS (21.317823923s) - Pattern appears in 2 graphs:
+Run 161: SUCCESS (21.109722956s) - Pattern appears in 2 graphs:
+Run 162: SUCCESS (21.225622124s) - Pattern appears in 3 graphs:
+Run 163: SUCCESS (21.205974994s) - Pattern appears in 1 graphs:
+Run 164: SUCCESS (21.151860835s) - Pattern appears in 3 graphs:
+Run 165: SUCCESS (21.207336565s) - Pattern appears in 2 graphs:
+Run 166: SUCCESS (21.205610819s) - Pattern appears in 3 graphs:
+Run 167: SUCCESS (21.196280637s) - Pattern appears in 5 graphs:
+Run 168: SUCCESS (21.164113643s) - Pattern appears in 2 graphs:
+Run 169: SUCCESS (21.025931316s) - Pattern appears in 4 graphs:
+Run 170: SUCCESS (21.204006731s) - Pattern appears in 2 graphs:
+Run 171: SUCCESS (21.284601349s) - Pattern appears in 4 graphs:
+Run 172: SUCCESS (21.476726978s) - Pattern appears in 4 graphs:
+Run 173: SUCCESS (21.157769924s) - Pattern appears in 5 graphs:
+Run 174: SUCCESS (21.143842031s) - Pattern appears in 4 graphs:
+Run 175: SUCCESS (21.100919195s) - Pattern appears in 4 graphs:
+Run 176: SUCCESS (21.113229615s) - Pattern appears in 2 graphs:
+Run 177: SUCCESS (21.256141209s) - Pattern appears in 4 graphs:
+Run 178: SUCCESS (21.286547479s) - Pattern appears in 4 graphs:
+Run 179: SUCCESS (21.167920471s) - Pattern appears in 3 graphs:
+Run 180: SUCCESS (21.131623889s) - Pattern appears in 5 graphs:
+Run 181: SUCCESS (21.571547432s) - Pattern appears in 4 graphs:
+Run 182: SUCCESS (21.428964668s) - Pattern appears in 4 graphs:
+Run 183: SUCCESS (21.329260760s) - Pattern appears in 4 graphs:
+Run 184: SUCCESS (21.387828511s) - Pattern appears in 3 graphs:
+Run 185: SUCCESS (21.477109205s) - Pattern appears in 2 graphs:
+Run 186: SUCCESS (21.507365134s) - Pattern appears in 3 graphs:
+Run 187: SUCCESS (21.399357209s) - Pattern appears in 2 graphs:
+Run 188: SUCCESS (21.192375157s) - Pattern appears in 5 graphs:
+Run 189: SUCCESS (21.255200274s) - Pattern appears in 3 graphs:
+Run 190: SUCCESS (21.179256317s) - Pattern appears in 4 graphs:
+Run 191: SUCCESS (21.135754070s) - Pattern appears in 4 graphs:
+Run 192: SUCCESS (21.229526809s) - Pattern appears in 4 graphs:
+Run 193: SUCCESS (21.175876270s) - Pattern appears in 3 graphs:
+Run 194: SUCCESS (21.245103328s) - Pattern appears in 2 graphs:
+Run 195: SUCCESS (21.627649846s) - Pattern appears in 4 graphs:
+Run 196: SUCCESS (21.672592351s) - Pattern appears in 5 graphs:
+Run 197: SUCCESS (21.471781824s) - Pattern appears in 5 graphs:
+Run 198: SUCCESS (21.351938560s) - Pattern appears in 2 graphs:
+Run 199: SUCCESS (21.391806271s) - Pattern appears in 4 graphs:
+Run 200: SUCCESS (22.142584896s) - Pattern appears in 5 graphs:
+Run 201: SUCCESS (21.646594489s) - Pattern appears in 3 graphs:
+Run 202: SUCCESS (21.526827975s) - Pattern appears in 5 graphs:
+Run 203: SUCCESS (21.152889007s) - Pattern appears in 4 graphs:
+Run 204: SUCCESS (21.373065679s) - Pattern appears in 5 graphs:
+Run 205: SUCCESS (21.391544132s) - Pattern appears in 4 graphs:
+Run 206: SUCCESS (21.189268389s) - Pattern appears in 5 graphs:
+Run 207: SUCCESS (21.463757169s) - Pattern appears in 5 graphs:
+Run 208: SUCCESS (21.316698650s) - Pattern appears in 3 graphs:
+Run 209: SUCCESS (21.546210026s) - Pattern appears in 3 graphs:
+Run 210: SUCCESS (21.552399905s) - Pattern appears in 5 graphs:
+Run 211: SUCCESS (21.441347829s) - Pattern appears in 2 graphs:
+Run 212: SUCCESS (21.450144420s) - Pattern appears in 3 graphs:
+Run 213: SUCCESS (21.568927818s) - Pattern appears in 3 graphs:
+Run 214: SUCCESS (21.444310245s) - Pattern appears in 4 graphs:
+Run 215: SUCCESS (21.919063189s) - Pattern appears in 2 graphs:
+Run 216: SUCCESS (21.362255409s) - Pattern appears in 3 graphs:
+Run 217: SUCCESS (21.549752085s) - Pattern appears in 3 graphs:
+Run 218: SUCCESS (21.491600143s) - Pattern appears in 2 graphs:
+Run 219: SUCCESS (21.356106998s) - Pattern appears in 3 graphs:
+Run 220: SUCCESS (21.345544839s) - Pattern appears in 5 graphs:
+Run 221: SUCCESS (21.560405517s) - Pattern appears in 4 graphs:
+Run 222: SUCCESS (21.460147700s) - Pattern appears in 3 graphs:
+Run 223: SUCCESS (21.632688217s) - Pattern appears in 4 graphs:
+Run 224: SUCCESS (21.461494958s) - Pattern appears in 3 graphs:
+Run 225: SUCCESS (21.465340543s) - Pattern appears in 3 graphs:
+Run 226: SUCCESS (21.121022767s) - Pattern appears in 2 graphs:
+Run 227: SUCCESS (21.221881992s) - Pattern appears in 4 graphs:
+Run 228: SUCCESS (21.158247148s) - Pattern appears in 2 graphs:
+Run 229: SUCCESS (21.237775964s) - Pattern appears in 5 graphs:
+Run 230: SUCCESS (21.236015590s) - Pattern appears in 2 graphs:
+Run 231: SUCCESS (21.193451515s) - Pattern appears in 3 graphs:
+Run 232: SUCCESS (21.277621823s) - Pattern appears in 4 graphs:
+Run 233: SUCCESS (21.220718695s) - Pattern appears in 4 graphs:
+Run 234: SUCCESS (21.127431275s) - Pattern appears in 5 graphs:
+Run 235: SUCCESS (21.075045746s) - Pattern appears in 3 graphs:
+Run 236: SUCCESS (20.992950985s) - Pattern appears in 5 graphs:
+Run 237: SUCCESS (21.261032122s) - Pattern appears in 4 graphs:
+Run 238: SUCCESS (21.096207927s) - Pattern appears in 1 graphs:
+Run 239: SUCCESS (21.033116549s) - Pattern appears in 4 graphs:
+Run 240: SUCCESS (21.286954054s) - Pattern appears in 5 graphs:
+Run 241: SUCCESS (21.053834802s) - Pattern appears in 4 graphs:
+Run 242: SUCCESS (21.274827822s) - Pattern appears in 5 graphs:
+Run 243: SUCCESS (21.215982700s) - Pattern appears in 5 graphs:
+Run 244: SUCCESS (21.106253159s) - Pattern appears in 2 graphs:
+Run 245: SUCCESS (21.335575579s) - Pattern appears in 4 graphs:
+Run 246: SUCCESS (21.282343293s) - Pattern appears in 5 graphs:
+Run 247: SUCCESS (21.343343936s) - Pattern appears in 4 graphs:
+Run 248: SUCCESS (21.340203638s) - Pattern appears in 3 graphs:
+Run 249: SUCCESS (20.981222469s) - Pattern appears in 3 graphs:
+Run 250: SUCCESS (21.320062074s) - Pattern appears in 3 graphs:
+Run 251: SUCCESS (21.394933753s) - Pattern appears in 5 graphs:
+Run 252: SUCCESS (21.283429358s) - Pattern appears in 5 graphs:
+Run 253: SUCCESS (21.392670978s) - Pattern appears in 2 graphs:
+Run 254: SUCCESS (21.107200364s) - Pattern appears in 5 graphs:
+Run 255: SUCCESS (21.302576857s) - Pattern appears in 3 graphs:
+Run 256: SUCCESS (21.233464613s) - Pattern appears in 5 graphs:
+Run 257: SUCCESS (21.301531721s) - Pattern appears in 3 graphs:
+Run 258: SUCCESS (21.100552713s) - Pattern appears in 3 graphs:
+Run 259: SUCCESS (21.399236246s) - Pattern appears in 3 graphs:
+Run 260: SUCCESS (21.155628595s) - Pattern appears in 4 graphs:
+Run 261: SUCCESS (21.277826377s) - Pattern appears in 4 graphs:
+Run 262: SUCCESS (21.203142602s) - Pattern appears in 3 graphs:
+Run 263: SUCCESS (21.134632718s) - Pattern appears in 5 graphs:
+Run 264: SUCCESS (21.270840166s) - Pattern appears in 5 graphs:
+Run 265: SUCCESS (21.593560026s) - Pattern appears in 5 graphs:
+Run 266: SUCCESS (21.590694962s) - Pattern appears in 2 graphs:
+Run 267: SUCCESS (21.241357275s) - Pattern appears in 2 graphs:
+Run 268: SUCCESS (21.150334067s) - Pattern appears in 4 graphs:
+Run 269: SUCCESS (21.204014296s) - Pattern appears in 5 graphs:
+Run 270: SUCCESS (21.077609226s) - Pattern appears in 3 graphs:
+Run 271: SUCCESS (21.893285823s) - Pattern appears in 3 graphs:
+Run 272: SUCCESS (21.476080051s) - Pattern appears in 3 graphs:
+Run 273: SUCCESS (21.127729843s) - Pattern appears in 4 graphs:
+Run 274: SUCCESS (21.178820185s) - Pattern appears in 4 graphs:
+Run 275: SUCCESS (21.257786190s) - Pattern appears in 3 graphs:
+Run 276: SUCCESS (21.428414001s) - Pattern appears in 4 graphs:
+Run 277: SUCCESS (21.398436398s) - Pattern appears in 2 graphs:
+Run 278: SUCCESS (21.239113649s) - Pattern appears in 4 graphs:
+Run 279: SUCCESS (.006121689s)
+Run 280: SUCCESS (.007852428s)
+Run 281: SUCCESS (.008175904s)
+Run 282: SUCCESS (.007493728s)
+Run 283: SUCCESS (.007815502s)
+Run 284: SUCCESS (.007450423s)
+Run 285: SUCCESS (.006532090s)
+Run 286: SUCCESS (.007996780s)
+Run 287: SUCCESS (.008141160s)
+Run 288: SUCCESS (.007544924s)
+Run 289: SUCCESS (.007518426s)
+Run 290: SUCCESS (.006341251s)
+Run 291: SUCCESS (.008140019s)
+Run 292: SUCCESS (.007349262s)
+Run 293: SUCCESS (.007561783s)
+Run 294: SUCCESS (.007556760s)
+Run 295: SUCCESS (.008113057s)
+Run 296: SUCCESS (.007308071s)
+Run 297: SUCCESS (.006843516s)
+Run 298: SUCCESS (.006944839s)
+Run 299: SUCCESS (.005977027s)
+Run 300: SUCCESS (.006740482s)
+Run 301: SUCCESS (.007468265s)
+Run 302: SUCCESS (.007755665s)
+Run 303: SUCCESS (.007339541s)
+Run 304: SUCCESS (.008007951s)
+Run 305: SUCCESS (.007821457s)
+Run 306: SUCCESS (.007996302s)
+Run 307: SUCCESS (.007464312s)
+Run 308: SUCCESS (.008548278s)
+Run 309: SUCCESS (.007726471s)
+Run 310: SUCCESS (.008136177s)
+Run 311: SUCCESS (.008202810s)
+Run 312: SUCCESS (.007523991s)
+Run 313: SUCCESS (.007101023s)
+Run 314: SUCCESS (.007782770s)
+Run 315: SUCCESS (.007691172s)
+Run 316: SUCCESS (.007112260s)
+Run 317: SUCCESS (.006918159s)
+Run 318: SUCCESS (.006651180s)
+Run 319: SUCCESS (.008207847s)
+Run 320: SUCCESS (.008081179s)
+Run 321: SUCCESS (.008399841s)
+Run 322: SUCCESS (.007225892s)
+Run 323: SUCCESS (.007478691s)
+Run 324: SUCCESS (.008475083s)
+Run 325: SUCCESS (.007185831s)
+Run 326: SUCCESS (.008088488s)
+Run 327: SUCCESS (.007537536s)
+Run 328: SUCCESS (.008263212s)
+Run 329: SUCCESS (.006001880s)
+Run 330: SUCCESS (.007543604s)
+Run 331: SUCCESS (.006688744s)
+Run 332: SUCCESS (.007486054s)
+Run 333: SUCCESS (.004994603s)
+Run 334: SUCCESS (.008108670s)
+Run 335: SUCCESS (.007656086s)
+Run 336: SUCCESS (.007138970s)
+Run 337: SUCCESS (.007362490s)
+Run 338: SUCCESS (.006710426s)
+Run 339: SUCCESS (.005582620s)
+Run 340: SUCCESS (.006939677s)
+Run 341: SUCCESS (.008212049s)
+Run 342: SUCCESS (.006567677s)
+Run 343: SUCCESS (.007498385s)
+Run 344: SUCCESS (.007531234s)
+Run 345: SUCCESS (.007727066s)
+Run 346: SUCCESS (.007778386s)
+Run 347: SUCCESS (.007614745s)
+Run 348: SUCCESS (.007141778s)
+Run 349: SUCCESS (.008083085s)
+Run 350: SUCCESS (.007129719s)
+Run 279: SUCCESS (21.798427449s)
+Run 279: SUCCESS (21.181690363s)
+Run 280: SUCCESS (21.297482979s)
+Run 281: SUCCESS (21.256833752s)
+Run 282: SUCCESS (21.518276751s)
+Run 283: SUCCESS (21.263952966s)
+Run 284: SUCCESS (21.245321864s)
+Run 285: SUCCESS (21.644745928s)
+Run 286: SUCCESS (21.191095004s)
+Run 287: SUCCESS (21.504939901s)
+Run 288: SUCCESS (21.268351466s)
+Run 289: SUCCESS (21.266281939s)
+Run 290: SUCCESS (21.122730951s)
+Run 291: SUCCESS (21.591675555s)
+Run 292: SUCCESS (21.555354301s)
+Run 293: SUCCESS (21.463001187s)
+Run 294: SUCCESS (21.496307472s)
+Run 295: SUCCESS (21.380731905s)
+Run 296: SUCCESS (21.227277251s)
+Run 297: SUCCESS (21.578765992s)
+Run 298: SUCCESS (21.574349513s)
+Run 299: SUCCESS (21.290607079s)
+Run 300: SUCCESS (21.257289608s)
+Run 301: SUCCESS (21.232767647s)
+Run 302: SUCCESS (21.247110809s)
+Run 303: SUCCESS (21.216071956s)
+Run 304: SUCCESS (21.360437529s)
+Run 305: SUCCESS (21.471187723s)
+Run 306: SUCCESS (21.206592755s)
+Run 307: SUCCESS (21.306096456s)
+Run 308: SUCCESS (21.308827330s)
+Run 309: SUCCESS (21.379378978s)
+Run 310: SUCCESS (21.290799751s)
+Run 311: SUCCESS (21.442315142s)
+Run 312: SUCCESS (21.578025320s)
+Run 313: SUCCESS (21.591949403s)
+Run 314: SUCCESS (21.780717213s)
+Run 315: SUCCESS (21.906336829s)
+Run 316: SUCCESS (22.121407983s)
+Run 317: SUCCESS (22.135637141s)
+Run 318: SUCCESS (22.220402983s)
+Run 319: SUCCESS (22.336008992s)
+Run 320: SUCCESS (22.299381795s)
+Run 321: SUCCESS (21.833882448s)
+Run 322: SUCCESS (21.973219299s)
+Run 323: SUCCESS (22.083757683s)
+Run 324: SUCCESS (22.056396497s)
+Run 325: SUCCESS (22.032504600s)
+Run 326: SUCCESS (22.004560830s)
+Run 327: SUCCESS (22.117020462s)
+Run 328: SUCCESS (21.864229776s)
+Run 329: SUCCESS (21.704320092s)
+Run 330: SUCCESS (21.781427344s)
+Run 279: SUCCESS (22.090935488s)
+Run 280: SUCCESS (21.477063256s)
+Run 281: SUCCESS (21.331310741s)
+Run 282: SUCCESS (21.261506701s)
+Run 283: SUCCESS (21.270487808s)
+Run 284: SUCCESS (21.298657347s)
+Run 285: SUCCESS (21.272051496s)
+Run 286: SUCCESS (21.535869361s)
+Run 287: SUCCESS (21.390724678s)
+Run 288: SUCCESS (21.372326038s)
+Run 289: SUCCESS (21.489420248s)
+Run 290: SUCCESS (21.863598471s)
+Run 291: SUCCESS (21.409140803s)
+Run 292: SUCCESS (21.381436238s)
+Run 293: SUCCESS (21.966087140s)
+Run 294: SUCCESS (22.156473458s)
+Run 295: SUCCESS (21.908966550s)
+Run 296: SUCCESS (22.061506073s)
+Run 297: SUCCESS (22.172632725s)
+Run 298: SUCCESS (22.402091218s)
+Run 299: SUCCESS (22.412248357s)
+Run 300: SUCCESS (22.563793289s)
+Run 301: SUCCESS (22.497222090s)
+Run 302: SUCCESS (22.211610084s)
+Run 303: SUCCESS (22.443559996s)
+Run 304: SUCCESS (21.653888518s)
+Run 305: SUCCESS (21.460814224s)
+Run 306: SUCCESS (21.569711241s)
+Run 307: SUCCESS (21.734502422s)
+Run 308: SUCCESS (21.695199962s)
+Run 309: SUCCESS (21.764874234s)
+Run 310: SUCCESS (21.608219411s)
+Run 311: SUCCESS (21.493705799s)
+Run 312: SUCCESS (21.393408902s)
+Run 313: SUCCESS (21.326711351s)
+Run 314: SUCCESS (21.499790255s)
+Run 315: SUCCESS (21.376127004s)
+Run 316: SUCCESS (21.619284427s)
+Run 317: SUCCESS (21.605152418s)
+Run 318: SUCCESS (21.474878361s)
+Run 319: SUCCESS (21.461617292s)
+Run 320: SUCCESS (21.423194487s)
+Run 321: SUCCESS (21.532029919s)
+Run 322: SUCCESS (21.669219626s)
+Run 323: SUCCESS (21.646436496s)
+Run 324: SUCCESS (21.572446183s)
+Run 325: SUCCESS (21.576831019s)
+Run 326: SUCCESS (21.491982093s)
+Run 327: SUCCESS (21.516820847s)
+Run 328: SUCCESS (21.616325054s)
+Run 329: SUCCESS (21.746019472s)
+Run 330: SUCCESS (21.567282749s)
+Run 331: SUCCESS (21.730852055s)
+Run 332: SUCCESS (21.878049444s)
+Run 333: SUCCESS (22.211099147s)
+Run 334: SUCCESS (21.986137963s)
+Run 335: SUCCESS (21.829256649s)
+Run 336: SUCCESS (22.046851812s)
+Run 337: SUCCESS (22.098154995s)
+Run 338: SUCCESS (22.322690524s)
+Run 339: SUCCESS (22.046656765s)
+Run 340: SUCCESS (22.445230472s)
+Run 341: SUCCESS (22.168245499s)
+Run 342: SUCCESS (22.670776411s)
+Run 343: SUCCESS (22.544011306s)
+Run 344: SUCCESS (22.103600741s)
+Run 345: SUCCESS (22.478705622s)
+Run 346: SUCCESS (22.441940992s)
+Run 347: SUCCESS (22.226837314s)
+Run 348: SUCCESS (22.033483203s)
+Run 349: SUCCESS (21.978867537s)
+Run 350: SUCCESS (21.896045602s)

@@ -1,0 +1,24 @@
+first_color: 0
+number of alive: 1000
+adding vertex with color number: 4 to node: 0
+number of alive: 1000
+number of alive: 1000
+adding vertex with color number: 18 to node: 1
+number of alive: 911
+adding vertex with color number: 3 to node: 2
+number of alive: 641
+adding vertex with color number: 2 to node: 1
+number of alive: 418
+Added edge (1, 3) with score 10
+number of alive: 10
+number of alive: 10
+adding vertex with color number: 2 to node: 3
+Time taken: 0.529444 seconds
+
+Pattern appears in 5 graphs:
+S[293] -> S_362.json
+S[347] -> S_410.json
+S[391] -> S_450.json
+S[664] -> S_697.json
+S[905] -> S_913.json
+Pattern written to pattern.json

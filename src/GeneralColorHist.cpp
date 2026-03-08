@@ -69,7 +69,7 @@ GeneralColorHist::get_color_to_add(uint32_t threshold)
 
     // no legal extension
     if (candidates.empty()) {
-        std::cout <<"No valid candidates found" ", colors=" << C << ", depths=" << m_number_of_trees.size() << std::endl;
+        //std::cout <<"No valid candidates found" ", colors=" << C << ", depths=" << m_number_of_trees.size() << std::endl;
         return {-1, -1};
     }
 

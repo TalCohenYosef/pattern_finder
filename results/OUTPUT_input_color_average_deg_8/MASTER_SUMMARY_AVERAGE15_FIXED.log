@@ -1,0 +1,15 @@
+COMPREHENSIVE PATTERN ANALYSIS SUMMARY - AVERAGE DEG 8 (FIXED)
+=================================================================
+Date: Thu Mar  5 10:22:13 PM IST 2026
+Total patterns tested: 350
+Total target graphs: 2
+Total execution time: 251.020707299 seconds
+
+Results for G_induced:
+  S files not in G: 0
+  Total subgraph testing time: 125.309779695 seconds
+
+Results for G_non_induced:
+  S files not in G: 557
+  Total subgraph testing time: 125.625425307 seconds
+

@@ -1,0 +1,11 @@
+MASTER ANALYSIS SUMMARY - NCI109
+========================================
+Total patterns tested: 350
+Total target graphs: 4
+Total time: 1498.478113609 seconds
+
+Target graphs tested:
+1. DHFR-MD
+2. Mutagenicity
+3. NCI109_edges
+4. NCI109

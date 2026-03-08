@@ -1,0 +1,47 @@
+==================================================
+Running: analyze_rare3_fixed.sh
+Log file: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/run_scripts/analyze_rare3_fixed_output.log
+==================================================
+Started with PID: 612696
+Waiting for completion...
+................
+✅ Completed successfully in 160.112309877 seconds
+
+Waiting 5 seconds before starting next script...
+==================================================
+Running: analyze_rare5_fixed.sh
+Log file: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/run_scripts/analyze_rare5_fixed_output.log
+==================================================
+Started with PID: 642472
+Waiting for completion...
+....................
+✅ Completed successfully in 200.136197981 seconds
+
+Waiting 5 seconds before starting next script...
+==================================================
+Running: analyze_rare8_fixed.sh
+Log file: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/run_scripts/analyze_rare8_fixed_output.log
+==================================================
+Started with PID: 672326
+Waiting for completion...
+..................................
+✅ Completed successfully in 340.233211035 seconds
+
+Waiting 5 seconds before starting next script...
+==================================================
+Running: analyze_rare15_fixed.sh
+Log file: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/run_scripts/analyze_rare15_fixed_output.log
+==================================================
+Started with PID: 703749
+Waiting for completion...
+.........................................................
+✅ Completed successfully in 570.375901653 seconds
+
+Waiting 5 seconds before starting next script...
+
+==================================================
+ALL SCRIPTS COMPLETED
+==================================================
+Total execution time: 1291.028893168 seconds
+Main log saved to: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/run_scripts/all_rare_sequential.log
+

@@ -46,10 +46,10 @@ int main(int32_t argc, char** argv)
         auto [s_list, s_names] = load_s_files(options);
            
         
-            for (int idx=0; idx<s_names.size(); idx++) {
-                std::cout << "S[" << idx << "] -> " 
-                            << s_names[idx] << "\n";
-            }
+            // for (int idx=0; idx<s_names.size(); idx++) {
+            //     std::cout << "S[" << idx << "] -> " 
+            //                 << s_names[idx] << "\n";
+            // }
         // for(int i = 0; i < 4; i++)
         // {
         //     std::pair<std::vector<uint32_t>::const_iterator, std::vector<uint32_t>::const_iterator> n = s_list[0].get_neighbours(i);

@@ -1,0 +1,33 @@
+first_color: 3
+number of alive: 995
+adding vertex with color number: 3 to node: 0
+number of alive: 994
+adding vertex with color number: 2 to node: 0
+number of alive: 814
+adding vertex with color number: 1 to node: 0
+number of alive: 432
+number of alive: 432
+adding vertex with color number: 3 to node: 1
+number of alive: 409
+number of alive: 409
+adding vertex with color number: 3 to node: 4
+number of alive: 387
+adding vertex with color number: 2 to node: 1
+number of alive: 114
+adding vertex with color number: 3 to node: 2
+number of alive: 106
+adding vertex with color number: 3 to node: 5
+number of alive: 98
+adding vertex with color number: 2 to node: 8
+number of alive: 10
+number of alive: 10
+adding vertex with color number: 1 to node: 8
+Time taken: 0.0722626 seconds
+
+Pattern appears in 5 graphs:
+S[513] -> S_560.json
+S[703] -> S_731.json
+S[915] -> S_922.json
+S[947] -> S_951.json
+S[961] -> S_964.json
+Pattern written to pattern.json
