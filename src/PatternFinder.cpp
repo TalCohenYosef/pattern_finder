@@ -343,10 +343,23 @@ void PatternFinder::recolor_pattern(BoostGraph& pattern,
 
 /* ---------- Main algorithm ---------- */
 
+// Helper function to calculate graph density
+static double calculate_density(const BoostGraph& pattern) {
+    uint32_t num_vertices = boost::num_vertices(pattern);
+    if (num_vertices < 1) return 0.0;  // Don't check density for empty patterns
+    
+    uint32_t num_edges = boost::num_edges(pattern);
+    uint32_t max_possible_edges = num_vertices * (num_vertices - 1) / 2;
+    
+    return static_cast<double>(num_edges) / static_cast<double>(max_possible_edges);
+}
+
 std::pair<BoostGraph, std::unordered_set<uint32_t>>
 PatternFinder::find_pattern(
     std::vector<Graph>& s_list,
-    double alive_threshold)
+    double alive_threshold,
+    bool single_graph,
+    double min_density)
 {
     auto start = std::chrono::high_resolution_clock::now();
     PatternFinder pf;
@@ -456,6 +469,17 @@ PatternFinder::find_pattern(
         i++;
     
         std::cout << "number of alive: " << alive_indexes.size() << std::endl;
+        
+        // Single graph mode: check if density dropped below or equal to minimum
+        if (single_graph) {
+            double current_density = calculate_density(pattern);
+            std::cout << "current density: " << current_density << " (minimum: " << min_density << ")" << std::endl;
+            
+            if (current_density <= min_density && current_density > 0.0) {
+                std::cout << "Density dropped below or equal to minimum " << min_density << ". Stopping early." << std::endl;
+                break;
+            }
+        }
     
         double p = 1.0 / std::cbrt(boost::num_vertices(pattern));
         

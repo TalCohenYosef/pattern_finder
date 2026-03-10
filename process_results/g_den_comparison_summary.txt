@@ -1,0 +1,165 @@
+G_Den Graphs Algorithm Comparison Summary
+==================================================
+
+Graph: g_den_5_embedded_den_3_uniform_0
+  Pattern finder not found: 190/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_5_embedded_den_3_uniform_0.csv
+
+Graph: g_den_5_embedded_den_3_average_0
+  Pattern finder not found: 178/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_5_embedded_den_3_average_0.csv
+
+Graph: g_den_5_embedded_den_3_rare_0
+  Pattern finder not found: 267/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_5_embedded_den_3_rare_0.csv
+
+Graph: g_den_8_embedded_den_3_uniform_0
+  Pattern finder not found: 192/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_8_embedded_den_3_uniform_0.csv
+
+Graph: g_den_8_embedded_den_3_average_0
+  Pattern finder not found: 30/1000
+  Induced FAIL: 983/1000
+  Non-induced FAIL: 983/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_8_embedded_den_3_average_0.csv
+
+Graph: g_den_8_embedded_den_3_rare_0
+  Pattern finder not found: 267/1000
+  Induced FAIL: 910/1000
+  Non-induced FAIL: 909/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_8_embedded_den_3_rare_0.csv
+
+Graph: g_den_10_embedded_den_3_uniform_0
+  Pattern finder not found: 192/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_10_embedded_den_3_uniform_0.csv
+
+Graph: g_den_10_embedded_den_3_average_0
+  Pattern finder not found: 69/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_10_embedded_den_3_average_0.csv
+
+Graph: g_den_10_embedded_den_3_rare_0
+  Pattern finder not found: 274/1000
+  Induced FAIL: 985/1000
+  Non-induced FAIL: 985/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_10_embedded_den_3_rare_0.csv
+
+Graph: g_den_13_embedded_den_3_uniform_0
+  Pattern finder not found: 192/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_13_embedded_den_3_uniform_0.csv
+
+Graph: g_den_13_embedded_den_3_average_0
+  Pattern finder not found: 54/1000
+  Induced FAIL: 987/1000
+  Non-induced FAIL: 987/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_13_embedded_den_3_average_0.csv
+
+Graph: g_den_13_embedded_den_3_rare_0
+  Pattern finder not found: 274/1000
+  Induced FAIL: 962/1000
+  Non-induced FAIL: 962/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_13_embedded_den_3_rare_0.csv
+
+Graph: g_den_15_embedded_den_3_uniform_0
+  Pattern finder not found: 192/1000
+  Induced FAIL: 563/1000
+  Non-induced FAIL: 557/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_15_embedded_den_3_uniform_0.csv
+
+Graph: g_den_15_embedded_den_3_average_0
+  Pattern finder not found: 146/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_15_embedded_den_3_average_0.csv
+
+Graph: g_den_15_embedded_den_3_rare_0
+  Pattern finder not found: 274/1000
+  Induced FAIL: 497/1000
+  Non-induced FAIL: 497/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_15_embedded_den_3_rare_0.csv
+
+Graph: g_den_8_embedded_den_5_uniform_0
+  Pattern finder not found: 375/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_8_embedded_den_5_uniform_0.csv
+
+Graph: g_den_8_embedded_den_5_average_0
+  Pattern finder not found: 394/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_8_embedded_den_5_average_0.csv
+
+Graph: g_den_8_embedded_den_5_rare_0
+  Pattern finder not found: 540/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_8_embedded_den_5_rare_0.csv
+
+Graph: g_den_10_embedded_den_5_uniform_0
+  Pattern finder not found: 395/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_10_embedded_den_5_uniform_0.csv
+
+Graph: g_den_10_embedded_den_5_average_0
+  Pattern finder not found: 322/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_10_embedded_den_5_average_0.csv
+
+Graph: g_den_10_embedded_den_5_rare_0
+  Pattern finder not found: 399/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_10_embedded_den_5_rare_0.csv
+
+Graph: g_den_13_embedded_den_5_uniform_0
+  Pattern finder not found: 395/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_13_embedded_den_5_uniform_0.csv
+
+Graph: g_den_13_embedded_den_5_average_0
+  Pattern finder not found: 254/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_13_embedded_den_5_average_0.csv
+
+Graph: g_den_13_embedded_den_5_rare_0
+  Pattern finder not found: 637/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_13_embedded_den_5_rare_0.csv
+
+Graph: g_den_15_embedded_den_5_uniform_0
+  Pattern finder not found: 395/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_15_embedded_den_5_uniform_0.csv
+
+Graph: g_den_15_embedded_den_5_average_0
+  Pattern finder not found: 187/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_15_embedded_den_5_average_0.csv
+
+Graph: g_den_15_embedded_den_5_rare_0
+  Pattern finder not found: 398/1000
+  Induced FAIL: 990/1000
+  Non-induced FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/g_den_15_embedded_den_5_rare_0.csv
+

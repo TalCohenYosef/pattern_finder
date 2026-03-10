@@ -63,7 +63,9 @@ int main(int32_t argc, char** argv)
         auto [pattern, alive_indexes] =
             PatternFinder::find_pattern(
                 s_list,
-                options.alive_threshold);
+                options.alive_threshold,
+                options.single_graph,
+                options.min_density);
     
         
         if (!alive_indexes.empty()) {

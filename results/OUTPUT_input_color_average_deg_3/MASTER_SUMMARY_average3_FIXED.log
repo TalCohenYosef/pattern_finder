@@ -1,0 +1,11 @@
+COMPREHENSIVE PATTERN ANALYSIS SUMMARY - average DEG 3 (FIXED)
+=================================================================
+Date: Sun Mar  8 03:43:23 PM IST 2026
+Total patterns tested: 300
+Total target graphs: 1
+Total execution time: 178.405536583 seconds
+
+Results for g_den_8_embedded_den_3_average_0:
+  S files not in G: 30
+  Total subgraph testing time: 178.382811406 seconds
+

@@ -94,15 +94,18 @@ public:
     /**
      * @brief Run the pattern-finding algorithm.
      *
-     * @param s_size Number of S graphs
      * @param s_list Input graphs
      * @param alive_threshold Global alive threshold
-     * @return Extracted pattern graph
+     * @param single_graph Single graph mode (find partial pattern)
+     * @param min_density Minimum density for single graph mode
+     * @return Extracted pattern graph and alive indexes
      */
     static std::pair<BoostGraph, std::unordered_set<uint32_t>>
     find_pattern(
     std::vector<Graph>& s_list,
-    double alive_threshold);
+    double alive_threshold,
+    bool single_graph = false,
+    double min_density = 0.7);
 
     void compute_global_color_distribution(
         uint32_t color_number,

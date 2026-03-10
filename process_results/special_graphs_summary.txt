@@ -1,0 +1,123 @@
+Special Graphs Algorithm Comparison Summary
+==================================================
+
+Graph: induced
+  Pattern finder not found: 421/1000
+  motifs FAIL: 915/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_uniform_deg_3_.csv
+
+Graph: non_induced
+  Pattern finder not found: 451/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_uniform_deg_3_.csv
+
+Graph: induced
+  Pattern finder not found: 498/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_uniform_deg_5_.csv
+
+Graph: non_induced
+  Pattern finder not found: 549/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_uniform_deg_5_.csv
+
+Graph: induced
+  Pattern finder not found: 600/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_uniform_deg_8_.csv
+
+Graph: non_induced
+  Pattern finder not found: 651/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_uniform_deg_8_.csv
+
+Graph: induced
+  Pattern finder not found: 545/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_uniform_deg_15_.csv
+
+Graph: non_induced
+  Pattern finder not found: 640/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_uniform_deg_15_.csv
+
+Graph: induced
+  Pattern finder not found: 361/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_average_deg_3_.csv
+
+Graph: non_induced
+  Pattern finder not found: 320/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_average_deg_3_.csv
+
+Graph: induced
+  Pattern finder not found: 436/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_average_deg_5_.csv
+
+Graph: non_induced
+  Pattern finder not found: 493/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_average_deg_5_.csv
+
+Graph: induced
+  Pattern finder not found: 557/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_average_deg_8_.csv
+
+Graph: non_induced
+  Pattern finder not found: 603/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_average_deg_8_.csv
+
+Graph: induced
+  Pattern finder not found: 610/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_average_deg_15_.csv
+
+Graph: non_induced
+  Pattern finder not found: 642/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_average_deg_15_.csv
+
+Graph: induced
+  Pattern finder not found: 430/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_rare_deg_3_.csv
+
+Graph: non_induced
+  Pattern finder not found: 504/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_rare_deg_3_.csv
+
+Graph: induced
+  Pattern finder not found: 356/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_rare_deg_5_.csv
+
+Graph: non_induced
+  Pattern finder not found: 507/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_rare_deg_5_.csv
+
+Graph: induced
+  Pattern finder not found: 568/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_rare_deg_8_.csv
+
+Graph: non_induced
+  Pattern finder not found: 597/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_rare_deg_8_.csv
+
+Graph: induced
+  Pattern finder not found: 615/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/induced_rare_deg_15_.csv
+
+Graph: non_induced
+  Pattern finder not found: 640/1000
+  motifs FAIL: 990/1000
+  Output: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/process_results/CSV/non_induced_rare_deg_15_.csv
+

@@ -1,23 +1,18 @@
 #!/bin/bash
 
-echo "Analyzing pattern matching results for uniform_deg_3..."
+echo "Analyzing pattern matching results for average_deg_3..."
 echo "======================================================"
 
 # Configuration
-PATTERNS_DIR="/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/OUTPUT_input_color_uniform_deg_3/patterns"
-LOGS_DIR="/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/OUTPUT_input_color_uniform_deg_3/logs"
-OUTPUT_DIR="/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/OUTPUT_input_color_uniform_deg_3"
+PATTERNS_DIR="/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_average_deg_3/patterns"
+LOGS_DIR="/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_average_deg_3/logs"
+OUTPUT_DIR="/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_average_deg_3"
 SUBGRAPH_DIR="/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/Graph-Search"
 
 # Target graphs
 TARGET_GRAPHS=(
-    "/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/local_tests/graphs_by_density_3/g_den_5_embedded_den_3_uniform_0.json"
-    "/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/local_tests/graphs_by_density_3/g_den_8_embedded_den_3_uniform_0.json"
-    "/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/local_tests/graphs_by_density_3/g_den_10_embedded_den_3_uniform_0.json"
-    "/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/local_tests/graphs_by_density_3/g_den_13_embedded_den_3_uniform_0.json"
-    "/home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/local_tests/graphs_by_density_3/g_den_15_embedded_den_3_uniform_0.json"
+   /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/local_tests/graphs_by_density_3/g_den_8_embedded_den_3_average_0.json
 )
-
 # Initialize variables
 TOTAL_START=$(date +%s.%N)
 FOUND_PATTERNS=()
@@ -36,8 +31,8 @@ for g_index in "${!TARGET_GRAPHS[@]}"; do
     echo "Testing graph: $GRAPH_NAME"
     GRAPH_START=$(date +%s.%N)
     
-    # Test patterns 1-350
-    for i in {1..350}; do
+    # Test patterns 1-300
+    for i in {1..300}; do
         PATTERN_FILE="$PATTERNS_DIR/P_${i}.json"
         
         if [ -f "$PATTERN_FILE" ]; then
@@ -121,11 +116,11 @@ echo ""
 echo "Creating master summary..."
 
 # Create master summary file
-MASTER_SUMMARY="$OUTPUT_DIR/MASTER_SUMMARY_UNIFORM3_FIXED.log"
-echo "COMPREHENSIVE PATTERN ANALYSIS SUMMARY - UNIFORM DEG 3 (FIXED)" > "$MASTER_SUMMARY"
+MASTER_SUMMARY="$OUTPUT_DIR/MASTER_SUMMARY_average3_FIXED.log"
+echo "COMPREHENSIVE PATTERN ANALYSIS SUMMARY - average DEG 3 (FIXED)" > "$MASTER_SUMMARY"
 echo "=================================================================" >> "$MASTER_SUMMARY"
 echo "Date: $(date)" >> "$MASTER_SUMMARY"
-echo "Total patterns tested: 350" >> "$MASTER_SUMMARY"
+echo "Total patterns tested: 300" >> "$MASTER_SUMMARY"
 echo "Total target graphs: ${#TARGET_GRAPHS[@]}" >> "$MASTER_SUMMARY"
 echo "Total execution time: $TOTAL_TIME seconds" >> "$MASTER_SUMMARY"
 echo "" >> "$MASTER_SUMMARY"
@@ -147,6 +142,6 @@ done
 
 echo "All results saved in: $OUTPUT_DIR"
 echo "Individual results: RESULTS_*.log"
-echo "Master summary: MASTER_SUMMARY_UNIFORM3_FIXED.log"
+echo "Master summary: MASTER_SUMMARY_average3_FIXED.log"
 echo ""
-echo "Fixed pattern analysis for input_color_uniform_deg_3 completed!"
+echo "Fixed pattern analysis for input_color_average_deg_3 completed!"

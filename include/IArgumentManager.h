@@ -22,6 +22,12 @@ public:
     /// Alive threshold parameter
     double alive_threshold = 0.0;
 
+    /// Single graph mode (find partial pattern instead of full convergence)
+    bool single_graph = false;
+
+    /// Minimum density for single graph mode
+    double min_density = 0.0;
+
     /**
      * @brief Parse command-line arguments.
      */

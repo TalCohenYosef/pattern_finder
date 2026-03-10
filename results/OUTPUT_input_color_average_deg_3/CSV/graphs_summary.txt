@@ -1,0 +1,45 @@
+Graph Processing Summary for OUTPUT_input_avg_deg_3
+==================================================
+
+Graph: g_den_5_embedded_den_3_average_0
+  Pattern Generation Time: 3389.806719664 seconds
+  Subgraph Testing Time: 74.953187203 seconds
+  S Found in G: 822/1000
+  S Not Found in G: 178/1000
+  Output File: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_avg_deg_3 /CSV/g_den_5_embedded_den_3_average_0_results.csv
+
+Graph: g_den_10_embedded_den_3_average_0
+  Pattern Generation Time: 3389.806719664 seconds
+  Subgraph Testing Time: 131.760861849 seconds
+  S Found in G: 931/1000
+  S Not Found in G: 69/1000
+  Output File: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_avg_deg_3 /CSV/g_den_10_embedded_den_3_average_0_results.csv
+
+Graph: g_den_13_embedded_den_3_average_0
+  Pattern Generation Time: 3389.806719664 seconds
+  Subgraph Testing Time: 238.779109022 seconds
+  S Found in G: 946/1000
+  S Not Found in G: 54/1000
+  Output File: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_avg_deg_3 /CSV/g_den_13_embedded_den_3_average_0_results.csv
+
+Graph: g_den_15_embedded_den_3_average_0
+  Pattern Generation Time: 3389.806719664 seconds
+  Subgraph Testing Time: 74.485682709 seconds
+  S Found in G: 854/1000
+  S Not Found in G: 146/1000
+  Output File: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_avg_deg_3 /CSV/g_den_15_embedded_den_3_average_0_results.csv
+
+Graph: G_induced
+  Pattern Generation Time: 3389.806719664 seconds
+  Subgraph Testing Time: 63.756389236 seconds
+  S Found in G: 639/1000
+  S Not Found in G: 361/1000
+  Output File: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_avg_deg_3 /CSV/G_induced_results.csv
+
+Graph: G_non_induced
+  Pattern Generation Time: 3389.806719664 seconds
+  Subgraph Testing Time: 64.415482665 seconds
+  S Found in G: 680/1000
+  S Not Found in G: 320/1000
+  Output File: /home/cohent59/PROJECT_RUN_PATTERN/pattern_finder/results/ OUTPUT_input_avg_deg_3 /CSV/G_non_induced_results.csv
+
