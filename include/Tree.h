@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <stack>
 #include <memory>
 #include <cstdint>
@@ -44,17 +45,18 @@ private:
     * @return Vector of pairs (depth in pattern, color pf vertex)
     */
     void _update_neighbours_in_tree_path(
-        std::vector<uint32_t> indexes_in_s, 
+        std::unordered_set<uint32_t> indexes_in_s, 
         const std::vector<Graph>& s_list,
-        std::unordered_map<uint32_t, uint32_t> path_in_tree,
-        std::unordered_multimap<uint32_t,uint32_t>& found_neibours_in_tree_path);
+        const std::unordered_map<uint32_t, uint32_t>& path_in_tree,
+        std::vector<uint32_t>& found_neibours_in_tree_path,
+        std::vector<bool>& vertex_already_processed);
 
     /**
     * @brief Get neighbors in S that are not in the tree path.
     * @return Vector ( color of vertex)
     */
     std::vector<uint32_t> _get_colors_of_neighbours_not_in_tree_path(
-        std::vector<uint32_t> indexes_in_s, 
+        std::unordered_set<uint32_t> indexes_in_s, 
         const std::vector<Graph>& s_list,
         std::unordered_map<uint32_t, uint32_t> path_in_tree,
         std::unordered_set<uint32_t>& previous_children);
