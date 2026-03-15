@@ -12,7 +12,8 @@ struct Node {
     std::unordered_set<uint32_t> previous_children;
 
     uint32_t index;
-    int32_t depth;
+    int32_t  depth;
+    uint32_t match_edge_count = 0; ///< Accumulated matching-edge count along path from root.
 
     Node(int32_t idx, int32_t d = 0)
         : index(idx), depth(d) {}

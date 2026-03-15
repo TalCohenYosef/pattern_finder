@@ -17,6 +17,7 @@ public:
     std::pair<std::vector<uint32_t>::const_iterator, std::vector<uint32_t>::const_iterator> get_neighbours(uint32_t vertex, bool reversed = false) const;
     bool is_edge(uint32_t u, uint32_t v) const;
     uint32_t vertex_count() const;
+    uint32_t edge_count() const;
     uint32_t get_vertex_color(uint32_t v) const;
     void set_vertex_color(uint32_t vertex, int32_t new_color);
 
@@ -32,5 +33,6 @@ private:
     std::vector<uint32_t> reversed_index_of_neighbours;
 
     std::vector<int32_t> colors;
+    uint32_t m_edge_count = 0;
     bool directed;
 };

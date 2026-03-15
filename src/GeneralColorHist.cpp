@@ -92,6 +92,21 @@ GeneralColorHist::get_color_to_add(uint32_t threshold)
 }
 
 
+void GeneralColorHist::dump() const
+{
+    uint64_t total = 0;
+    for (uint32_t d = 0; d < m_number_of_trees.size(); ++d) {
+        for (uint32_t c = 0; c < static_cast<uint32_t>(C); ++c) {
+            uint32_t v = m_number_of_trees[d][c];
+            if (v > 0) {
+                std::cout << "  hist[depth=" << d << "][color=" << c << "] = " << v << "\n";
+                total += v;
+            }
+        }
+    }
+    std::cout << "  hist total = " << total << "\n";
+}
+
 std::vector<double> GeneralColorHist::compute_softmax(const std::vector<uint32_t>& input) const
 {
     std::vector<double> softmax_values(input.size());

@@ -25,8 +25,11 @@ public:
     /// Single graph mode (find partial pattern instead of full convergence)
     bool single_graph = false;
 
-    /// Minimum density for single graph mode
-    double min_density = 0.0;
+    /// Score threshold for single graph mode (stop when pattern score < threshold)
+    double score_threshold = 0.0;
+
+    /// Path to the background graph G (required in single-graph mode)
+    std::string g_path;
 
     /**
      * @brief Parse command-line arguments.

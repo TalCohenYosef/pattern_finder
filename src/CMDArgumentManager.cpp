@@ -17,7 +17,8 @@ void CMDArgumentManager::read_arguments(int argc, char** argv)
         ("path", po::value<std::string>()->required(), "Path to S graphs folder")
         ("alive", po::value<double>(), "Alive threshold (required unless --single-graph is used)")
         ("single-graph", po::bool_switch(&single_graph), "Single graph mode (find partial pattern)")
-        ("min-density", po::value<double>(&min_density)->default_value(0.7), "Minimum density for single graph mode");
+        ("score-threshold", po::value<double>(&score_threshold)->default_value(-15.0), "Score threshold for single graph mode (stop when pattern score < threshold)")
+        ("g-path", po::value<std::string>(), "Path to background graph G (required in single-graph mode)");
 
     try {
         po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -50,5 +51,12 @@ void CMDArgumentManager::read_arguments(int argc, char** argv)
     // Validate single graph mode
     if (single_graph && vm.count("alive")) {
         std::cerr << "Warning: --alive is ignored in single-graph mode" << std::endl;
+    }
+
+    // G graph is required in single-graph mode
+    if (single_graph) {
+        if (!vm.count("g-path"))
+            throw std::runtime_error("--g-path is required when using --single-graph");
+        g_path = vm["g-path"].as<std::string>();
     }
 }

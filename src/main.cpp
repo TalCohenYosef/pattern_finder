@@ -1,6 +1,7 @@
 #include "CMDArgumentManager.h"
 #include "JsonGraphManager.h"
-#include "PatternFinder.h"
+#include "MultiGraphPatternFinder.h"
+#include "SingleGraphPatternFinder.h"
 
 #include <vector>
 #include <string>
@@ -60,12 +61,22 @@ int main(int32_t argc, char** argv)
         // }
 
         /* ---------- Run pattern finder ---------- */
-        auto [pattern, alive_indexes] =
-            PatternFinder::find_pattern(
-                s_list,
-                options.alive_threshold,
-                options.single_graph,
-                options.min_density);
+        BoostGraph pattern;
+        std::unordered_set<uint32_t> alive_indexes;
+
+        if (options.single_graph) {
+            Graph g = JsonGraphManager::read_graph(
+                options.g_path, options.directed);
+
+            SingleGraphPatternFinder sgpf;
+            std::tie(pattern, alive_indexes) =
+                sgpf.find_pattern(s_list[0], g, options.score_threshold);
+        } else {
+            std::tie(pattern, alive_indexes) =
+                MultiGraphPatternFinder::find_pattern(
+                    s_list,
+                    options.alive_threshold);
+        }
     
         
         if (!alive_indexes.empty()) {

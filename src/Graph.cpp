@@ -8,6 +8,8 @@ Graph::Graph(uint32_t vertex_count, std::vector<std::pair<uint32_t, uint32_t>>& 
     this->colors = colors;
     if (!edges.empty())
     {
+        m_edge_count = static_cast<uint32_t>(edges.size());
+
         if (!directed)
         {
             // add oppiste edges
@@ -87,6 +89,11 @@ std::pair<std::vector<uint32_t>::const_iterator, std::vector<uint32_t>::const_it
 uint32_t Graph::vertex_count() const
 {
     return static_cast<uint32_t>(colors.size());
+}
+
+uint32_t Graph::edge_count() const
+{
+    return m_edge_count;
 }
 
 uint32_t Graph::get_vertex_color(uint32_t v) const
