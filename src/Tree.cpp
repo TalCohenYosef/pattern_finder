@@ -106,37 +106,45 @@ void Tree::_delete_node(const NodePtr& node)
 }
 
 void Tree::_update_neighbours_in_tree_path(
-    std::vector<uint32_t> indexes_in_s, 
+    std::unordered_set<uint32_t> indexes_in_s, 
     const std::vector<Graph>& s_list,
-    std::unordered_map<uint32_t, uint32_t> path_in_tree,
-
-
-
-    std::unordered_multimap<uint32_t,uint32_t>& found_neibours_in_tree_path)
+    const std::unordered_map<uint32_t, uint32_t>& path_in_tree,
+    std::vector<uint32_t>& found_neibours_in_tree_path,
+    std::vector<bool>& vertex_already_processed)
 {
-    // return all the neighbours of the indexes in s that are also in the tree path
+    // For each vertex in the tree path, check if it's a neighbor of any new child
     const Graph& graph = s_list[this->m_root->index];
-    for (uint32_t index_in_s : indexes_in_s)
+    
+    for (const auto& vertex_depth_pair : path_in_tree)
     {
-        auto src_vertex = index_in_s;
-
-        auto[first_neigbhour, last_neighbour] = graph.get_neighbours(src_vertex, true);
-        for (auto edge = first_neigbhour; edge != last_neighbour; ++edge) 
+        uint32_t tree_vertex = vertex_depth_pair.first;
+        uint32_t depth = vertex_depth_pair.second;
+        
+        // Skip if this vertex was already processed
+        if (vertex_already_processed[tree_vertex])
         {
-            uint32_t neighbour = *edge;
-            uint32_t neighbour_index = static_cast<uint32_t>(neighbour);
-            if (path_in_tree.find(neighbour_index) != path_in_tree.end())
+            continue;
+        }
+        
+        // Check if this tree vertex is a neighbor of any new child
+        auto[neighbour_begin, neighbour_end] = graph.get_neighbours(tree_vertex, true);
+        for (auto neighbour_it = neighbour_begin; neighbour_it != neighbour_end; ++neighbour_it)
+        {
+            uint32_t neighbour = *neighbour_it;
+            if (indexes_in_s.find(neighbour) != indexes_in_s.end())
             {
-                found_neibours_in_tree_path.insert({neighbour_index, path_in_tree[neighbour_index]-1});
-            }    
+                // This tree vertex is a neighbor of at least one new child
+                found_neibours_in_tree_path.push_back(depth - 1);
+                vertex_already_processed[tree_vertex] = true;  // Mark this vertex as processed
+                break;  // Only add once per tree vertex
+            }
         }
     }
-
 }
 
 
 std::vector<uint32_t> Tree::_get_colors_of_neighbours_not_in_tree_path(
-     std::vector<uint32_t> indexes_in_s, 
+     std::unordered_set<uint32_t> indexes_in_s, 
      const std::vector<Graph>& s_list,
      std::unordered_map<uint32_t, uint32_t> path_in_tree,
     std::unordered_set<uint32_t>& previous_children)
@@ -195,7 +203,7 @@ bool Tree::is_empty()
 std::vector<NodePtr>
 Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexes,
                      const std::vector<Graph>& s_list)
-{
+{    
     std::vector<NodePtr> added_nodes;
 
     if (!new_indexes.empty()) {
@@ -211,17 +219,22 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
         // update histogram
         int new_child_index = 0;
         NodePtr last_parent_node = nullptr;
-        std::unordered_multimap<uint32_t,uint32_t> decrease_neighbours_in_hist_map;
+        std::vector<uint32_t> decrease_neighbours_in_hist;
         std::unordered_set<uint32_t> empty_previous_children;
-
+        
+        // Track which tree path vertices have already been processed
+        // Index: vertex index in S, Value: whether already added to decrease_neighbours_in_hist
+        std::vector<bool> vertex_already_processed(s_list[this->m_root->index].vertex_count(), false);
+        
         while (new_child_index < new_indexes.size())
         {
             // get all children of the same parent
-            std::vector<uint32_t> new_indexes_same_parent = {new_indexes[new_child_index].first};
+            std::unordered_set<uint32_t> new_indexes_same_parent;
+            new_indexes_same_parent.insert(new_indexes[new_child_index].first);
             NodePtr current_parent = new_indexes[new_child_index].second;
             while(new_child_index + 1 < new_indexes.size() && new_indexes[new_child_index + 1].second == current_parent)
             {
-                new_indexes_same_parent.push_back(new_indexes[new_child_index + 1].first);
+                new_indexes_same_parent.insert(new_indexes[new_child_index + 1].first);
                 new_child_index++;
             }
             new_child_index++;
@@ -235,6 +248,8 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
                 while(last_parent_iterate != current_parent_iterate)
                 {
                     path_in_tree[current_parent_iterate->index] = current_parent_iterate->depth;
+                    // Reset processed flag for vertices that changed in the tree path
+                    vertex_already_processed[current_parent_iterate->index] = false;
                     replaced_value_in_key.insert(current_parent_iterate->index);
                     if (replaced_value_in_key.find(last_parent_iterate->index) == replaced_value_in_key.end())
                     {
@@ -247,7 +262,7 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
             }
 
             last_parent_node = current_parent;
-            _update_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, decrease_neighbours_in_hist_map);
+            _update_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, decrease_neighbours_in_hist, vertex_already_processed);
 
            
 
@@ -256,11 +271,6 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
 
             hist.update_neigbours_add_node_add_neighbours_to_hist(
                 this->depth-1, update_in_hist);
-        }
-
-        std::vector<uint32_t> decrease_neighbours_in_hist;
-        for (const auto& pair : decrease_neighbours_in_hist_map) {
-            decrease_neighbours_in_hist.push_back(pair.second);
         }
 
         uint32_t color = s_list[this->m_root->index].get_vertex_color(new_indexes[0].first);
