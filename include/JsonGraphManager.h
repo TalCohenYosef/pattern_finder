@@ -1,12 +1,13 @@
 #pragma once
 
+#include "IGraphManager.h"
 #include "Graph.h"
 #include "BoostGraph.h"
 #include <string>
 
 /**
  * @class JsonGraphManager
- * @brief Static utility class for reading and writing Boost graphs in JSON format.
+ * @brief Graph manager for reading and writing JSON format files.
  *
  * Expected JSON format:
  * {
@@ -19,18 +20,26 @@
  * - Vertex color is stored in VertexProperty::color.
  * - EdgeProperty::is_reversed is set to false by default when reading.
  */
-class JsonGraphManager {
+class JsonGraphManager : public IGraphManager {
 public:
-    JsonGraphManager() = delete;              // static-only class
-    ~JsonGraphManager() = delete;
+    /**
+     * @brief Constructor.
+     */
+    JsonGraphManager() = default;
+
+    /**
+     * @brief Destructor.
+     */
+    ~JsonGraphManager() override = default;
 
     /**
      * @brief Read a graph from a JSON file.
      * @param path Path to JSON file
-     * @return Constructed Boost graph
+     * @param directed Whether the graph should be treated as directed
+     * @return Constructed Graph object
      * @throws std::runtime_error on file or parse error
      */
-    static Graph read_graph(const std::string& path, const bool directed);
+    Graph read_graph(const std::string& path, bool directed = false) override;
 
     /**
      * @brief Write a graph to a JSON file.
@@ -38,6 +47,7 @@ public:
      * @param graph Boost graph to serialize
      * @throws std::runtime_error on file error
      */
-    static void write_graph(const std::string& path,
-                            const BoostGraph& graph);
+    void write_graph(const std::string& path,
+                     const BoostGraph& graph) override;
+
 };

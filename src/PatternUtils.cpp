@@ -85,6 +85,18 @@ void PatternUtils::count_vertex_colors(const Graph& graph,
     }
 }
 
+std::vector<std::vector<uint32_t>> PatternUtils::get_all_color_matches(const Graph& graph, uint32_t color_count)
+{
+    std::vector<std::vector<uint32_t>> all_matches(color_count);
+    for (uint32_t vertex = 0; vertex < graph.vertex_count(); ++vertex) {
+        int32_t color = graph.get_vertex_color(vertex);
+        if (color >= 0 && color < static_cast<int32_t>(color_count)) {
+            all_matches[color].push_back(vertex);
+        }
+    }
+    return all_matches;
+}
+
 std::vector<double> PatternUtils::counts_to_probability(
     const std::vector<uint32_t>& counts,
     uint64_t total_vertices)

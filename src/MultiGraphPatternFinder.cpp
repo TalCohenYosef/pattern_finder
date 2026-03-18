@@ -217,6 +217,10 @@ MultiGraphPatternFinder::find_pattern(
     std::vector<Graph>& s_list,
     double alive_threshold)
 {
+    if (s_list.empty()) {
+        throw std::runtime_error("No input graphs provided to MultiGraphPatternFinder");
+    }
+    
     auto start = std::chrono::high_resolution_clock::now();
 
     std::vector<int32_t> m_color_map =

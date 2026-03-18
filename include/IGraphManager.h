@@ -15,7 +15,7 @@ public:
     /**
      * @brief Read a graph from a file.
      */
-    virtual Graph read_graph(const std::string& path) = 0;
+    virtual Graph read_graph(const std::string& path, bool directed = false) = 0;
 
     /**
      * @brief Write a graph to a file.

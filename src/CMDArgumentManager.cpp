@@ -18,7 +18,8 @@ void CMDArgumentManager::read_arguments(int argc, char** argv)
         ("alive", po::value<double>(), "Alive threshold (required unless --single-graph is used)")
         ("single-graph", po::bool_switch(&single_graph), "Single graph mode (find partial pattern)")
         ("score-threshold", po::value<double>(&score_threshold)->default_value(-15.0), "Score threshold for single graph mode (stop when pattern score < threshold)")
-        ("g-path", po::value<std::string>(), "Path to background graph G (required in single-graph mode)");
+        ("g-path", po::value<std::string>(), "Path to background graph G (required in single-graph mode)")
+        ("graph-format", po::value<std::string>()->default_value("json"), "Graph format (json or graphml)");
 
     try {
         po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -58,5 +59,13 @@ void CMDArgumentManager::read_arguments(int argc, char** argv)
         if (!vm.count("g-path"))
             throw std::runtime_error("--g-path is required when using --single-graph");
         g_path = vm["g-path"].as<std::string>();
+    }
+
+    // Assign graph format
+    graph_format = vm["graph-format"].as<std::string>();
+    
+    // Validate graph format
+    if (graph_format != "json" && graph_format != "graphml") {
+        throw std::runtime_error("Invalid graph format: " + graph_format + ". Supported formats: json, graphml");
     }
 }

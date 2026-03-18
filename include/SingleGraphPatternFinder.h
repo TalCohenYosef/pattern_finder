@@ -11,6 +11,16 @@
 #include <vector>
 
 /**
+ * @brief Seed information for initial beam creation.
+ */
+struct SeedInfo {
+    uint32_t              color_id;
+    double                probability;
+    std::vector<uint32_t> matches;
+    double                weight;
+};
+
+/**
  * @brief Pattern finder for the single-S-graph case.
  *
  * Activated when the tool receives --single-s.  Exposes an identical
@@ -64,9 +74,68 @@ public:
         double  score_threshold);
 
 private:
+    static constexpr uint32_t MAX_ITERATIONS = 50;  // Safety limit for pattern expansion
+    
     uint32_t m_max_active_patterns;
     double   m_alpha_0;
     double   m_alpha_decay;
+
+    // Private helper functions
+    double score_state(PatternState& state, double background_density) const;
+    
+    void expand_one_state(
+        PatternState&          state,
+        const CandidateVertex& cand,
+        const Graph&           search_graph) const;
+    
+    PatternState clone_state(const PatternState& src) const;
+    
+    std::vector<uint32_t> select_seed_indices(
+        uint32_t total_colors,
+        uint32_t initial_count) const;
+    
+    std::vector<uint32_t> allocate_seed_states(
+        const std::vector<SeedInfo>& seeds,
+        uint32_t                     target_count) const;
+    
+    std::vector<uint32_t> allocate_seed_states_improved(
+        const std::vector<SeedInfo>& seeds,
+        uint32_t                     target_count) const;
+    
+    std::vector<SeedInfo> select_valid_seeds(
+        const std::vector<std::tuple<double, uint32_t, uint32_t>>& valid_colors,
+        const std::vector<std::vector<uint32_t>>& all_matches,
+        uint32_t initial_count) const;
+    
+    std::vector<PatternState> create_beam_from_seeds(
+        const std::vector<SeedInfo>& seeds,
+        const std::vector<uint32_t>& alloc,
+        const Graph& search_graph,
+        const std::vector<double>& color_probability,
+        const std::vector<int32_t>& color_map,
+        double log_bg_density,
+        double alpha_0,
+        double alpha_decay) const;
+    
+    PatternState create_initial_state(
+        const Graph&               search_graph,
+        const std::vector<double>& color_probability,
+        double                     log_bg_density,
+        double                     alpha_0,
+        double                     alpha_decay,
+        uint32_t                   color_id,
+        uint32_t                   match_vertex) const;
+    
+    uint32_t find_gap_cut(
+        const std::vector<std::pair<double, uint32_t>>& scored) const;
+    
+    PatternState* select_best_state(
+        std::vector<PatternState>& beam,
+        double                     background_density) const;
+    
+    bool any_state_below_threshold(
+        std::vector<PatternState>& beam,
+        double bg_density, double threshold, uint32_t iteration) const;
 
     /**
      * @brief Build the initial beam from diverse seed colours.

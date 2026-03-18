@@ -53,6 +53,12 @@ public:
                                                       uint32_t     color);
 
     /**
+     * @brief Get all matches for all colors in one pass through the graph.
+     * @return Vector where result[color] = vector of vertices with that color.
+     */
+    static std::vector<std::vector<uint32_t>> get_all_color_matches(const Graph& s, uint32_t color_count);
+
+    /**
      * @brief Compute per-colour probability distribution across all S-graphs.
      *
      * @return Vector of size @p color_number where element c is the fraction

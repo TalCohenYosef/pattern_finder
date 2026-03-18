@@ -1,5 +1,6 @@
 #include "CMDArgumentManager.h"
 #include "JsonGraphManager.h"
+#include "GraphMLGraphManager.h"
 #include "MultiGraphPatternFinder.h"
 #include "SingleGraphPatternFinder.h"
 
@@ -7,6 +8,7 @@
 #include <string>
 #include <filesystem>
 #include <iostream>
+#include <memory>
 
 /**
  * @brief Load S graphs and record file name for each S[i]
@@ -16,19 +18,77 @@ static std::pair<std::vector<Graph>, std::vector<std::string>> load_s_files(cons
     std::vector<Graph> s_list;
     std::vector<std::string> names;
 
-    int32_t count = 0;
-    for (const auto& entry :
-         std::filesystem::directory_iterator(options.s_path)) {
-
-        if (entry.path().extension() == ".json") {
-            std::string filename = entry.path().filename().string();
-            s_list.push_back(JsonGraphManager::read_graph(
-                entry.path().string(), options.directed));
-            names.push_back(filename);
-            ++count;
-        }
+    // Create appropriate graph manager based on format
+    std::unique_ptr<IGraphManager> graph_manager;
+    if (options.graph_format == "json") {
+        graph_manager = std::make_unique<JsonGraphManager>();
+    } else if (options.graph_format == "graphml") {
+        graph_manager = std::make_unique<GraphMLGraphManager>();
+    } else {
+        throw std::runtime_error("Unsupported graph format: " + options.graph_format);
     }
 
+    // Check if path exists
+    if (!std::filesystem::exists(options.s_path)) {
+        throw std::runtime_error("Path does not exist: " + options.s_path);
+    }
+
+    if (options.single_graph) {
+        // Single graph mode: --path points to a single file
+        if (!std::filesystem::is_regular_file(options.s_path)) {
+            throw std::runtime_error("In single-graph mode, --path must point to a file, not a directory: " + options.s_path);
+        }
+
+        std::string extension = std::filesystem::path(options.s_path).extension().string();
+        std::string filename = std::filesystem::path(options.s_path).filename().string();
+
+        // Check if file extension matches the expected format
+        if ((options.graph_format == "json" && extension == ".json") ||
+            (options.graph_format == "graphml" && (extension == ".graphml" || extension == ".xml"))) {
+            
+            try {
+                s_list.push_back(graph_manager->read_graph(options.s_path, options.directed));
+                names.push_back(filename);
+            } catch (const std::exception& e) {
+                throw std::runtime_error("Failed to load " + filename + ": " + e.what());
+            }
+        } else {
+            throw std::runtime_error("File extension does not match expected format " + options.graph_format + ": " + options.s_path);
+        }
+    } else {
+        // Multiple graphs mode: --path points to a directory
+        if (!std::filesystem::is_directory(options.s_path)) {
+            throw std::runtime_error("In multi-graph mode, --path must point to a directory, not a file: " + options.s_path);
+        }
+
+        int32_t count = 0;
+
+        // Load files with correct extension
+        for (const auto& entry : std::filesystem::directory_iterator(options.s_path)) {
+            std::string extension = entry.path().extension().string();
+            std::string filename = entry.path().filename().string();
+
+            // Check if file extension matches the expected format
+            if ((options.graph_format == "json" && extension == ".json") ||
+                (options.graph_format == "graphml" && (extension == ".graphml" || extension == ".xml"))) {
+                
+                try {
+                    s_list.push_back(graph_manager->read_graph(entry.path().string(), options.directed));
+                    names.push_back(filename);
+                    ++count;
+                } catch (const std::exception& e) {
+                    std::cerr << "Warning: Failed to load " << filename << ": " << e.what() << std::endl;
+                }
+            }
+        }
+        
+        if (count == 0) {
+            std::string msg = "No valid graph files found in directory: " + options.s_path + 
+                             " with format: " + options.graph_format;
+            throw std::runtime_error(msg);
+        }
+    }
+    
     return {s_list, names};
 }
 
@@ -37,7 +97,6 @@ static std::pair<std::vector<Graph>, std::vector<std::string>> load_s_files(cons
  */
 int main(int32_t argc, char** argv)
 {
-    
     try {
         /* ---------- Parse arguments ---------- */
         CMDArgumentManager options;
@@ -64,10 +123,17 @@ int main(int32_t argc, char** argv)
         BoostGraph pattern;
         std::unordered_set<uint32_t> alive_indexes;
 
-        if (options.single_graph) {
-            Graph g = JsonGraphManager::read_graph(
-                options.g_path, options.directed);
+         std::unique_ptr<IGraphManager> graph_manager;
+        if (options.graph_format == "json") {
+            graph_manager = std::make_unique<JsonGraphManager>();
+        } else if (options.graph_format == "graphml") {
+            graph_manager = std::make_unique<GraphMLGraphManager>();
+        } else {
+            throw std::runtime_error("Unsupported graph format: " + options.graph_format);
+        }
 
+        if (options.single_graph) {
+            Graph g = graph_manager->read_graph(options.g_path, options.directed);
             SingleGraphPatternFinder sgpf;
             std::tie(pattern, alive_indexes) =
                 sgpf.find_pattern(s_list[0], g, options.score_threshold);
@@ -99,7 +165,7 @@ int main(int32_t argc, char** argv)
         }
                 
         /* ---------- Write output ---------- */
-        JsonGraphManager::write_graph(
+        graph_manager->write_graph(
             "pattern.json", pattern);
 
         std::cout << "Pattern written to pattern.json\n";

@@ -31,6 +31,9 @@ public:
     /// Path to the background graph G (required in single-graph mode)
     std::string g_path;
 
+    /// Graph format ("json" or "graphml")
+    std::string graph_format = "json";
+
     /**
      * @brief Parse command-line arguments.
      */
