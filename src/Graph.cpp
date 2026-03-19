@@ -1,6 +1,6 @@
 #include "Graph.h"
 #include <algorithm>
-
+#include <iostream>
 /* ---------- Construction ---------- */
 
 Graph::Graph(uint32_t vertex_count, std::vector<std::pair<uint32_t, uint32_t>>& edges, std::vector<int32_t>& colors, bool is_directed) : directed(is_directed)
@@ -19,6 +19,7 @@ Graph::Graph(uint32_t vertex_count, std::vector<std::pair<uint32_t, uint32_t>>& 
                 edges.emplace_back(edges[i].second, edges[i].first);
             }
             initiate_graph(vertex_count, edges, colors, this->neigbours, this->index_of_neighbours);
+            std::cout << "Edges after deduplication: " << edges.size() << std::endl;
         }
         else
         {
@@ -40,6 +41,8 @@ void Graph::initiate_graph(const uint32_t vertex_count, std::vector<std::pair<ui
     std::vector<uint32_t>& neigbours, std::vector<uint32_t>& index_of_neighbours) 
 {
     std::sort(edges.begin(), edges.end());
+    auto new_end = std::unique(edges.begin(), edges.end());
+    edges.erase(new_end, edges.end());
     neigbours.reserve(edges.size());
     index_of_neighbours.resize(vertex_count, 0);
     uint32_t current_vertex = edges[0].first;

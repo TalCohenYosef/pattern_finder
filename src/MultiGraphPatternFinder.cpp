@@ -342,9 +342,6 @@ MultiGraphPatternFinder::find_pattern(
             alive_s = static_cast<uint32_t>(alive_indexes.size());
         }
 
-        std::cout << "--- Histogram after step ---\n";
-        color_hist.dump();
-
         if (failed_add_edge && done_adding_vertices) break;
     }
 

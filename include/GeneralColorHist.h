@@ -92,9 +92,7 @@ public:
 
     uint32_t get_color_number() const { return C; }
 
-    /** Print non-zero histogram entries to stdout for debugging. */
-    void dump() const;
-
+   
 };
 
 using GeneralColorHistPtr = std::shared_ptr<GeneralColorHist>;

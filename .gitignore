@@ -1,10 +1,11 @@
-build/*
+build/*giy
 Graph-Search
-local_test/*
 .vscode/*
 venv/*
 __pycache__/*
-realgraphs/s_jsons
-test/inputs/*
-local_test/*
+*.log
+results/*
+not_for_git/*
 *.json
+*.sh
+*.xml
