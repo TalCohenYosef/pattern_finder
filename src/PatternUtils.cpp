@@ -139,3 +139,13 @@ double PatternUtils::compute_density(uint32_t vertex_count, uint32_t edge_count)
     if (max_possible_edges == 0) return 0.0;
     return static_cast<double>(edge_count) / static_cast<double>(max_possible_edges);
 }
+
+void PatternUtils::add_edge(bool is_directed, BoostGraph& graph, uint32_t source, uint32_t target)
+{
+    if (is_directed) {
+        boost::add_edge(source, target, graph);
+    } else {
+        boost::add_edge(source, target, graph);
+        boost::add_edge(target, source, graph);
+    }
+}

@@ -16,11 +16,14 @@ void GeneralColorHist::update_hist_increase_tree_count(
     const uint32_t pattern_depth,
     const uint32_t current_vertex_color)
 {
+    
     while(pattern_depth >= m_number_of_trees.size())
     {
-        this->m_number_of_trees.push_back(std::vector<uint32_t>(C, 0));
+         this->m_number_of_trees.push_back(std::vector<uint32_t>(C, 0));
     }
+   
     ++m_number_of_trees[pattern_depth][current_vertex_color];
+
 }
 
 void GeneralColorHist::update_hist_decrease_tree_count(
@@ -30,17 +33,16 @@ void GeneralColorHist::update_hist_decrease_tree_count(
     --m_number_of_trees[pattern_depth][current_vertex_color];
 }
 
-std::pair<int32_t, int32_t>
-GeneralColorHist::get_color_to_add(uint32_t threshold)
+std::tuple<int32_t, int32_t, uint32_t> GeneralColorHist::get_color_to_add(uint32_t threshold)
 {
     struct Candidate {
         int32_t color;
         int32_t node;
-        double  weight;
+        uint32_t  weight;
     };
 
     std::vector<Candidate> candidates;
-    double total_weight = 0.0;
+    uint32_t total_weight = 0.0;
 
     // 1. Collect all legal candidates
     for (uint32_t c = 0; c < static_cast<uint32_t>(C); ++c) {
@@ -48,34 +50,38 @@ GeneralColorHist::get_color_to_add(uint32_t threshold)
 
             uint32_t support = m_number_of_trees[d][c];
             
-            // Debug output for large graphs
-            //std::cout << "Color " << c << ", Depth " << d << ", Support: " << support << ", Threshold: " << threshold << std::endl;
-            
-            if (support <= threshold)
+            if (support < threshold || support == 0)
                 continue;
-
-            // linear weight (you can change this later)
-            double w = static_cast<double>(support);
 
             candidates.push_back({
                 static_cast<int32_t>(c),
                 static_cast<int32_t>(d),
-                w
+                support
             });
 
-            total_weight += w;
+            total_weight += support;
         }
     }
 
-    // no legal extension
     if (candidates.empty()) {
-        //std::cout <<"No valid candidates found" ", colors=" << C << ", depths=" << m_number_of_trees.size() << std::endl;
-        return {-1, -1};
+        return {-1, -1, 0};
     }
 
-    // 2. Sample
+    // 2. Weighted random sampling.
+    //
+    // Imagine placing all candidates end-to-end on a number line from 0 to
+    // total_weight, each occupying a segment whose length equals its support:
+    //
+    //   |-- A (10) --|------ B (30) ------|---------------- C (60) ----------------|
+    //   0           10                   40                                       100
+    //
+    // A uniform random value r is drawn from [0, total_weight). We then walk
+    // through the candidates, accumulating their weights. The first candidate
+    // whose cumulative sum reaches or exceeds r is selected. Because each
+    // candidate's segment is proportional to its support, the probability of
+    // landing in it equals support / total_weight — exactly the desired bias.
     static thread_local std::mt19937 rng{std::random_device{}()};
-    std::uniform_real_distribution<double> dist(0.0, total_weight);
+    std::uniform_real_distribution<double> dist(0.0, static_cast<double>(total_weight));
 
     double r = dist(rng);
     double acc = 0.0;
@@ -83,12 +89,13 @@ GeneralColorHist::get_color_to_add(uint32_t threshold)
     for (const auto& cand : candidates) {
         acc += cand.weight;
         if (r <= acc) {
-            return {cand.color, cand.node};
+            return {cand.color, cand.node, cand.weight};
         }
     }
 
-    // fallback (numerical safety)
-    return {candidates.back().color, candidates.back().node};
+    // Fallback for numerical safety: floating-point rounding can push r just
+    // above total_weight, so return the last candidate rather than failing.
+    return {candidates.back().color, candidates.back().node, candidates.back().weight};
 }
 
 std::vector<double> GeneralColorHist::compute_softmax(const std::vector<uint32_t>& input) const

@@ -36,10 +36,10 @@ SingleGraphPatternFinder::SingleGraphPatternFinder(
 
 /* ---------- score_state ---------- */
 
-double SingleGraphPatternFinder::score_state(PatternState& state, double background_density) const
+double SingleGraphPatternFinder::score_state(PatternState& state, double background_density, bool is_direcred) const
 {
     const uint32_t vertex_count = boost::num_vertices(state.pattern);
-    const uint32_t edge_count   = boost::num_edges(state.pattern);
+    const uint32_t edge_count   = is_direcred? boost::num_edges(state.pattern) : boost::num_edges(state.pattern) / 2;
     return PatternScorer::score(
         state.pattern_color_logp, edge_count, background_density, vertex_count);
 }
@@ -49,7 +49,8 @@ double SingleGraphPatternFinder::score_state(PatternState& state, double backgro
 void SingleGraphPatternFinder::expand_one_state(
     PatternState&          state,
     const CandidateVertex& cand,
-    const Graph&           search_graph) const
+    const Graph&           search_graph,
+    bool                   is_directed) const
 {
     const uint32_t selected_vertex = static_cast<uint32_t>(cand.s_vertex);
     const uint32_t vertex_color =
@@ -67,8 +68,7 @@ void SingleGraphPatternFinder::expand_one_state(
     for (uint32_t i = 0; i < state.match_path.size(); ++i) {
         if (search_graph.is_edge(selected_vertex, state.match_path[i]))
         {
-            boost::add_edge(new_pattern_node, i,
-                            EdgeProperty{false}, state.pattern);
+            PatternUtils::add_edge(is_directed, state.pattern, new_pattern_node, i);
         }
     }
 
@@ -319,13 +319,14 @@ uint32_t SingleGraphPatternFinder::find_gap_cut(
 
 PatternState* SingleGraphPatternFinder::select_best_state(
     std::vector<PatternState>& beam,
-    double                     background_density) const
+    double                     background_density,
+    bool                       is_directed) const
 {
     PatternState* best = nullptr;
     double best_score = std::numeric_limits<double>::max();
     for (PatternState& state : beam) {
         if (state.alive_indexes.empty()) continue;
-        const double s = score_state(state, background_density);
+        const double s = score_state(state, background_density, is_directed);
         if (s < best_score) { best_score = s; best = &state; }
     }
     return best;
@@ -335,11 +336,11 @@ PatternState* SingleGraphPatternFinder::select_best_state(
 
 bool SingleGraphPatternFinder::any_state_below_threshold(
     std::vector<PatternState>& beam,
-    double bg_density, double threshold, uint32_t iteration) const
+    double bg_density, double threshold, uint32_t iteration, bool is_directed) const
 {
     for (PatternState& state : beam) {
         if (state.alive_indexes.empty()) continue;
-        const double s = score_state(state, bg_density);
+        const double s = score_state(state, bg_density, is_directed);
         if (s < threshold) {
             std::cout << "Score " << s << " < threshold " << threshold
                       << " at iteration " << iteration << " -- stopping.\n";
@@ -397,7 +398,8 @@ std::vector<PatternState> SingleGraphPatternFinder::build_initial_beam(
 bool SingleGraphPatternFinder::expand_beam(
     std::vector<PatternState>& beam,
     const Graph&               search_graph,
-    double                     background_density) const
+    double                     background_density,
+    bool                       is_directed) const
 {
     bool any_expanded = false;
     const uint32_t current_size = static_cast<uint32_t>(beam.size());
@@ -421,10 +423,10 @@ bool SingleGraphPatternFinder::expand_beam(
         any_expanded = true;
         for (size_t ci = 0; ci + 1 < candidates.size(); ++ci) {
             PatternState cloned = clone_state(state);
-            expand_one_state(cloned, candidates[ci], search_graph);
+            expand_one_state(cloned, candidates[ci], search_graph, is_directed);
             new_beam.push_back(std::move(cloned));
         }
-        expand_one_state(state, candidates.back(), search_graph);
+        expand_one_state(state, candidates.back(), search_graph, is_directed);
         new_beam.push_back(std::move(state));
     }
 
@@ -437,7 +439,8 @@ bool SingleGraphPatternFinder::expand_beam(
 void SingleGraphPatternFinder::prune_beam(
     std::vector<PatternState>& beam,
     double                     background_density,
-    uint32_t                   iteration) const
+    uint32_t                   iteration,
+    bool                       is_directed) const
 {
     if (beam.size() <= 1) return;
 
@@ -445,7 +448,7 @@ void SingleGraphPatternFinder::prune_beam(
     scored.reserve(beam.size());
     for (uint32_t i = 0; i < static_cast<uint32_t>(beam.size()); ++i) {
         const double s = !beam[i].alive_indexes.empty()
-            ? score_state(beam[i], background_density)
+            ? score_state(beam[i], background_density, is_directed)
             : std::numeric_limits<double>::max();
         scored.emplace_back(s, i);
     }
@@ -471,7 +474,8 @@ std::pair<BoostGraph, std::unordered_set<uint32_t>>
 SingleGraphPatternFinder::find_pattern(
     Graph&  search_graph,
     Graph&  background_graph,
-    double  score_threshold)
+    double  score_threshold,
+    bool    is_directed)
 {
     const std::chrono::high_resolution_clock::time_point time_start = std::chrono::high_resolution_clock::now();
 
@@ -495,7 +499,7 @@ SingleGraphPatternFinder::find_pattern(
     bool threshold_reached = false;
     
     while (static_cast<uint32_t>(beam.size()) < m_max_active_patterns && iteration < MAX_ITERATIONS) {
-        if (!expand_beam(beam, search_graph, bg_density)) {
+        if (!expand_beam(beam, search_graph, bg_density, is_directed)) {
             std::cout << "No more expansions possible at iteration " << iteration << "\n";
             break;
         }
@@ -503,7 +507,7 @@ SingleGraphPatternFinder::find_pattern(
         // Check if any state reached the threshold
         for (PatternState& state : beam) {
             if (!state.alive_indexes.empty()) {
-                double score = score_state(state, bg_density);
+                double score = score_state(state, bg_density, is_directed);
                 if (score <= score_threshold) {
                     threshold_reached = true;
                     std::cout << "Score " << score << " reached threshold " << score_threshold 
@@ -517,7 +521,7 @@ SingleGraphPatternFinder::find_pattern(
         ++iteration;
     }
 
-    PatternState* best_state = select_best_state(beam, bg_density);
+    PatternState* best_state = select_best_state(beam, bg_density, is_directed);
     if (!best_state) {
         std::cerr << "SingleGraphPatternFinder: beam exhausted.\n";
         return {BoostGraph{}, {}};
@@ -525,13 +529,13 @@ SingleGraphPatternFinder::find_pattern(
     
     if (!threshold_reached) {
         std::cout << "No pattern reached threshold, returning best pattern found (score: " 
-                  << score_state(*best_state, bg_density) << ")\n";
+                  << score_state(*best_state, bg_density,is_directed) << ")\n";
     }
 
     PatternUtils::recolor_pattern(best_state->pattern, color_map);
     const std::chrono::high_resolution_clock::time_point time_end = std::chrono::high_resolution_clock::now();
     std::cout << "Total pattern finding time: "
-              << std::chrono::duration<double>(time_end - time_start).count()
+              << std::chrono::duration<double>(time_end - time_start).count()   
               << " seconds\n";
 
     return {std::move(best_state->pattern), std::move(best_state->alive_indexes)};

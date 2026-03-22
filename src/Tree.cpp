@@ -7,10 +7,17 @@
 #include <unordered_set>
 
 /* ---------- Constructor ---------- */
-
-Tree::Tree(int32_t s_index, GeneralColorHist& general_hist)
-    : depth(0), hist(IndevidualColorHist(general_hist))
+Tree::Tree(int32_t s_index, bool is_directed,
+           GeneralColorHist& general_hist, GeneralColorHist* reverse_general_hist)
+    : depth(0),
+      is_direcred(is_directed),
+      hist(IndevidualColorHist(general_hist)),
+      reverse_hist(reverse_general_hist
+                   ? boost::optional<IndevidualColorHist>(IndevidualColorHist(*reverse_general_hist))
+                   : boost::none)
 {
+    if (is_direcred && !reverse_hist)
+        throw std::runtime_error("Reverse histogram is required for directed trees");
     m_root = std::make_shared<Node>(s_index, 0);
 }
 
@@ -110,7 +117,8 @@ void Tree::_update_neighbours_in_tree_path(
     const std::vector<Graph>& s_list,
     const std::unordered_map<uint32_t, uint32_t>& path_in_tree,
     std::vector<uint32_t>& found_neibours_in_tree_path,
-    std::vector<bool>& vertex_already_processed)
+    std::vector<bool>& vertex_already_processed,
+    bool is_reversed)
 {
     // For each vertex in the tree path, check if it's a neighbor of any new child
     const Graph& graph = s_list[this->m_root->index];
@@ -127,7 +135,7 @@ void Tree::_update_neighbours_in_tree_path(
         }
         
         // Check if this tree vertex is a neighbor of any new child
-        auto[neighbour_begin, neighbour_end] = graph.get_neighbours(tree_vertex, true);
+        auto[neighbour_begin, neighbour_end] = graph.get_neighbours(tree_vertex, is_reversed);
         for (auto neighbour_it = neighbour_begin; neighbour_it != neighbour_end; ++neighbour_it)
         {
             uint32_t neighbour = *neighbour_it;
@@ -147,16 +155,16 @@ std::vector<uint32_t> Tree::_get_colors_of_neighbours_not_in_tree_path(
      std::unordered_set<uint32_t> indexes_in_s, 
      const std::vector<Graph>& s_list,
      std::unordered_map<uint32_t, uint32_t> path_in_tree,
-    std::unordered_set<uint32_t>& previous_children)
+    std::unordered_set<uint32_t>& previous_children,
+    bool is_reversed)
 {
     // return all the neighbours of the indexes in s that are also not in the tree path
     std::vector<uint32_t> neighbours_in_s_not_in_tree_path;
-
     for (uint32_t index_in_s : indexes_in_s)
     {
         auto src_vertex = index_in_s;
 
-        auto[first_neigbhour, last_neighbour] = s_list[this->m_root->index].get_neighbours(src_vertex, false);
+        auto[first_neigbhour, last_neighbour] = s_list[this->m_root->index].get_neighbours(src_vertex, is_reversed);
         for (auto edge = first_neigbhour; edge != last_neighbour; ++edge) {
             uint32_t neighbour_index = *edge;
             if (path_in_tree.find(neighbour_index) == path_in_tree.end() && 
@@ -165,9 +173,7 @@ std::vector<uint32_t> Tree::_get_colors_of_neighbours_not_in_tree_path(
                 neighbours_in_s_not_in_tree_path.push_back(s_list[this->m_root->index].get_vertex_color(neighbour_index));
             }
         }
-    } 
-
-    
+    }     
     return neighbours_in_s_not_in_tree_path;
 }
 
@@ -202,29 +208,30 @@ bool Tree::is_empty()
 
 std::vector<NodePtr>
 Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexes,
-                     const std::vector<Graph>& s_list)
+                     const std::vector<Graph>& s_list, bool is_directed)
 {    
     std::vector<NodePtr> added_nodes;
-
     if (!new_indexes.empty()) {
         // initial path in tree
         std::unordered_map<uint32_t, uint32_t> path_in_tree =
             get_tree_path_map(new_indexes[0].second);
-
         depth = depth + 1;
 
         for (std::pair<uint32_t, NodePtr> idx : new_indexes)
+        {
             added_nodes.push_back(_add_node(idx.second, idx.first));
-
+        }
         // update histogram
         int new_child_index = 0;
         NodePtr last_parent_node = nullptr;
         std::vector<uint32_t> decrease_neighbours_in_hist;
+        std::vector<uint32_t> decrease_neighbours_in_hist_reverse;
         std::unordered_set<uint32_t> empty_previous_children;
         
         // Track which tree path vertices have already been processed
         // Index: vertex index in S, Value: whether already added to decrease_neighbours_in_hist
         std::vector<bool> vertex_already_processed(s_list[this->m_root->index].vertex_count(), false);
+        std::vector<bool> vertex_already_processed_reversed(s_list[this->m_root->index].vertex_count(), false);
         
         while (new_child_index < new_indexes.size())
         {
@@ -250,6 +257,7 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
                     path_in_tree[current_parent_iterate->index] = current_parent_iterate->depth;
                     // Reset processed flag for vertices that changed in the tree path
                     vertex_already_processed[current_parent_iterate->index] = false;
+                    vertex_already_processed_reversed[current_parent_iterate->index] = false;
                     replaced_value_in_key.insert(current_parent_iterate->index);
                     if (replaced_value_in_key.find(last_parent_iterate->index) == replaced_value_in_key.end())
                     {
@@ -262,27 +270,45 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
             }
 
             last_parent_node = current_parent;
-            _update_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, decrease_neighbours_in_hist, vertex_already_processed);
-
+            _update_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, decrease_neighbours_in_hist, 
+                vertex_already_processed, false);
            
-
+            if (is_direcred)
+            {
+                _update_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, decrease_neighbours_in_hist_reverse, 
+                    vertex_already_processed_reversed, true);
+            }
             const std::vector<uint32_t> update_in_hist =
-                _get_colors_of_neighbours_not_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, empty_previous_children);
-
+                _get_colors_of_neighbours_not_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, empty_previous_children, false);
             hist.update_neigbours_add_node_add_neighbours_to_hist(
                 this->depth-1, update_in_hist);
+            if (is_direcred)
+            {
+                const std::vector<uint32_t> update_in_hist_reverse =
+                    _get_colors_of_neighbours_not_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, empty_previous_children, true);
+
+                reverse_hist.value().update_neigbours_add_node_add_neighbours_to_hist(
+                    this->depth-1, update_in_hist_reverse);
+            }
         }
 
         uint32_t color = s_list[this->m_root->index].get_vertex_color(new_indexes[0].first);
         hist.update_hist_decrease_from_neighbours(
             color, decrease_neighbours_in_hist);
+
+        if (is_directed)
+        {
+            reverse_hist.value().update_hist_decrease_from_neighbours(
+                color, decrease_neighbours_in_hist_reverse);
+        }
     }
 
     return added_nodes;
 }
 
 void Tree::remove_node(const NodePtr& node,
-                       const std::vector<Graph>& s_list)
+                       const std::vector<Graph>& s_list,
+                       bool is_directed)
 {
     NodePtr node_to_remove = node;
     std::unordered_map<uint32_t, uint32_t> path_in_tree =
@@ -294,10 +320,20 @@ void Tree::remove_node(const NodePtr& node,
         if (node_to_remove->depth != 0)
         {
             const std::vector<uint32_t> update_in_hist =
-                _get_colors_of_neighbours_not_in_tree_path({node_to_remove->index}, s_list, path_in_tree, node_to_remove->previous_children);
+                _get_colors_of_neighbours_not_in_tree_path({node_to_remove->index}, s_list, path_in_tree, node_to_remove->previous_children, false);
 
             hist.update_neigbours_remove_node_decrease_neighbours_from_hist(
                 node_to_remove->depth-1, update_in_hist);
+
+            if (is_direcred)
+            {
+                const std::vector<uint32_t> update_in_hist_reverse =
+                    _get_colors_of_neighbours_not_in_tree_path({node_to_remove->index}, s_list, path_in_tree, node_to_remove->previous_children, true);
+
+                reverse_hist.value().update_neigbours_remove_node_decrease_neighbours_from_hist(
+                    node_to_remove->depth-1, update_in_hist_reverse);
+            }
+            
             parent = node_to_remove->parent.lock();
             _delete_node(node_to_remove);
         }

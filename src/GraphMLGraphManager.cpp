@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <regex>
+#include <set>
 
 /* =====================
    Read graph from GraphML
@@ -93,7 +94,8 @@ Graph GraphMLGraphManager::read_graph(const std::string& path, bool directed)
    ===================== */
 
 void GraphMLGraphManager::write_graph(const std::string& path,
-                                      const BoostGraph& graph)
+                                      const BoostGraph& graph,
+                                      bool is_directed)
 {
     std::ofstream file(path);
     if (!file.is_open()) {
@@ -104,14 +106,14 @@ void GraphMLGraphManager::write_graph(const std::string& path,
     file << R"(<?xml version="1.0" encoding="UTF-8"?>)" << std::endl;
     file << R"(<graphml xmlns="http://graphml.graphdrawing.org/xmlns")" << std::endl;
     file << R"(         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance")" << std::endl;
-    file << R"(         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns)" << std::endl;
+    file << R"(         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns")" << std::endl;
     file << R"(         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">)" << std::endl;
     
     // Define color attribute
     file << R"(  <key id="color" for="node" attr.name="color" attr.type="int"/>)" << std::endl;
 
     // Write graph
-    file << R"(  <graph id="G" edgedefault=")" << (boost::num_edges(graph) > 0 ? "directed" : "undirected") << R"(">)" << std::endl;
+    file << R"(  <graph id="G" edgedefault=")" << (is_directed ? "directed" : "undirected") << R"(">)" << std::endl;
 
     // Write nodes
     auto vertices = boost::vertices(graph);
@@ -124,12 +126,33 @@ void GraphMLGraphManager::write_graph(const std::string& path,
     }
 
     // Write edges
-    auto edges = boost::edges(graph);
-    for (auto it = edges.first; it != edges.second; ++it) {
-        auto edge = *it;
-        auto source = boost::source(edge, graph);
-        auto target = boost::target(edge, graph);
-        file << R"(    <edge source="v)" << source << R"(" target="v)" << target << R"("/>)" << std::endl;
+    if (is_directed) {
+        // For directed graphs, write all edges as they appear
+        auto edges = boost::edges(graph);
+        for (auto it = edges.first; it != edges.second; ++it) {
+            auto edge = *it;
+            auto source = boost::source(edge, graph);
+            auto target = boost::target(edge, graph);
+            file << R"(    <edge source="v)" << source << R"(" target="v)" << target << R"("/>)" << std::endl;
+        }
+    } else {
+        // For undirected graphs, only write each edge once (avoid duplicates)
+        std::set<std::pair<uint32_t, uint32_t>> written_edges;
+        auto edges = boost::edges(graph);
+        for (auto it = edges.first; it != edges.second; ++it) {
+            auto edge = *it;
+            auto source = boost::source(edge, graph);
+            auto target = boost::target(edge, graph);
+            
+            // Create ordered pair to avoid duplicate edges
+            auto edge_pair = std::make_pair(std::min(source, target), std::max(source, target));
+            
+            // Only write if we haven't written this edge before
+            if (written_edges.find(edge_pair) == written_edges.end()) {
+                file << R"(    <edge source="v)" << source << R"(" target="v)" << target << R"("/>)" << std::endl;
+                written_edges.insert(edge_pair);
+            }
+        }
     }
 
     file << R"(  </graph>)" << std::endl;

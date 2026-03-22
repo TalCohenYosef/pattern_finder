@@ -45,9 +45,11 @@ public:
      * @brief Write a graph to a JSON file.
      * @param path Output file path
      * @param graph Boost graph to serialize
+     * @param is_graph_directed Whether the graph is directed
      * @throws std::runtime_error on file error
      */
     void write_graph(const std::string& path,
-                     const BoostGraph& graph) override;
+                     const BoostGraph& graph,
+                     bool is_graph_directed) override;
 
 };

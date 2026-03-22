@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstdint>
+#include <iostream>
 
 /**
  * @brief Compute the log-likelihood score of a pattern under a random-graph
@@ -47,12 +48,12 @@ double PatternScorer::score(
 
     // Log-probability of observing exactly pattern_edges edges out of
     // potential_pattern_edges possible under independent Bernoulli trials.
+
     const double edge_log_probability =
         static_cast<double>(pattern_edges)
             * std::log(background_edge_probability)
         + static_cast<double>(potential_pattern_edges - pattern_edges)
             * std::log(1.0 - background_edge_probability);
-
     return pattern_color_logp + edge_log_probability;
 }
 

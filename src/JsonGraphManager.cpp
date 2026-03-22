@@ -69,16 +69,23 @@ Graph JsonGraphManager::read_graph(const std::string& path, bool directed)
    Write graph to JSON
    ===================== */
 
-   void JsonGraphManager::write_graph(const std::string& path, const BoostGraph& graph)
+   void JsonGraphManager::write_graph(const std::string& path, const BoostGraph& graph, bool is_directed)
 {
     nlohmann::json root;
 
     for (auto v : boost::make_iterator_range(vertices(graph)))
+    {
         root["nodes"].push_back({{"id", (int)v}, {"color", (int)graph[v].color}});
+    }
 
     for (auto e : boost::make_iterator_range(edges(graph)))
-        root["links"].push_back({{"source", (int)source(e, graph)},
-                                  {"target", (int)target(e, graph)}});
+    {
+        if (is_directed || source(e, graph) < target(e, graph))
+        {
+            root["links"].push_back({{"source", (int)source(e, graph)},
+                                    {"target", (int)target(e, graph)}});
+        }
+    }
 
     std::ofstream f(path);
     if (!f.is_open())

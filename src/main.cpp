@@ -136,12 +136,13 @@ int main(int32_t argc, char** argv)
             Graph g = graph_manager->read_graph(options.g_path, options.directed);
             SingleGraphPatternFinder sgpf;
             std::tie(pattern, alive_indexes) =
-                sgpf.find_pattern(s_list[0], g, options.score_threshold);
+                sgpf.find_pattern(s_list[0], g, options.score_threshold, options.directed);
         } else {
             std::tie(pattern, alive_indexes) =
                 MultiGraphPatternFinder::find_pattern(
                     s_list,
-                    options.alive_threshold);
+                    options.alive_threshold,
+                    options.directed);
         }
     
         
@@ -166,7 +167,7 @@ int main(int32_t argc, char** argv)
                 
         /* ---------- Write output ---------- */
         graph_manager->write_graph(
-            "pattern.json", pattern);
+            "pattern.json", pattern, options.directed);
 
         std::cout << "Pattern written to pattern.json\n";
     }

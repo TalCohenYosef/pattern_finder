@@ -71,7 +71,8 @@ public:
     std::pair<BoostGraph, std::unordered_set<uint32_t>> find_pattern(
         Graph&  search_graph,
         Graph&  background_graph,
-        double  score_threshold);
+        double  score_threshold,
+        bool    is_directed);
 
 private:
     static constexpr uint32_t MAX_ITERATIONS = 50;  // Safety limit for pattern expansion
@@ -81,12 +82,13 @@ private:
     double   m_alpha_decay;
 
     // Private helper functions
-    double score_state(PatternState& state, double background_density) const;
+    double score_state(PatternState& state, double background_density,bool is_directed) const;
     
     void expand_one_state(
         PatternState&          state,
         const CandidateVertex& cand,
-        const Graph&           search_graph) const;
+        const Graph&           search_graph,
+        bool                   is_directed) const;
     
     PatternState clone_state(const PatternState& src) const;
     
@@ -131,11 +133,12 @@ private:
     
     PatternState* select_best_state(
         std::vector<PatternState>& beam,
-        double                     background_density) const;
+        double                     background_density,
+        bool                       is_directed) const;
     
     bool any_state_below_threshold(
         std::vector<PatternState>& beam,
-        double bg_density, double threshold, uint32_t iteration) const;
+        double bg_density, double threshold, uint32_t iteration, bool is_directed) const;
 
     /**
      * @brief Build the initial beam from diverse seed colours.
@@ -161,7 +164,8 @@ private:
     bool expand_beam(
         std::vector<PatternState>& beam,
         const Graph&               search_graph,
-        double                     background_density) const;
+        double                     background_density,
+        bool                       is_directed) const;
 
     /**
      * @brief Prune weak states using a dynamic gap-based threshold.
@@ -174,5 +178,6 @@ private:
     void prune_beam(
         std::vector<PatternState>& beam,
         double                     background_density,
-        uint32_t                   iteration) const;
+        uint32_t                   iteration,
+        bool                       is_directed) const;
 };

@@ -83,6 +83,11 @@ public:
      */
     static double compute_density(uint32_t vertex_count, uint32_t edge_count);
 
+    /*
+    * Adds edge to boost graph, both sides if the graph is undirected, just one if it is directed.
+    */
+    static void add_edge(bool is_directed, BoostGraph& graph, uint32_t source, uint32_t target); 
+
 private:
     static void scan_graph_colors(const Graph& graph,
                                   std::map<int32_t, uint32_t>& old_to_new,
@@ -98,4 +103,5 @@ private:
     static std::vector<double> counts_to_probability(
         const std::vector<uint32_t>& counts,
         uint64_t total_vertices);
+
 };

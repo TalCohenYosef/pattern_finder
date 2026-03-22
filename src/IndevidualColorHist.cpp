@@ -60,7 +60,6 @@ void IndevidualColorHist::update_neigbours_remove_node_decrease_neighbours_from_
     uint32_t remove_node_depth,
     const std::vector<uint32_t>& update_in_hist)
 {
-
     for (const auto& color : update_in_hist) {
         --m_number_of_neighbours[remove_node_depth][color];
         if (m_number_of_neighbours[remove_node_depth][color] == 0)

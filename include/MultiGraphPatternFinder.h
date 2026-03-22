@@ -5,12 +5,15 @@
 #include "Tree.h"
 #include "IndevidualColorHist.h"
 #include "PatternUtils.h"
+#include "GeneralColorHist.h"
 
 #include <unordered_set>
 #include <utility>
 #include <vector>
 #include <map>
 #include <memory>
+#include <random>
+#include <boost/optional.hpp>
 
 /**
  * @class MultiGraphPatternFinder
@@ -40,7 +43,8 @@ private:
                          uint32_t s_size,
                          const std::vector<Graph>& s_list,
                          double threshold,
-                         double alive_threshold);
+                         double alive_threshold,
+                         bool is_directed);
 
     /**
      * Compute support score for a candidate pattern edge (uP, vP).
@@ -59,11 +63,18 @@ private:
         std::vector<std::shared_ptr<Tree>>& trees,
         std::vector<std::vector<NodePtr>>& last_nodes,
         std::unordered_set<uint32_t>& alive_indexes,
-        const std::vector<Graph>& s_list);
+        const std::vector<Graph>& s_list,
+        bool is_directed);
 
     static uint32_t find_first_color(uint32_t color_number,
                                      int32_t  s_size,
                                      const std::vector<Graph>& s_list);
+
+    static std::tuple<int32_t, int32_t, bool> get_candidates_from_histogram(
+        GeneralColorHist& color_hist,
+        boost::optional<GeneralColorHist>& reverse_color_hist,
+        uint32_t alive_threshold,
+        bool is_directed);
 
     static std::pair<int32_t,int32_t> extend_pattern_at_node_find_matches_in_s(
         std::vector<std::shared_ptr<Tree>>& trees,
@@ -72,8 +83,10 @@ private:
         uint32_t new_node_id,
         uint32_t new_color,
         uint32_t node_to_connect_id,
+        bool is_reversed,
         std::vector<std::vector<NodePtr>>& last_nodes,
-        std::unordered_set<uint32_t>& alive_indexes);
+        std::unordered_set<uint32_t>& alive_indexes,
+        bool is_directed);
 
 public:
     /**
@@ -85,5 +98,6 @@ public:
      */
     static std::pair<BoostGraph, std::unordered_set<uint32_t>>
     find_pattern(std::vector<Graph>& s_list,
-                 double alive_threshold);
+                 double alive_threshold,
+                 bool is_directed);
 };

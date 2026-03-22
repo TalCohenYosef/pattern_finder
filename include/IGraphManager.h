@@ -21,5 +21,6 @@ public:
      * @brief Write a graph to a file.
      */
     virtual void write_graph(const std::string& path,
-                             const BoostGraph& graph) = 0;
+                             const BoostGraph& graph,
+                             bool is_directed) = 0;
 };
