@@ -74,7 +74,7 @@ public:
      *         - depth: pattern depth where extension is most promising
      */
     /// @brief Returns the color, vertex to connect and weight of the best candidate
-    std::tuple<int32_t, int32_t, uint32_t> get_color_to_add(uint32_t threshold=0) ;
+    std::tuple<int32_t, int32_t, uint32_t> get_color_to_add(uint32_t threshold=0, bool is_random=true); ;
 
     /**
      * @brief Increase number of trees that stay valid if color is added as neighbour at depth.

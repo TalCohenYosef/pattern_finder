@@ -9,3 +9,4 @@ not_for_git/*
 *.json
 *.sh
 *.xml
+Gnp_graphs/*

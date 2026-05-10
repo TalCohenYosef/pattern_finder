@@ -8,6 +8,7 @@
  *
  * This class represents an undirected graph with integer vertex IDs.
  */
+
 class Graph {
 public:
     Graph(uint32_t vertex_count, std::vector<std::pair<uint32_t, uint32_t>>& edges, std::vector<int32_t>& colors, bool directed = false);

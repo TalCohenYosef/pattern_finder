@@ -50,7 +50,7 @@ public:
      *    registers it as a candidate (or increments its in-degree)
      *  - updates outside-logp caches for affected candidates
      */
-    void absorb_vertex(uint32_t s_vertex);
+    void absorb_vertex(uint32_t s_vertex, bool directed);
 
     /**
      * @brief Return the top-k best candidate vertices with connect points.
@@ -91,4 +91,6 @@ private:
     std::unordered_map<uint32_t, uint32_t> m_candidate_any_parent;
 
     inline double log_prob_of_vertex(uint32_t s_vertex) const;
+    void add_vertex_neighbour_to_candidate(uint32_t vertex, uint32_t absorbed_vertex, bool is_reversed);
+    void add_all_vertex_neighbours_to_candidate(uint32_t absorbed_vertex, bool is_reversed);
 };

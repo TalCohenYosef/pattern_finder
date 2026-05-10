@@ -69,7 +69,7 @@ double SingleGraphHistogram::log_prob_of_color(uint32_t remapped_color) const
  * 
  * @param s_vertex The vertex to absorb into the match set.
  */
-void SingleGraphHistogram::absorb_vertex(uint32_t s_vertex)
+void SingleGraphHistogram::absorb_vertex(uint32_t s_vertex, bool directed)
 {
     // 1. Add to match set.
     m_match_vertices.insert(s_vertex);
@@ -81,37 +81,50 @@ void SingleGraphHistogram::absorb_vertex(uint32_t s_vertex)
     m_candidate_outside_logp.erase(s_vertex);
 
     // 3. Process neighbours of the newly absorbed vertex.
-    auto [nb_begin, nb_end] = m_graph.get_neighbours(s_vertex, false);
-    for (auto it = nb_begin; it != nb_end; ++it) {
-        const uint32_t u = *it;
-        if (m_match_vertices.find(u) != m_match_vertices.end()) continue;
-
-        auto deg_it = m_candidate_in_degree.find(u);
-        if (deg_it == m_candidate_in_degree.end()) {
-            // Brand-new candidate.
-            m_candidates.insert(u);
-            m_candidate_in_degree[u] = 1;
-            m_candidate_any_parent[u] = s_vertex;
-
-            // Compute full outside-logp by scanning u's neighbours.
-            double outside_sum = 0.0;
-            auto [nb_b, nb_e] = m_graph.get_neighbours(u, false);
-            for (auto it2 = nb_b; it2 != nb_e; ++it2) {
-                if (m_match_vertices.find(*it2) == m_match_vertices.end())
-                    outside_sum += log_prob_of_vertex(*it2);
-            }
-            m_candidate_outside_logp[u] = outside_sum;
-        } else {
-            // Existing candidate — increment in-degree.
-            ++(deg_it->second);
-            // s_vertex moved from outside to inside for this candidate.
-            auto cache_it = m_candidate_outside_logp.find(u);
-            if (cache_it != m_candidate_outside_logp.end())
-                cache_it->second -= log_prob_of_vertex(s_vertex);
-        }
+    add_all_vertex_neighbours_to_candidate(s_vertex, false);
+    if (directed)
+    {
+        add_all_vertex_neighbours_to_candidate(s_vertex, true);
     }
 
     ++m_current_depth;
+}
+
+void SingleGraphHistogram::add_all_vertex_neighbours_to_candidate(uint32_t absorbed_vertex, bool is_reversed)
+{
+    auto [nb_begin, nb_end] = m_graph.get_neighbours(absorbed_vertex, is_reversed);
+    for (auto it = nb_begin; it != nb_end; ++it) {
+        const uint32_t u = *it;
+        if (m_match_vertices.find(u) != m_match_vertices.end()) continue;
+        add_vertex_neighbour_to_candidate(u, absorbed_vertex, is_reversed);
+    }
+}
+
+void SingleGraphHistogram::add_vertex_neighbour_to_candidate(uint32_t vertex, uint32_t absorbed_vertex, bool is_reversed)
+{
+    auto deg_it = m_candidate_in_degree.find(vertex);
+    if (deg_it == m_candidate_in_degree.end()) {
+        // Brand-new candidate.
+        m_candidates.insert({vertex, is_reversed});
+        m_candidate_in_degree[vertex] = 1;
+        m_candidate_any_parent[vertex] = absorbed_vertex;
+
+        // Compute full outside-logp by scanning u's neighbours.
+        double outside_sum = 0.0;
+        auto [nb_b, nb_e] = m_graph.get_neighbours(vertex, false);
+        for (auto it2 = nb_b; it2 != nb_e; ++it2) {
+            if (m_match_vertices.find(*it2) == m_match_vertices.end())
+                outside_sum += log_prob_of_vertex(*it2);
+        }
+        m_candidate_outside_logp[vertex] = outside_sum;
+    } else {
+        // Existing candidate — increment in-degree.
+        ++(deg_it->second);
+        // s_vertex moved from outside to inside for this candidate.
+        auto cache_it = m_candidate_outside_logp.find(vertex);
+        if (cache_it != m_candidate_outside_logp.end())
+            cache_it->second -= log_prob_of_vertex(absorbed_vertex);
+    }
 }
 
 /* ---------- get_top_k_vertices ---------- */

@@ -6,6 +6,12 @@
 Graph::Graph(uint32_t vertex_count, std::vector<std::pair<uint32_t, uint32_t>>& edges, std::vector<int32_t>& colors, bool is_directed) : directed(is_directed)
 {
     this->colors = colors;
+    this->index_of_neighbours.resize(vertex_count, 0);
+    if (directed)
+    {
+        this->reversed_index_of_neighbours.resize(vertex_count, 0);
+    }
+    
     if (!edges.empty())
     {
         m_edge_count = static_cast<uint32_t>(edges.size());
@@ -19,7 +25,6 @@ Graph::Graph(uint32_t vertex_count, std::vector<std::pair<uint32_t, uint32_t>>& 
                 edges.emplace_back(edges[i].second, edges[i].first);
             }
             initiate_graph(vertex_count, edges, colors, this->neigbours, this->index_of_neighbours);
-            std::cout << "Edges after deduplication: " << edges.size() << std::endl;
         }
         else
         {
@@ -39,12 +44,11 @@ Graph::Graph(uint32_t vertex_count, std::vector<std::pair<uint32_t, uint32_t>>& 
 
 void Graph::initiate_graph(const uint32_t vertex_count, std::vector<std::pair<uint32_t, uint32_t>>& edges, const std::vector<int32_t>& colors,
     std::vector<uint32_t>& neigbours, std::vector<uint32_t>& index_of_neighbours) 
-{
+{ 
     std::sort(edges.begin(), edges.end());
     auto new_end = std::unique(edges.begin(), edges.end());
     edges.erase(new_end, edges.end());
     neigbours.reserve(edges.size());
-    index_of_neighbours.resize(vertex_count, 0);
     uint32_t current_vertex = edges[0].first;
     for (int i = 0; i < edges.size(); ++i)
     {

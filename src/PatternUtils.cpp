@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <map>
+#include <iostream>
 
 /* ---------- private helpers ---------- */
 

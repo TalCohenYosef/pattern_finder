@@ -163,12 +163,11 @@ std::vector<uint32_t> Tree::_get_colors_of_neighbours_not_in_tree_path(
     for (uint32_t index_in_s : indexes_in_s)
     {
         auto src_vertex = index_in_s;
-
         auto[first_neigbhour, last_neighbour] = s_list[this->m_root->index].get_neighbours(src_vertex, is_reversed);
         for (auto edge = first_neigbhour; edge != last_neighbour; ++edge) {
             uint32_t neighbour_index = *edge;
             if (path_in_tree.find(neighbour_index) == path_in_tree.end() && 
-            previous_children.find(neighbour_index) == previous_children.end())
+                previous_children.find(neighbour_index) == previous_children.end())
             {
                 neighbours_in_s_not_in_tree_path.push_back(s_list[this->m_root->index].get_vertex_color(neighbour_index));
             }
@@ -209,18 +208,20 @@ bool Tree::is_empty()
 std::vector<NodePtr>
 Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexes,
                      const std::vector<Graph>& s_list, bool is_directed)
-{    
+{
     std::vector<NodePtr> added_nodes;
     if (!new_indexes.empty()) {
         // initial path in tree
         std::unordered_map<uint32_t, uint32_t> path_in_tree =
             get_tree_path_map(new_indexes[0].second);
+
         depth = depth + 1;
 
         for (std::pair<uint32_t, NodePtr> idx : new_indexes)
         {
             added_nodes.push_back(_add_node(idx.second, idx.first));
         }
+
         // update histogram
         int new_child_index = 0;
         NodePtr last_parent_node = nullptr;
@@ -272,7 +273,7 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
             last_parent_node = current_parent;
             _update_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, decrease_neighbours_in_hist, 
                 vertex_already_processed, false);
-           
+            
             if (is_direcred)
             {
                 _update_neighbours_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, decrease_neighbours_in_hist_reverse, 
@@ -280,8 +281,10 @@ Tree::add_tree_level(const std::vector<std::pair<uint32_t, NodePtr>>& new_indexe
             }
             const std::vector<uint32_t> update_in_hist =
                 _get_colors_of_neighbours_not_in_tree_path(new_indexes_same_parent, s_list, path_in_tree, empty_previous_children, false);
+
             hist.update_neigbours_add_node_add_neighbours_to_hist(
                 this->depth-1, update_in_hist);
+
             if (is_direcred)
             {
                 const std::vector<uint32_t> update_in_hist_reverse =
@@ -339,7 +342,6 @@ void Tree::remove_node(const NodePtr& node,
         }
         else{
             m_root.reset();
-            //std::cout << "deleted_root" << std::endl;
         }
 
         if (parent && !parent->son)

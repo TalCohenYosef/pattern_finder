@@ -1,0 +1,2 @@
+pattern_S_1299.json - matches 2
+pattern_S_8749.json - matches 0

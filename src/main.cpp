@@ -135,14 +135,15 @@ int main(int32_t argc, char** argv)
         if (options.single_graph) {
             Graph g = graph_manager->read_graph(options.g_path, options.directed);
             SingleGraphPatternFinder sgpf;
-            std::tie(pattern, alive_indexes) =
+            pattern =
                 sgpf.find_pattern(s_list[0], g, options.score_threshold, options.directed);
         } else {
             std::tie(pattern, alive_indexes) =
                 MultiGraphPatternFinder::find_pattern(
                     s_list,
                     options.alive_threshold,
-                    options.directed);
+                    options.directed,
+                    false);
         }
     
         
@@ -161,15 +162,20 @@ int main(int32_t argc, char** argv)
                                 << s_names[idx] << "\n";
                 }
             }
-        } else {
+        } else if (!options.single_graph) {
             std::cout << "No S graphs survived.\n";
         }
                 
-        /* ---------- Write output ---------- */
-        graph_manager->write_graph(
-            "pattern.json", pattern, options.directed);
+                std::string output_name = "pattern.json";
 
-        std::cout << "Pattern written to pattern.json\n";
+        if (options.single_graph && !s_names.empty()) {
+            std::filesystem::path s_file(s_names[0]);
+            output_name = "pattern_" + s_file.stem().string() + ".json";
+        }
+
+        graph_manager->write_graph(output_name, pattern, options.directed);
+
+        std::cout << "Pattern written to " << output_name << "\n";
     }
     catch (const std::exception& e) {
         std::cerr << "Fatal error: " << e.what() << "\n";

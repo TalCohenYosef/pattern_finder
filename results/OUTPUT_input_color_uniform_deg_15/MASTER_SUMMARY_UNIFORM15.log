@@ -1,9 +1,0 @@
-MASTER ANALYSIS SUMMARY - input_color_uniform_deg_15
-========================================
-Total patterns tested: 350
-Total target graphs: 2
-Total time: 447.926287528 seconds
-
-Target graphs tested:
-1. G_induced
-2. G_non_induced

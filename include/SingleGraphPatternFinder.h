@@ -53,7 +53,7 @@ public:
      * @param alpha_decay          Per-vertex multiplicative alpha decay.
      */
     explicit SingleGraphPatternFinder(
-        uint32_t max_active_patterns  = 150,
+        uint32_t max_active_patterns  = 500,
         double   alpha_0              = 1.0,
         double   alpha_decay          = 0.9);
 
@@ -68,7 +68,7 @@ public:
      * @return {pattern BoostGraph, alive_indexes} — alive_indexes is {0} if
      *         S still has matches, {} if the beam was exhausted.
      */
-    std::pair<BoostGraph, std::unordered_set<uint32_t>> find_pattern(
+    BoostGraph find_pattern(
         Graph&  search_graph,
         Graph&  background_graph,
         double  score_threshold,
@@ -117,7 +117,8 @@ private:
         const std::vector<int32_t>& color_map,
         double log_bg_density,
         double alpha_0,
-        double alpha_decay) const;
+        double alpha_decay,
+        bool is_directed) const;
     
     PatternState create_initial_state(
         const Graph&               search_graph,
@@ -126,7 +127,8 @@ private:
         double                     alpha_0,
         double                     alpha_decay,
         uint32_t                   color_id,
-        uint32_t                   match_vertex) const;
+        uint32_t                   match_vertex,
+        bool                       is_directed) const;
     
     uint32_t find_gap_cut(
         const std::vector<std::pair<double, uint32_t>>& scored) const;
@@ -138,7 +140,7 @@ private:
     
     bool any_state_below_threshold(
         std::vector<PatternState>& beam,
-        double bg_density, double threshold, uint32_t iteration, bool is_directed) const;
+        double bg_density, double threshold, bool is_directed) const;
 
     /**
      * @brief Build the initial beam from diverse seed colours.
@@ -151,7 +153,8 @@ private:
         const Graph&                search_graph,
         const std::vector<double>&  color_probability,
         const std::vector<int32_t>& color_map,
-        double                      background_density) const;
+        double                      background_density,
+        bool                        is_directed) const;
 
     /**
      * @brief Expand each live state by cloning it for the top-K candidates.

@@ -33,7 +33,7 @@ void GeneralColorHist::update_hist_decrease_tree_count(
     --m_number_of_trees[pattern_depth][current_vertex_color];
 }
 
-std::tuple<int32_t, int32_t, uint32_t> GeneralColorHist::get_color_to_add(uint32_t threshold)
+std::tuple<int32_t, int32_t, uint32_t> GeneralColorHist::get_color_to_add(uint32_t threshold, bool is_random)
 {
     struct Candidate {
         int32_t color;
@@ -65,6 +65,11 @@ std::tuple<int32_t, int32_t, uint32_t> GeneralColorHist::get_color_to_add(uint32
 
     if (candidates.empty()) {
         return {-1, -1, 0};
+    }
+
+    if (!is_random) {
+        // Pick the highest-weight candidate deterministically.
+        return {candidates.back().color, candidates.back().node, candidates.back().weight};
     }
 
     // 2. Weighted random sampling.

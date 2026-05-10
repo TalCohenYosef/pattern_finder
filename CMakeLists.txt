@@ -67,3 +67,31 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 elseif (MSVC)
     target_compile_options(pattern_finder PRIVATE /W4)
 endif()
+
+find_package(GTest REQUIRED)
+include(GoogleTest)
+
+# Single-graph tests
+add_executable(test_single
+    tests/test_single_graph_pattern_finder.cpp
+    src/SingleGraphPatternFinder.cpp
+    src/SingleGraphHistogram.cpp
+    src/PatternScorer.cpp
+    src/PatternUtils.cpp
+    src/Graph.cpp)
+target_include_directories(test_single PRIVATE include tests)
+target_link_libraries(test_single GTest::GTest GTest::Main Boost::graph)
+gtest_discover_tests(test_single)
+
+# Multi-graph tests
+add_executable(test_multi
+    tests/test_multi_graph_pattern_finder.cpp
+    src/MultiGraphPatternFinder.cpp
+    src/GeneralColorHist.cpp
+    src/IndevidualColorHist.cpp
+    src/PatternUtils.cpp
+    src/Tree.cpp
+    src/Graph.cpp)
+target_include_directories(test_multi PRIVATE include tests)
+target_link_libraries(test_multi GTest::GTest GTest::Main Boost::graph)
+gtest_discover_tests(test_multi)

@@ -74,7 +74,8 @@ private:
         GeneralColorHist& color_hist,
         boost::optional<GeneralColorHist>& reverse_color_hist,
         uint32_t alive_threshold,
-        bool is_directed);
+        bool is_directed,
+        bool is_random = true);
 
     static std::pair<int32_t,int32_t> extend_pattern_at_node_find_matches_in_s(
         std::vector<std::shared_ptr<Tree>>& trees,
@@ -99,5 +100,6 @@ public:
     static std::pair<BoostGraph, std::unordered_set<uint32_t>>
     find_pattern(std::vector<Graph>& s_list,
                  double alive_threshold,
-                 bool is_directed);
+                 bool is_directed,
+                 bool is_random = true);
 };

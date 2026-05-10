@@ -12,6 +12,8 @@
 #include <numeric>
 #include <stdexcept>
 
+static constexpr bool DEBUG = true;
+
 /* ---------- Named constants ---------- */
 
 static constexpr uint32_t INITIAL_BEAM_DIVISOR      = 3;
@@ -40,6 +42,7 @@ double SingleGraphPatternFinder::score_state(PatternState& state, double backgro
 {
     const uint32_t vertex_count = boost::num_vertices(state.pattern);
     const uint32_t edge_count   = is_direcred? boost::num_edges(state.pattern) : boost::num_edges(state.pattern) / 2;
+
     return PatternScorer::score(
         state.pattern_color_logp, edge_count, background_density, vertex_count);
 }
@@ -56,6 +59,14 @@ void SingleGraphPatternFinder::expand_one_state(
     const uint32_t vertex_color =
         static_cast<uint32_t>(search_graph.get_vertex_color(selected_vertex));
 
+    if (DEBUG) {
+    std::cout << "[EXPAND] selected_vertex=" << selected_vertex
+              << " color=" << vertex_color
+              << " current_pattern_size=" << boost::num_vertices(state.pattern)
+              << " current_edges=" << boost::num_edges(state.pattern) / (is_directed ? 1 : 2)
+              << " current_color_logp=" << state.pattern_color_logp
+              << std::endl;
+    }       
     const uint32_t new_pattern_node = boost::add_vertex(
         VertexProperty{static_cast<int32_t>(vertex_color)}, state.pattern);
 
@@ -70,9 +81,16 @@ void SingleGraphPatternFinder::expand_one_state(
         {
             PatternUtils::add_edge(is_directed, state.pattern, new_pattern_node, i);
         }
+        if (is_directed)
+        {
+            if (search_graph.is_edge(state.match_path[i], selected_vertex))
+            {
+                PatternUtils::add_edge(is_directed, state.pattern, i, new_pattern_node);
+            }
+        }
     }
 
-    state.hist->absorb_vertex(selected_vertex);
+    state.hist->absorb_vertex(selected_vertex, is_directed);
     state.match_path.push_back(selected_vertex);
 }
 
@@ -84,7 +102,6 @@ PatternState SingleGraphPatternFinder::clone_state(const PatternState& src) cons
     dst.pattern            = src.pattern;
     dst.hist               = std::make_unique<SingleGraphHistogram>(*src.hist);
     dst.match_path         = src.match_path;
-    dst.alive_indexes      = src.alive_indexes;
     dst.beam_score         = src.beam_score;
     dst.pattern_color_logp = src.pattern_color_logp;
     return dst;
@@ -237,17 +254,21 @@ std::vector<PatternState> SingleGraphPatternFinder::create_beam_from_seeds(
     const std::vector<int32_t>& color_map,
     double log_bg_density,
     double alpha_0,
-    double alpha_decay) const
+    double alpha_decay,
+    bool is_directed) const
 {
     std::vector<PatternState> beam;
     for (size_t si = 0; si < seeds.size(); ++si) {
-        std::cout << "Seed colour " << color_map[seeds[si].color_id]
-                  << " (p=" << seeds[si].probability << ")  matches="
-                  << seeds[si].matches.size() << "  keeping=" << alloc[si] << "\n";
+        if (DEBUG)
+        {
+            std::cout << "Seed colour " << color_map[seeds[si].color_id]
+                    << " (p=" << seeds[si].probability << ")  matches="
+                    << seeds[si].matches.size() << "  keeping=" << alloc[si] << "\n";
+        }
         for (uint32_t mi = 0; mi < alloc[si]; ++mi)
             beam.push_back(create_initial_state(
                 search_graph, color_probability, log_bg_density,
-                alpha_0, alpha_decay, seeds[si].color_id, seeds[si].matches[mi]));
+                alpha_0, alpha_decay, seeds[si].color_id, seeds[si].matches[mi], is_directed));
     }
     return beam;
 }
@@ -261,11 +282,12 @@ PatternState SingleGraphPatternFinder::create_initial_state(
     double                     alpha_0,
     double                     alpha_decay,
     uint32_t                   color_id,
-    uint32_t                   match_vertex) const
+    uint32_t                   match_vertex,
+    bool                       is_directed) const
 {
     std::unique_ptr<SingleGraphHistogram> hist = std::make_unique<SingleGraphHistogram>(
         search_graph, color_probability, log_bg_density, alpha_0, alpha_decay);
-    hist->absorb_vertex(match_vertex);
+    hist->absorb_vertex(match_vertex, is_directed);
 
     BoostGraph pattern;
     boost::add_vertex(VertexProperty{static_cast<int32_t>(color_id)}, pattern);
@@ -274,7 +296,6 @@ PatternState SingleGraphPatternFinder::create_initial_state(
     state.pattern            = std::move(pattern);
     state.hist               = std::move(hist);
     state.match_path         = {match_vertex};
-    state.alive_indexes      = {0u};
     state.beam_score         = 0.0;
     state.pattern_color_logp = state.hist->log_prob_of_color(color_id);
     return state;
@@ -325,7 +346,6 @@ PatternState* SingleGraphPatternFinder::select_best_state(
     PatternState* best = nullptr;
     double best_score = std::numeric_limits<double>::max();
     for (PatternState& state : beam) {
-        if (state.alive_indexes.empty()) continue;
         const double s = score_state(state, background_density, is_directed);
         if (s < best_score) { best_score = s; best = &state; }
     }
@@ -336,14 +356,15 @@ PatternState* SingleGraphPatternFinder::select_best_state(
 
 bool SingleGraphPatternFinder::any_state_below_threshold(
     std::vector<PatternState>& beam,
-    double bg_density, double threshold, uint32_t iteration, bool is_directed) const
+    double bg_density, double threshold, bool is_directed) const
 {
     for (PatternState& state : beam) {
-        if (state.alive_indexes.empty()) continue;
         const double s = score_state(state, bg_density, is_directed);
         if (s < threshold) {
-            std::cout << "Score " << s << " < threshold " << threshold
-                      << " at iteration " << iteration << " -- stopping.\n";
+            if (DEBUG) {
+                std::cout << "Score " << s << " < threshold " << threshold
+                        << " -- stopping.\n";
+            }
             return true;
         }
     }
@@ -356,7 +377,8 @@ std::vector<PatternState> SingleGraphPatternFinder::build_initial_beam(
     const Graph&                search_graph,
     const std::vector<double>&  color_probability,
     const std::vector<int32_t>& color_map,
-    double                      background_density) const
+    double                      background_density,
+    bool                        is_directed) const
 {
     const double log_bg_density =
         (background_density > 0.0) ? std::log(background_density) : 0.0;
@@ -364,17 +386,24 @@ std::vector<PatternState> SingleGraphPatternFinder::build_initial_beam(
 
     // Get all matches for all colors in ONE pass (efficient!)
     std::vector<std::vector<uint32_t>> all_matches = PatternUtils::get_all_color_matches(search_graph, 
-                                                                                          static_cast<uint32_t>(color_probability.size()));
+                                                                                          static_cast<uint32_t>(color_map.size()));
 
     // Create valid colors list with their match counts
     std::vector<std::tuple<double, uint32_t, uint32_t>> valid_colors;
-    for (uint32_t c = 0; c < static_cast<uint32_t>(color_probability.size()); ++c) {
-        if (color_probability[c] > 0.0 && !all_matches[c].empty()) {
-            valid_colors.emplace_back(color_probability[c], c, static_cast<uint32_t>(all_matches[c].size()));
+    for (uint32_t c = 0; c < static_cast<uint32_t>(color_map.size()); ++c) {
+        if (!all_matches[c].empty())
+        {
+            if (c >= color_probability.size() || color_probability[c] == 0)
+            {
+                valid_colors = {{color_probability[c], c, static_cast<uint32_t>(all_matches[c].size())}};
+                break;
+            }
+            else {
+                valid_colors.emplace_back(color_probability[c], c, static_cast<uint32_t>(all_matches[c].size()));
+            }
         }
     }
     
-    if (valid_colors.empty()) return {};
 
     // Sort by probability (ascending = rarest first)
     std::sort(valid_colors.begin(), valid_colors.end(),
@@ -390,7 +419,7 @@ std::vector<PatternState> SingleGraphPatternFinder::build_initial_beam(
     std::vector<uint32_t> alloc = allocate_seed_states_improved(seeds, initial_count);
 
     return create_beam_from_seeds(seeds, alloc, search_graph, color_probability, 
-                                 color_map, log_bg_density, m_alpha_0, m_alpha_decay);
+                                 color_map, log_bg_density, m_alpha_0, m_alpha_decay, is_directed);
 }
 
 /* ---------- expand_beam ---------- */
@@ -409,11 +438,6 @@ bool SingleGraphPatternFinder::expand_beam(
     new_beam.reserve(current_size * branching_factor);
 
     for (PatternState& state : beam) {
-        if (state.alive_indexes.empty()) {
-            new_beam.push_back(std::move(state));
-            continue;
-        }
-
         std::vector<CandidateVertex> candidates = state.hist->get_top_k_vertices(branching_factor);
         if (candidates.empty()) {
             new_beam.push_back(std::move(state));
@@ -447,10 +471,7 @@ void SingleGraphPatternFinder::prune_beam(
     std::vector<std::pair<double, uint32_t>> scored;
     scored.reserve(beam.size());
     for (uint32_t i = 0; i < static_cast<uint32_t>(beam.size()); ++i) {
-        const double s = !beam[i].alive_indexes.empty()
-            ? score_state(beam[i], background_density, is_directed)
-            : std::numeric_limits<double>::max();
-        scored.emplace_back(s, i);
+        scored.emplace_back(score_state(beam[i], background_density, is_directed), i);
     }
     std::sort(scored.begin(), scored.end());
 
@@ -470,73 +491,85 @@ void SingleGraphPatternFinder::prune_beam(
 
 /* ---------- find_pattern ---------- */
 
-std::pair<BoostGraph, std::unordered_set<uint32_t>>
+BoostGraph
 SingleGraphPatternFinder::find_pattern(
     Graph&  search_graph,
     Graph&  background_graph,
     double  score_threshold,
     bool    is_directed)
 {
+
+    if (search_graph.vertex_count() == 0)
+    {
+        throw std::runtime_error("S has no nodes.");
+    }
+    if (background_graph.vertex_count() == 0)
+    {
+        throw std::runtime_error("G has no nodes.");
+    }
+
     const std::chrono::high_resolution_clock::time_point time_start = std::chrono::high_resolution_clock::now();
 
     const std::vector<int32_t> color_map = PatternUtils::map_colors(search_graph, background_graph);
 
     const std::vector<double> color_probability = PatternUtils::compute_color_distribution(
         static_cast<uint32_t>(color_map.size()), background_graph);
+
     const double bg_density = PatternUtils::compute_density(
         background_graph.vertex_count(), background_graph.edge_count());
 
     std::vector<PatternState> beam = build_initial_beam(
-        search_graph, color_probability, color_map, bg_density);
+        search_graph, color_probability, color_map, bg_density, is_directed);
     if (beam.empty()) {
         std::cerr << "SingleGraphPatternFinder: no valid seed.\n";
-        return {BoostGraph{}, {}};
+        return BoostGraph{};
     }
 
     // Main expansion loop
     uint32_t iteration = 0;
     const uint32_t MAX_ITERATIONS = 50;  // Safety limit
-    bool threshold_reached = false;
-    
-    while (static_cast<uint32_t>(beam.size()) < m_max_active_patterns && iteration < MAX_ITERATIONS) {
+    bool threshold_reached = any_state_below_threshold(beam, bg_density, score_threshold, is_directed);
+
+    while (static_cast<uint32_t>(beam.size()) < m_max_active_patterns && iteration < MAX_ITERATIONS && !threshold_reached) {
         if (!expand_beam(beam, search_graph, bg_density, is_directed)) {
-            std::cout << "No more expansions possible at iteration " << iteration << "\n";
+            if (DEBUG)
+            {
+                std::cout << "No more expansions possible at iteration " << iteration << "\n";
+            }
             break;
         }
         
         // Check if any state reached the threshold
-        for (PatternState& state : beam) {
-            if (!state.alive_indexes.empty()) {
-                double score = score_state(state, bg_density, is_directed);
-                if (score <= score_threshold) {
-                    threshold_reached = true;
-                    std::cout << "Score " << score << " reached threshold " << score_threshold 
-                              << " at iteration " << iteration << "\n";
-                    break;
-                }
-            }
+        if (any_state_below_threshold(beam, bg_density, score_threshold, is_directed))
+        {
+            threshold_reached = true;
         }
-        
-        if (threshold_reached) break;
+
         ++iteration;
     }
 
     PatternState* best_state = select_best_state(beam, bg_density, is_directed);
     if (!best_state) {
         std::cerr << "SingleGraphPatternFinder: beam exhausted.\n";
-        return {BoostGraph{}, {}};
+        return BoostGraph{};
     }
     
     if (!threshold_reached) {
-        std::cout << "No pattern reached threshold, returning best pattern found (score: " 
-                  << score_state(*best_state, bg_density,is_directed) << ")\n";
+        if (DEBUG)
+        {
+            std::cout << "No pattern reached threshold, returning best pattern found (score: " 
+                    << score_state(*best_state, bg_density,is_directed) << ")\n";
+        }
     }
 
     PatternUtils::recolor_pattern(best_state->pattern, color_map);
     const std::chrono::high_resolution_clock::time_point time_end = std::chrono::high_resolution_clock::now();
-    std::cout << "Total pattern finding time: "
-              << std::chrono::duration<double>(time_end - time_start).count()   
-              << " seconds\n";
+    if (DEBUG)
+    {
+        std::cout << "Total pattern finding time: "
+                << std::chrono::duration<double>(time_end - time_start).count()   
+                << " seconds\n";
+    }
 
-    return {std::move(best_state->pattern), std::move(best_state->alive_indexes)};
+    return std::move(best_state->pattern);
 }

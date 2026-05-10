@@ -25,7 +25,6 @@ struct PatternState
     BoostGraph                            pattern;
     std::unique_ptr<SingleGraphHistogram> hist;         ///< Owned histogram.
     std::vector<uint32_t>                 match_path;   ///< S-vertex at each pattern depth.
-    std::unordered_set<uint32_t>          alive_indexes;
     double                                beam_score         = 0.0;
 
     /** Σ log(p[color(v)]) over all vertices currently in the pattern.
