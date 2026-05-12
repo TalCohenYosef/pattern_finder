@@ -120,7 +120,6 @@ int main(int32_t argc, char** argv)
         // }
 
         /* ---------- Run pattern finder ---------- */
-        BoostGraph pattern;
         std::unordered_set<uint32_t> alive_indexes;
 
          std::unique_ptr<IGraphManager> graph_manager;
@@ -135,19 +134,57 @@ int main(int32_t argc, char** argv)
         if (options.single_graph) {
             Graph g = graph_manager->read_graph(options.g_path, options.directed);
             SingleGraphPatternFinder sgpf;
-            pattern =
+            std::vector<BoostGraph> patterns =
                 sgpf.find_pattern(s_list[0], g, options.score_threshold, options.directed);
-        } else {
+
+                    if (!alive_indexes.empty()) {
+            // Copy unordered_set to vector and sort
+            std::vector<int> alive_sorted(alive_indexes.begin(), alive_indexes.end());
+            std::sort(alive_sorted.begin(), alive_sorted.end());
+        
+            std::cout << "\nPattern appears in " 
+                        << alive_sorted.size() 
+                        << " graphs:\n";
+        
+            for (int idx : alive_sorted) {
+                if (idx >= 0 && idx < static_cast<int>(s_names.size())) {
+                    std::cout << "S[" << idx << "] -> " 
+                                << s_names[idx] << "\n";
+                }
+            }
+        } else if (!options.single_graph) {
+            std::cout << "No S graphs survived.\n";
+        }
+                
+                std::string output_name = "pattern.json";
+
+        if (options.single_graph && !s_names.empty()) {
+            std::filesystem::path s_file(s_names[0]);
+            output_name = "pattern_" + s_file.stem().string() + ".json";
+        }
+
+        std::filesystem::path out_path(output_name);
+        std::string base_name = out_path.stem().string();          // removes .json
+        std::filesystem::path parent_dir = out_path.parent_path();
+
+        for (size_t i = 0; i < patterns.size(); ++i) {
+            std::filesystem::path pattern_output_path =
+            parent_dir / (base_name + "_" + std::to_string(i + 1) + ".json");
+
+            graph_manager->write_graph(pattern_output_path.string(), patterns[i], options.directed);
+
+            std::cout << "Pattern written to " << pattern_output_path.string() << "\n";
+        }
+    }   
+        else {
+            BoostGraph pattern;
             std::tie(pattern, alive_indexes) =
                 MultiGraphPatternFinder::find_pattern(
                     s_list,
                     options.alive_threshold,
                     options.directed,
                     false);
-        }
-    
-        
-        if (!alive_indexes.empty()) {
+                    if (!alive_indexes.empty()) {
             // Copy unordered_set to vector and sort
             std::vector<int> alive_sorted(alive_indexes.begin(), alive_indexes.end());
             std::sort(alive_sorted.begin(), alive_sorted.end());
@@ -176,6 +213,7 @@ int main(int32_t argc, char** argv)
         graph_manager->write_graph(output_name, pattern, options.directed);
 
         std::cout << "Pattern written to " << output_name << "\n";
+        }
     }
     catch (const std::exception& e) {
         std::cerr << "Fatal error: " << e.what() << "\n";

@@ -21,4 +21,14 @@ g++ -std=c++17 -O2 -g -Wall -Wextra -Wpedantic -Iinclude -I/usr/local/anaconda3/
     git clone https://github.com/yaelgin2/new-graph-measures/tree/test_motifs_solution/local_tests
     cd local_tests
 
-4. 
+4.
+echo "matches 0:"
+grep -Ec "matches 0$" summary_file.txt
+
+echo "matches > 0:"
+grep -E "matches [1-9][0-9]*$" summary_file.txt | wc -l
+
+echo "total:"
+wc -l summary_file.txt
+
+5.

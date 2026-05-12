@@ -68,7 +68,7 @@ public:
      * @return {pattern BoostGraph, alive_indexes} — alive_indexes is {0} if
      *         S still has matches, {} if the beam was exhausted.
      */
-    BoostGraph find_pattern(
+    std::vector<BoostGraph> find_pattern(
         Graph&  search_graph,
         Graph&  background_graph,
         double  score_threshold,
@@ -133,7 +133,7 @@ private:
     uint32_t find_gap_cut(
         const std::vector<std::pair<double, uint32_t>>& scored) const;
     
-    PatternState* select_best_state(
+    std::vector<PatternState*> select_best_state(
         std::vector<PatternState>& beam,
         double                     background_density,
         bool                       is_directed) const;
